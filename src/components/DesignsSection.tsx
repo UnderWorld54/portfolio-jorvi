@@ -265,7 +265,7 @@ export default function DesignsSection() {
   ];
 
   return (
-    <section id="designs" className="min-h-screen sm:h-screen bg-black relative overflow-x-hidden flex items-center justify-center pt-20 sm:pt-24 md:pt-28 py-6 sm:py-8 md:py-0">
+    <section id="designs" className="min-h-screen bg-black relative overflow-x-hidden pt-20 sm:pt-24 md:pt-28">
       {/* Background gradient animé */}
       <motion.div
         className="absolute inset-0 opacity-20 sm:opacity-30"
@@ -282,37 +282,27 @@ export default function DesignsSection() {
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <div className="relative z-10 w-full h-full px-4 sm:px-5 md:px-6 lg:px-8 xl:px-10 flex flex-col justify-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 md:py-12">
         {/* Titre avec étoiles et glow */}
         <motion.div
-          className="mb-1.5 sm:mb-2 md:mb-3 lg:mb-4"
+          className="mb-8 md:mb-12"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.6 }}
         >
-          <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4">
-            {/* Étoile gauche */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="hidden sm:block"
-            >
-              <Image
-                src="/logo/star.svg"
-                alt="Star"
-                width={24}
-                height={24}
-                className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6"
-                style={{ 
-                  filter: "brightness(0) invert(1) drop-shadow(0 0 4px rgba(255, 255, 255, 0.6))",
-                }}
-              />
-            </motion.div>
-            
-            {/* Titre en rouge avec glow */}
+          <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4 mb-4">
+            <Image
+              src="/logo/star.svg"
+              alt="Star"
+              width={24}
+              height={24}
+              className="w-5 h-5 sm:w-6 sm:h-6 hidden sm:block"
+              style={{ 
+                filter: "brightness(0) invert(1) drop-shadow(0 0 4px rgba(255, 255, 255, 0.6))",
+              }}
+            />
             <h2
-              className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-bold text-red-500 text-center tracking-tight uppercase"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-red-500 text-center tracking-tight uppercase"
               style={{ 
                 fontFamily: "serif",
                 textShadow: "0 0 10px rgba(239, 68, 68, 0.5), 0 0 20px rgba(239, 68, 68, 0.3)"
@@ -320,25 +310,16 @@ export default function DesignsSection() {
             >
               DESIGNS
             </h2>
-            
-            {/* Étoile droite */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="hidden sm:block"
-            >
-              <Image
-                src="/logo/star.svg"
-                alt="Star"
-                width={24}
-                height={24}
-                className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6"
-                style={{ 
-                  filter: "brightness(0) invert(1) drop-shadow(0 0 4px rgba(255, 255, 255, 0.6))",
-                }}
-              />
-            </motion.div>
+            <Image
+              src="/logo/star.svg"
+              alt="Star"
+              width={24}
+              height={24}
+              className="w-5 h-5 sm:w-6 sm:h-6 hidden sm:block"
+              style={{ 
+                filter: "brightness(0) invert(1) drop-shadow(0 0 4px rgba(255, 255, 255, 0.6))",
+              }}
+            />
           </div>
         </motion.div>
 

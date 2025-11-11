@@ -68,14 +68,16 @@ export default function Header() {
             animate={{ opacity: 1, scale: 1 }}
             className="absolute left-1/2 -translate-x-1/2"
           >
-            <Image
-              src="/logo/star.svg"
-              alt="Star"
-              width={28}
-              height={28}
-              className="w-7 h-7"
-              style={{ filter: "brightness(0) invert(1)", display: "block" }}
-            />
+            <Link href="/">
+              <Image
+                src="/logo/star.svg"
+                alt="Star"
+                width={28}
+                height={28}
+                className="w-7 h-7"
+                style={{ filter: "brightness(0) invert(1)", display: "block" }}
+              />
+            </Link>
           </motion.div>
 
           {/* Hamburger Menu - Right */}
@@ -178,20 +180,22 @@ export default function Header() {
           </div>
 
           {/* Center - Star logo */}
-          <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none z-0">
+          <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center z-0">
             <motion.div
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.3, duration: 0.5 }}
             >
-              <Image
-                src="/logo/star.svg"
-                alt="Star"
-                width={32}
-                height={32}
-                className="w-8 h-8"
-                style={{ filter: "brightness(0) invert(1)", display: "block" }}
-              />
+              <Link href="/">
+                <Image
+                  src="/logo/star.svg"
+                  alt="Star"
+                  width={32}
+                  height={32}
+                  className="w-8 h-8"
+                  style={{ filter: "brightness(0) invert(1)", display: "block" }}
+                />
+              </Link>
             </motion.div>
           </div>
 
