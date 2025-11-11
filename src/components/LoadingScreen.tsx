@@ -23,7 +23,7 @@ const LoadingScreen = memo(function LoadingScreen({ isLoading }: LoadingScreenPr
             transform: "translateZ(0)",
           }}
         >
-          {/* Étoile animée au centre - optimisée */}
+          {/* Étoile animée au centre - scintillement */}
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ 
@@ -35,22 +35,23 @@ const LoadingScreen = memo(function LoadingScreen({ isLoading }: LoadingScreenPr
               ease: "easeOut",
             }}
             style={{
-              willChange: "transform",
+              willChange: "transform, opacity",
               transform: "translateZ(0)",
             }}
           >
             <motion.div
               animate={{ 
-                rotate: 360,
+                opacity: [0.4, 1, 0.4],
+                scale: [0.95, 1.05, 0.95],
               }}
               transition={{
-                duration: 2,
+                duration: 1.5,
                 repeat: Infinity,
-                ease: "linear",
+                ease: "easeInOut",
                 repeatType: "loop",
               }}
               style={{
-                willChange: "transform",
+                willChange: "opacity, transform",
                 transform: "translateZ(0)",
               }}
             >
@@ -69,20 +70,20 @@ const LoadingScreen = memo(function LoadingScreen({ isLoading }: LoadingScreenPr
               />
             </motion.div>
             
-            {/* Effet de glow subtil */}
+            {/* Effet de glow qui scintille aussi */}
             <motion.div
               className="absolute inset-0 -z-10"
               animate={{
-                opacity: [0.3, 0.6, 0.3],
-                scale: [1, 1.1, 1],
+                opacity: [0.2, 0.5, 0.2],
+                scale: [1, 1.15, 1],
               }}
               transition={{
-                duration: 2,
+                duration: 1.5,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
               style={{
-                background: "radial-gradient(circle, rgba(239, 68, 68, 0.3) 0%, transparent 70%)",
+                background: "radial-gradient(circle, rgba(239, 68, 68, 0.4) 0%, transparent 70%)",
                 willChange: "opacity, transform",
                 transform: "translateZ(0)",
               }}
