@@ -2,8 +2,9 @@
 
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ArrowUp } from "lucide-react";
+import LoadingScreen from "@/components/LoadingScreen";
 
 interface Cover {
   id: string;
@@ -115,11 +116,85 @@ const covers: Cover[] = [
 
 export default function CoversPage() {
   const [isVisible, setIsVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { scrollY } = useScroll();
+  const imagesLoadedRef = useRef<Set<string>>(new Set());
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setIsVisible(latest > 300);
   });
+
+  useEffect(() => {
+    // Réinitialiser le compteur
+    imagesLoadedRef.current.clear();
+    setIsLoading(true);
+
+    // Nettoyer le timeout précédent
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    const checkAllImagesLoaded = () => {
+      // Vérifier toutes les images de covers
+      const coverImages = document.querySelectorAll('.cover-image');
+      
+      if (coverImages.length === 0) {
+        // Si pas encore d'images dans le DOM, attendre un peu
+        timeoutRef.current = setTimeout(checkAllImagesLoaded, 100);
+        return;
+      }
+
+      let loadedCount = 0;
+      const totalCount = coverImages.length;
+
+      coverImages.forEach((img) => {
+        const imageElement = img as HTMLImageElement;
+        if (imageElement.complete && imageElement.naturalHeight !== 0) {
+          loadedCount++;
+        } else if (imageElement.complete && imageElement.naturalHeight === 0) {
+          // Image en erreur, compter comme chargée
+          loadedCount++;
+        }
+      });
+
+      // Si toutes les images sont chargées
+      if (loadedCount >= totalCount && totalCount > 0) {
+        timeoutRef.current = setTimeout(() => {
+          setIsLoading(false);
+        }, 300);
+        return;
+      }
+
+      // Écouter les événements de chargement
+      coverImages.forEach((img) => {
+        const imageElement = img as HTMLImageElement;
+        if (!imageElement.complete) {
+          const handleLoad = () => {
+            imagesLoadedRef.current.add(imageElement.src);
+            checkAllImagesLoaded();
+          };
+          
+          imageElement.addEventListener("load", handleLoad, { once: true });
+          imageElement.addEventListener("error", handleLoad, { once: true });
+        }
+      });
+
+      // Timeout de sécurité (max 3 secondes)
+      timeoutRef.current = setTimeout(() => {
+        setIsLoading(false);
+      }, 3000);
+    };
+
+    // Démarrer la vérification après un court délai
+    timeoutRef.current = setTimeout(checkAllImagesLoaded, 200);
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -129,7 +204,14 @@ export default function CoversPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black pt-20 sm:pt-24 md:pt-28 relative">
+    <>
+      <LoadingScreen isLoading={isLoading} />
+      <motion.div 
+        className="min-h-screen bg-black pt-20 sm:pt-24 md:pt-28 relative"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoading ? 0 : 1 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+      >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 md:py-12">
         {/* Header */}
         <motion.div
@@ -187,7 +269,7 @@ export default function CoversPage() {
                   <img
                     src={cover.image}
                     alt={cover.projectName}
-                    className="w-full h-auto block transition-transform duration-500 group-hover:scale-105"
+                    className="cover-image w-full h-auto block transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
@@ -234,7 +316,8 @@ export default function CoversPage() {
       >
         <ArrowUp size={24} />
       </motion.button>
-    </div>
+      </motion.div>
+    </>
   );
 }
 
