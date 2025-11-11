@@ -1,19 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
-import Image from "next/image";
+import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
 
 export default function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isClicking, setIsClicking] = useState(false);
   
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   
-  const springConfig = { damping: 20, stiffness: 150 };
+  // Curseur principal - très fluide
+  const springConfig = { damping: 25, stiffness: 200 };
   const cursorXSpring = useSpring(cursorX, springConfig);
   const cursorYSpring = useSpring(cursorY, springConfig);
+  
+  // Traînée - plus lente pour l'effet de traînée
+  const trailXSpring = useSpring(cursorX, { damping: 30, stiffness: 100 });
+  const trailYSpring = useSpring(cursorY, { damping: 30, stiffness: 100 });
 
   useEffect(() => {
     const updateCursor = (e: MouseEvent) => {
@@ -31,14 +36,21 @@ export default function CustomCursor() {
     // Utiliser la délégation d'événements pour gérer tous les éléments interactifs
     document.addEventListener("mousemove", handleMouseMove);
 
+    const handleMouseDown = () => setIsClicking(true);
+    const handleMouseUp = () => setIsClicking(false);
+
     window.addEventListener("mousemove", updateCursor);
     window.addEventListener("mouseenter", () => setIsVisible(true));
     window.addEventListener("mouseleave", () => setIsVisible(false));
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
 
     return () => {
       window.removeEventListener("mousemove", updateCursor);
       window.removeEventListener("mouseenter", () => setIsVisible(true));
       window.removeEventListener("mouseleave", () => setIsVisible(false));
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
       document.removeEventListener("mousemove", handleMouseMove);
     };
   }, [cursorX, cursorY, isVisible]);
@@ -47,6 +59,36 @@ export default function CustomCursor() {
 
   return (
     <>
+      {/* Traînée - point qui suit avec délai */}
+      <motion.div
+        className="fixed top-0 left-0 pointer-events-none z-[9997]"
+        style={{
+          x: trailXSpring,
+          y: trailYSpring,
+          translateX: "-50%",
+          translateY: "-50%",
+        }}
+      >
+        <motion.div
+          animate={{
+            scale: isHovering ? [1, 1.2, 1] : 1,
+            opacity: isHovering ? 0.3 : 0.2,
+          }}
+          transition={{
+            scale: {
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
+            opacity: {
+              duration: 0.3,
+              ease: [0.4, 0, 0.2, 1],
+            },
+          }}
+          className="w-3 h-3 rounded-full bg-red-500/60"
+        />
+      </motion.div>
+
       {/* Curseur principal - point discret */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none z-[9999]"
@@ -59,40 +101,83 @@ export default function CustomCursor() {
       >
         <motion.div
           animate={{
-            scale: isHovering ? 0.8 : 1,
-            opacity: isHovering ? 0.6 : 1,
+            scale: isClicking ? 0.6 : isHovering ? 0.8 : 1,
+            opacity: isClicking ? 0.8 : isHovering ? 0.6 : 1,
           }}
-          transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-          className="w-2 h-2 rounded-full bg-red-500/80"
+          transition={{
+            duration: 0.2,
+            ease: [0.4, 0, 0.2, 1],
+          }}
+          className="w-2 h-2 rounded-full bg-red-500/90"
           style={{
             backdropFilter: "blur(4px)",
+            boxShadow: isHovering 
+              ? "0 0 8px rgba(239, 68, 68, 0.4), 0 0 16px rgba(239, 68, 68, 0.2)"
+              : "0 0 4px rgba(239, 68, 68, 0.3)",
           }}
         />
       </motion.div>
 
-      {/* Cercle externe au hover */}
-      {isHovering && (
-        <motion.div
-          className="fixed top-0 left-0 pointer-events-none z-[9998]"
-          style={{
-            x: cursorXSpring,
-            y: cursorYSpring,
-            translateX: "-50%",
-            translateY: "-50%",
-          }}
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.5 }}
-          transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-        >
-          <div 
-            className="w-12 h-12 rounded-full border border-red-500/40"
+      {/* Cercle externe au hover avec animation pulsante */}
+      <AnimatePresence>
+        {isHovering && (
+          <motion.div
+            className="fixed top-0 left-0 pointer-events-none z-[9998]"
             style={{
-              backdropFilter: "blur(2px)",
+              x: cursorXSpring,
+              y: cursorYSpring,
+              translateX: "-50%",
+              translateY: "-50%",
             }}
-          />
-        </motion.div>
-      )}
+            initial={{ opacity: 0, scale: 0.3 }}
+            animate={{
+              opacity: [0.4, 0.6, 0.4],
+              scale: [1, 1.1, 1],
+            }}
+            exit={{ opacity: 0, scale: 0.3 }}
+            transition={{
+              opacity: {
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              },
+              scale: {
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              },
+            }}
+          >
+            <div 
+              className="w-12 h-12 rounded-full border border-red-500/50"
+              style={{
+                backdropFilter: "blur(2px)",
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Effet de clic - onde */}
+      <AnimatePresence>
+        {isClicking && (
+          <motion.div
+            className="fixed top-0 left-0 pointer-events-none z-[9996]"
+            style={{
+              x: cursorXSpring,
+              y: cursorYSpring,
+              translateX: "-50%",
+              translateY: "-50%",
+            }}
+            initial={{ opacity: 0.6, scale: 0.8 }}
+            animate={{ opacity: 0, scale: 2 }}
+            exit={{ opacity: 0, scale: 2 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+          >
+            <div className="w-16 h-16 rounded-full border-2 border-red-500/60" />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
