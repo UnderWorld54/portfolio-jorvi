@@ -4,27 +4,31 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Linkedin, Instagram, Mail } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
-  const [activeNav, setActiveNav] = useState<string>("DESIGNS");
+  const pathname = usePathname();
   const [activeLang, setActiveLang] = useState<string>("FR");
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   const navItemsMobile = [
-    { label: "DESIGNS", href: "#designs" },
+    { label: "DESIGNS", href: "/designs" },
     { label: "COVERS", href: "#covers" },
   ];
   
   const navItemsDesktop = [
-    { label: "DESIGNS", href: "#designs" },
+    { label: "DESIGNS", href: "/designs" },
     { label: "COVERS", href: "#covers" },
     { label: "CONTACT", href: "mailto:jorvikapela@gmail.com" },
   ];
   
   const contactEmail = "jorvikapela@gmail.com";
 
-  const handleNavClick = (label: string) => {
-    setActiveNav(label);
+  // Calculer activeNav directement depuis le pathname
+  const activeNav = pathname === "/designs" ? "DESIGNS" : "";
+
+  const handleNavClick = () => {
     setMenuOpen(false);
   };
 
@@ -195,25 +199,45 @@ export default function Header() {
           <nav className="flex items-center gap-4 md:gap-8 flex-1 justify-end min-w-0 z-10">
             {navItemsDesktop.map(({ label, href }) => (
               <motion.div key={label} className="relative flex items-center justify-center">
-                <a
-                  href={href}
-                  onClick={() => setActiveNav(label)}
-                  className={`text-red-500 text-sm md:text-base font-medium transition-colors leading-none ${
-                    activeNav === label
-                      ? "text-red-500"
-                      : "text-red-500/60 hover:text-red-400"
-                  }`}
-                  style={{
-                    textShadow:
+                {href.startsWith("mailto:") ? (
+                  <a
+                    href={href}
+                    className={`text-red-500 text-sm md:text-base font-medium transition-colors leading-none ${
                       activeNav === label
-                        ? "0 0 10px rgba(239,68,68,0.8), 0 0 20px rgba(239,68,68,0.5)"
-                        : "none",
-                    fontFamily: "serif",
-                    lineHeight: "1",
-                  }}
-                >
-                  {label}
-                </a>
+                        ? "text-red-500"
+                        : "text-red-500/60 hover:text-red-400"
+                    }`}
+                    style={{
+                      textShadow:
+                        activeNav === label
+                          ? "0 0 10px rgba(239,68,68,0.8), 0 0 20px rgba(239,68,68,0.5)"
+                          : "none",
+                      fontFamily: "serif",
+                      lineHeight: "1",
+                    }}
+                  >
+                    {label}
+                  </a>
+                ) : (
+                  <Link
+                    href={href}
+                    className={`text-red-500 text-sm md:text-base font-medium transition-colors leading-none ${
+                      activeNav === label
+                        ? "text-red-500"
+                        : "text-red-500/60 hover:text-red-400"
+                    }`}
+                    style={{
+                      textShadow:
+                        activeNav === label
+                          ? "0 0 10px rgba(239,68,68,0.8), 0 0 20px rgba(239,68,68,0.5)"
+                          : "none",
+                      fontFamily: "serif",
+                      lineHeight: "1",
+                    }}
+                  >
+                    {label}
+                  </Link>
+                )}
                 {activeNav === label && (
                   <motion.div
                     initial={{ opacity: 0, scaleX: 0 }}
@@ -254,25 +278,47 @@ export default function Header() {
                     transition={{ delay: 0.1 * index }}
                     className="relative"
                   >
-                    <a
-                      href={href}
-                      onClick={() => handleNavClick(label)}
-                      className={`text-3xl font-bold transition-all duration-300 block leading-none ${
-                        activeNav === label
-                          ? "text-red-500"
-                          : "text-red-500/60"
-                      }`}
-                      style={{
-                        textShadow:
+                    {href.startsWith("#") ? (
+                      <a
+                        href={href}
+                        onClick={handleNavClick}
+                        className={`text-3xl font-bold transition-all duration-300 block leading-none ${
                           activeNav === label
-                            ? "0 0 20px rgba(239, 68, 68, 0.8), 0 0 40px rgba(239, 68, 68, 0.5)"
-                            : "none",
-                        fontFamily: "serif",
-                        lineHeight: "1",
-                      }}
-                    >
-                      {label}
-                    </a>
+                            ? "text-red-500"
+                            : "text-red-500/60"
+                        }`}
+                        style={{
+                          textShadow:
+                            activeNav === label
+                              ? "0 0 20px rgba(239, 68, 68, 0.8), 0 0 40px rgba(239, 68, 68, 0.5)"
+                              : "none",
+                          fontFamily: "serif",
+                          lineHeight: "1",
+                        }}
+                      >
+                        {label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={href}
+                        onClick={handleNavClick}
+                        className={`text-3xl font-bold transition-all duration-300 block leading-none ${
+                          activeNav === label
+                            ? "text-red-500"
+                            : "text-red-500/60"
+                        }`}
+                        style={{
+                          textShadow:
+                            activeNav === label
+                              ? "0 0 20px rgba(239, 68, 68, 0.8), 0 0 40px rgba(239, 68, 68, 0.5)"
+                              : "none",
+                          fontFamily: "serif",
+                          lineHeight: "1",
+                        }}
+                      >
+                        {label}
+                      </Link>
+                    )}
                     {activeNav === label && (
                       <motion.div
                         initial={{ opacity: 0, scaleX: 0 }}
@@ -323,7 +369,7 @@ export default function Header() {
                   aria-label="Email"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleNavClick("CONTACT");
+                    handleNavClick();
                   }}
                 >
                   <Mail size={24} />
