@@ -156,25 +156,22 @@ export default function CoversPage() {
         </motion.div>
 
         {/* Grille Masonry de type Pinterest */}
-        <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 md:gap-6">
+        <div className="columns-2 sm:columns-2 md:columns-3 lg:columns-4 gap-3 sm:gap-4 md:gap-6">
           {covers.map((cover, index) => (
             <motion.div
               key={cover.id}
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="break-inside-avoid mb-4 md:mb-6 group cursor-pointer"
+              className="break-inside-avoid mb-3 sm:mb-4 md:mb-6 group cursor-pointer"
             >
               <div className="relative overflow-hidden rounded-lg bg-gray-900 border border-red-500/20 hover:border-red-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/20">
-                {/* Image */}
+                {/* Image - conserve les dimensions d'origine pour effet mur de brique */}
                 <div className="relative w-full overflow-hidden">
-                  <Image
+                  <img
                     src={cover.image}
                     alt={cover.projectName}
-                    width={400}
-                    height={600}
-                    className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                    className="w-full h-auto block transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
