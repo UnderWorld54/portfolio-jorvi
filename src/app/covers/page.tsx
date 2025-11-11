@@ -1,7 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import Image from "next/image";
+import { useState } from "react";
+import { ArrowUp } from "lucide-react";
 
 interface Cover {
   id: string;
@@ -15,7 +17,7 @@ interface Cover {
 const covers: Cover[] = [
   {
     id: "1",
-    image: "/images/cover1.jpg",
+    image: "/images/cover6.jpg",
     artist: "Artiste 1",
     projectName: "Projet Alpha",
     date: "2024",
@@ -39,7 +41,7 @@ const covers: Cover[] = [
   },
   {
     id: "4",
-    image: "/images/cover4.jpg",
+    image: "/images/cover1.jpg",
     artist: "Artiste 4",
     projectName: "Projet Delta",
     date: "2023",
@@ -71,7 +73,7 @@ const covers: Cover[] = [
   },
   {
     id: "8",
-    image: "/images/cover2.jpg",
+    image: "/images/cover3.jpg",
     artist: "Artiste 2",
     projectName: "Projet Beta",
     date: "2024",
@@ -79,8 +81,8 @@ const covers: Cover[] = [
   },
   {
     id: "9",
-    image: "/images/cover3.jpg",
-    artist: "Artiste 3",
+    image: "/images/cover2.jpg",
+    artist: "Artiste 2",
     projectName: "Projet Gamma",
     date: "2023",
     description: "Description du projet et de l'artiste",
@@ -95,7 +97,7 @@ const covers: Cover[] = [
   },
   {
     id: "11",
-    image: "/images/cover5.jpg",
+    image: "/images/cover6.jpg",
     artist: "Artiste 5",
     projectName: "Projet Epsilon",
     date: "2024",
@@ -103,7 +105,7 @@ const covers: Cover[] = [
   },
   {
     id: "12",
-    image: "/images/cover6.jpg",
+    image: "/images/cover4.jpg",
     artist: "Artiste 6",
     projectName: "Projet Zeta",
     date: "2024",
@@ -112,8 +114,22 @@ const covers: Cover[] = [
 ];
 
 export default function CoversPage() {
+  const [isVisible, setIsVisible] = useState(false);
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setIsVisible(latest > 300);
+  });
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
-    <div className="min-h-screen bg-black pt-20 sm:pt-24 md:pt-28">
+    <div className="min-h-screen bg-black pt-20 sm:pt-24 md:pt-28 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 md:py-12">
         {/* Header */}
         <motion.div
@@ -199,6 +215,25 @@ export default function CoversPage() {
           ))}
         </div>
       </div>
+
+      {/* Bouton Scroll to Top flottant */}
+      <motion.button
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{
+          opacity: isVisible ? 1 : 0,
+          scale: isVisible ? 1 : 0,
+        }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={scrollToTop}
+        className="fixed bottom-8 right-8 z-50 p-3 rounded-full bg-red-500/90 hover:bg-red-500 text-white shadow-lg hover:shadow-red-500/50 transition-all duration-300 backdrop-blur-sm border border-red-500/30"
+        style={{
+          boxShadow: "0 4px 20px rgba(239, 68, 68, 0.4), 0 0 30px rgba(239, 68, 68, 0.2)",
+        }}
+        aria-label="Retour en haut"
+      >
+        <ArrowUp size={24} />
+      </motion.button>
     </div>
   );
 }

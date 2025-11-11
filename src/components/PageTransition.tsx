@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import LoadingScreen from "./LoadingScreen";
 
 interface PageTransitionProps {
@@ -175,9 +176,16 @@ export default function PageTransition({ children }: PageTransitionProps) {
   return (
     <>
       <LoadingScreen isLoading={isLoading} />
-      <div style={{ opacity: isLoading ? 0 : 1, transition: "opacity 0.3s ease-in-out" }}>
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoading ? 0 : 1 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+        style={{
+          willChange: "opacity",
+        }}
+      >
         {children}
-      </div>
+      </motion.div>
     </>
   );
 }
