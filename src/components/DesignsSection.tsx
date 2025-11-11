@@ -249,13 +249,6 @@ export default function DesignsSection() {
       count: 8,
     },
     {
-      title: "PHOTOS",
-      slug: "photos",
-      image: "/images/photos.jpg",
-      description: "Captures artistiques",
-      count: 24,
-    },
-    {
       title: "VIDÉOS",
       slug: "videos",
       image: "/images/videos.jpg",

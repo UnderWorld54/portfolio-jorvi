@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import { ArrowUp } from "lucide-react";
 import LoadingScreen from "@/components/LoadingScreen";
 
-interface Cover {
+interface Photo {
   id: string;
   image: string;
   artist: string;
@@ -15,7 +15,7 @@ interface Cover {
   description: string;
 }
 
-const covers: Cover[] = [
+const photos: Photo[] = [
   {
     id: "1",
     image: "/images/cover6.jpg",
@@ -114,7 +114,7 @@ const covers: Cover[] = [
   },
 ];
 
-export default function CoversPage() {
+export default function PhotosPage() {
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { scrollY } = useScroll();
@@ -136,8 +136,8 @@ export default function CoversPage() {
     }
 
     const checkAllImagesLoaded = () => {
-      // Vérifier toutes les images de covers
-      const coverImages = document.querySelectorAll('.cover-image');
+      // Vérifier toutes les images de photos
+      const coverImages = document.querySelectorAll('.photo-image');
       
       if (coverImages.length === 0) {
         // Si pas encore d'images dans le DOM, attendre un peu
@@ -238,7 +238,7 @@ export default function CoversPage() {
                 textShadow: "0 0 10px rgba(239, 68, 68, 0.5), 0 0 20px rgba(239, 68, 68, 0.3)"
               }}
             >
-              COVERS
+              PHOTOS
             </h1>
             <Image
               src="/logo/star.svg"
@@ -255,9 +255,9 @@ export default function CoversPage() {
 
         {/* Grille Masonry de type Pinterest */}
         <div className="columns-2 sm:columns-2 md:columns-3 lg:columns-4 gap-3 sm:gap-4 md:gap-6">
-          {covers.map((cover, index) => (
+          {photos.map((photo, index) => (
             <motion.div
-              key={cover.id}
+              key={photo.id}
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -267,12 +267,12 @@ export default function CoversPage() {
                 {/* Image - conserve les dimensions d'origine pour effet mur de brique */}
                 <div className="relative w-full overflow-hidden">
                   <Image
-                    src={cover.image}
-                    alt={cover.projectName}
+                    src={photo.image}
+                    alt={photo.projectName}
                     width={800}
                     height={1200}
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className="cover-image w-full h-auto block transition-transform duration-500 group-hover:scale-105"
+                    className="photo-image w-full h-auto block transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
@@ -282,19 +282,7 @@ export default function CoversPage() {
                 </div>
 
                 {/* Informations */}
-                <div className="p-4 bg-black/90 backdrop-blur-sm">
-                  <p className="text-white/80 text-xs sm:text-sm mb-2 line-clamp-2">
-                    {cover.description}
-                  </p>
-                  <div className="flex flex-col gap-1 text-xs sm:text-sm">
-                    <div className="text-white font-medium">
-                      <span className="text-red-500/80">{cover.artist}</span>
-                    </div>
-                    <div className="text-white/60">
-                      {cover.projectName} · {cover.date}
-                    </div>
-                  </div>
-                </div>
+
               </div>
             </motion.div>
           ))}

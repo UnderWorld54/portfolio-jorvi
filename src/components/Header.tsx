@@ -15,18 +15,20 @@ export default function Header() {
   const navItemsMobile = [
     { label: "DESIGNS", href: "/designs" },
     { label: "COVERS", href: "/covers" },
+    { label: "PHOTOS", href: "/photos" },
   ];
   
   const navItemsDesktop = [
     { label: "DESIGNS", href: "/designs" },
     { label: "COVERS", href: "/covers" },
+    { label: "PHOTOS", href: "/photos" },
     { label: "CONTACT", href: "mailto:jorvikapela@gmail.com" },
   ];
   
   const contactEmail = "jorvikapela@gmail.com";
 
   // Calculer activeNav directement depuis le pathname
-  const activeNav = pathname === "/designs" ? "DESIGNS" : pathname === "/covers" ? "COVERS" : "";
+  const activeNav = pathname === "/designs" ? "DESIGNS" : pathname === "/covers" ? "COVERS" : pathname === "/photos" ? "PHOTOS" : "";
 
   const handleNavClick = () => {
     setMenuOpen(false);
