@@ -180,13 +180,13 @@ export default function Header() {
           </div>
 
           {/* Center - Star logo */}
-          <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center z-0">
+          <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center z-10">
             <motion.div
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.3, duration: 0.5 }}
             >
-              <Link href="/">
+              <Link href="/" className="cursor-pointer">
                 <Image
                   src="/logo/star.svg"
                   alt="Star"
