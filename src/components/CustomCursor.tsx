@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 export default function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false);
@@ -59,37 +60,7 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* Traînée - point qui suit avec délai */}
-      <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9997]"
-        style={{
-          x: trailXSpring,
-          y: trailYSpring,
-          translateX: "-50%",
-          translateY: "-50%",
-        }}
-      >
-        <motion.div
-          animate={{
-            scale: isHovering ? [1, 1.2, 1] : 1,
-            opacity: isHovering ? 0.3 : 0.2,
-          }}
-          transition={{
-            scale: {
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut",
-            },
-            opacity: {
-              duration: 0.3,
-              ease: [0.4, 0, 0.2, 1],
-            },
-          }}
-          className="w-3 h-3 rounded-full bg-red-500/60"
-        />
-      </motion.div>
-
-      {/* Curseur principal - point discret */}
+      {/* Curseur principal - étoile avec transparence et animation */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none z-[9999]"
         style={{
@@ -101,21 +72,39 @@ export default function CustomCursor() {
       >
         <motion.div
           animate={{
-            scale: isClicking ? 0.6 : isHovering ? 0.8 : 1,
-            opacity: isClicking ? 0.8 : isHovering ? 0.6 : 1,
+            scale: isClicking ? 0.8 : isHovering ? 1.1 : [1, 1.05, 1],
+            opacity: isClicking ? 0.7 : isHovering ? 0.8 : 0.6,
+            rotate: [0, 5, -5, 0],
           }}
           transition={{
-            duration: 0.2,
-            ease: [0.4, 0, 0.2, 1],
+            scale: {
+              duration: isHovering ? 0.2 : 2,
+              repeat: isHovering ? 0 : Infinity,
+              ease: "easeInOut",
+            },
+            opacity: {
+              duration: 0.2,
+              ease: [0.4, 0, 0.2, 1],
+            },
+            rotate: {
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
           }}
-          className="w-2 h-2 rounded-full bg-red-500/90"
           style={{
-            backdropFilter: "blur(4px)",
-            boxShadow: isHovering 
-              ? "0 0 8px rgba(239, 68, 68, 0.4), 0 0 16px rgba(239, 68, 68, 0.2)"
-              : "0 0 4px rgba(239, 68, 68, 0.3)",
+            filter: "brightness(0) invert(1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.4))",
           }}
-        />
+        >
+          <Image
+            src="/logo/star-cursor.svg"
+            alt=""
+            width={32}
+            height={32}
+            className="w-8 h-8"
+            unoptimized
+          />
+        </motion.div>
       </motion.div>
 
       {/* Cercle externe au hover avec animation pulsante */}
@@ -131,8 +120,8 @@ export default function CustomCursor() {
             }}
             initial={{ opacity: 0, scale: 0.3 }}
             animate={{
-              opacity: [0.4, 0.6, 0.4],
-              scale: [1, 1.1, 1],
+              opacity: [0.3, 0.5, 0.3],
+              scale: [1, 1.2, 1],
             }}
             exit={{ opacity: 0, scale: 0.3 }}
             transition={{
@@ -149,7 +138,7 @@ export default function CustomCursor() {
             }}
           >
             <div 
-              className="w-12 h-12 rounded-full border border-red-500/50"
+              className="w-12 h-12 rounded-full border border-white/30"
               style={{
                 backdropFilter: "blur(2px)",
               }}
@@ -169,12 +158,12 @@ export default function CustomCursor() {
               translateX: "-50%",
               translateY: "-50%",
             }}
-            initial={{ opacity: 0.6, scale: 0.8 }}
+            initial={{ opacity: 0.4, scale: 0.8 }}
             animate={{ opacity: 0, scale: 2 }}
             exit={{ opacity: 0, scale: 2 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
-            <div className="w-16 h-16 rounded-full border-2 border-red-500/60" />
+            <div className="w-16 h-16 rounded-full border-2 border-white/40" />
           </motion.div>
         )}
       </AnimatePresence>

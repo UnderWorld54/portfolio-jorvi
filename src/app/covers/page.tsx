@@ -232,9 +232,9 @@ export default function CoversPage() {
               }}
             />
             <h1
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-red-500 text-center tracking-tight uppercase"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-red-500 text-center tracking-tight uppercase"
               style={{ 
-                fontFamily: "serif",
+                fontFamily: '"Great White Serif", serif',
                 textShadow: "0 0 10px rgba(239, 68, 68, 0.5), 0 0 20px rgba(239, 68, 68, 0.3)"
               }}
             >

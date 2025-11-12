@@ -148,7 +148,7 @@ const CategoryCard = ({ title, slug, image, description, count, index }: Categor
               >
                 <motion.h3
                   className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-white uppercase mb-1 sm:mb-1.5 tracking-tight"
-                  style={{ fontFamily: "serif" }}
+                  style={{ fontFamily: '"Great White Serif", serif' }}
                   animate={{
                     textShadow: isHovered 
                       ? "0 0 8px rgba(239, 68, 68, 0.4), 0 0 15px rgba(239, 68, 68, 0.2)"
@@ -295,9 +295,9 @@ export default function DesignsSection() {
               }}
             />
             <h2
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-red-500 text-center tracking-tight uppercase"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-red-500 text-center tracking-tight uppercase"
               style={{ 
-                fontFamily: "serif",
+                fontFamily: '"Great White Serif", serif',
                 textShadow: "0 0 10px rgba(239, 68, 68, 0.5), 0 0 20px rgba(239, 68, 68, 0.3)"
               }}
             >

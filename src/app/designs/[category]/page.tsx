@@ -50,7 +50,7 @@ export default function CategoryPage() {
     return (
       <div className="min-h-screen bg-black pt-20 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-red-500 mb-4" style={{ fontFamily: "serif" }}>
+          <h1 className="text-4xl font-bold text-red-500 mb-4" style={{ fontFamily: '"Great White Serif", serif' }}>
             Catégorie non trouvée
           </h1>
           <Link href="/designs" className="text-red-500/60 hover:text-red-500 transition-colors">
@@ -92,7 +92,7 @@ export default function CategoryPage() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            style={{ fontFamily: "serif" }}
+            style={{ fontFamily: '"Great White Serif", serif' }}
           >
             {data.title}
           </motion.h1>

@@ -46,7 +46,7 @@ export default function Header() {
                 key={lang}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setActiveLang(lang)}
-                className={`text-xs font-bold px-2 py-1 rounded transition-all ${
+                className={`text-md font-bold px-2 py-1 rounded transition-all ${
                   activeLang === lang
                     ? "text-red-500 bg-red-500/10"
                     : "text-red-500/60"
@@ -56,7 +56,7 @@ export default function Header() {
                     activeLang === lang
                       ? "0 0 10px rgba(239, 68, 68, 0.8)"
                       : "none",
-                  fontFamily: "serif",
+                  fontFamily: '"Great White Serif", serif',
                 }}
               >
                 {lang}
@@ -127,7 +127,7 @@ export default function Header() {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setActiveLang(lang)}
-                    className={`text-red-500 text-sm md:text-base font-medium transition-colors p-0 m-0 border-0 bg-transparent leading-none ${
+                    className={`text-red-500 text-md md:text-lg font-medium transition-colors p-0 m-0 border-0 bg-transparent leading-none ${
                       activeLang === lang
                         ? "text-red-500"
                         : "text-red-500/60 hover:text-red-400"
@@ -137,7 +137,7 @@ export default function Header() {
                         activeLang === lang
                           ? "0 0 10px rgba(239,68,68,0.8), 0 0 20px rgba(239,68,68,0.5)"
                           : "none",
-                      fontFamily: "serif",
+                      fontFamily: '"Great White Serif", serif',
                       lineHeight: "1",
                     }}
                   >
@@ -155,7 +155,7 @@ export default function Header() {
             </div>
 
             {/* Socials */}
-            <div className="flex items-center gap-3 md:gap-4 text-sm md:text-base" style={{ lineHeight: "1" }}>
+            <div className="flex items-center gap-3 md:gap-4 text-base md:text-lg" style={{ lineHeight: "1" }}>
               <motion.a
                 href="https://www.linkedin.com/in/jorvi-kapela-178823189/"
                 target="_blank"
@@ -208,7 +208,7 @@ export default function Header() {
                 {href.startsWith("mailto:") ? (
                   <a
                     href={href}
-                    className={`text-red-500 text-sm md:text-base font-medium transition-colors leading-none ${
+                    className={`text-red-500 text-lg md:text-lg font-medium transition-colors leading-none ${
                       activeNav === label
                         ? "text-red-500"
                         : "text-red-500/60 hover:text-red-400"
@@ -218,7 +218,7 @@ export default function Header() {
                         activeNav === label
                           ? "0 0 10px rgba(239,68,68,0.8), 0 0 20px rgba(239,68,68,0.5)"
                           : "none",
-                      fontFamily: "serif",
+                      fontFamily: '"Great White Serif", serif',
                       lineHeight: "1",
                     }}
                   >
@@ -227,7 +227,7 @@ export default function Header() {
                 ) : (
                   <Link
                     href={href}
-                    className={`text-red-500 text-sm md:text-base font-medium transition-colors leading-none ${
+                    className={`text-red-500 text-base md:text-lg font-medium transition-colors leading-none ${
                       activeNav === label
                         ? "text-red-500"
                         : "text-red-500/60 hover:text-red-400"
@@ -237,7 +237,7 @@ export default function Header() {
                         activeNav === label
                           ? "0 0 10px rgba(239,68,68,0.8), 0 0 20px rgba(239,68,68,0.5)"
                           : "none",
-                      fontFamily: "serif",
+                      fontFamily: '"Great White Serif", serif',
                       lineHeight: "1",
                     }}
                   >
@@ -288,7 +288,7 @@ export default function Header() {
                       <a
                         href={href}
                         onClick={handleNavClick}
-                        className={`text-3xl font-bold transition-all duration-300 block leading-none ${
+                        className={`text-4xl font-bold transition-all duration-300 block leading-none ${
                           activeNav === label
                             ? "text-red-500"
                             : "text-red-500/60"
@@ -298,7 +298,7 @@ export default function Header() {
                             activeNav === label
                               ? "0 0 20px rgba(239, 68, 68, 0.8), 0 0 40px rgba(239, 68, 68, 0.5)"
                               : "none",
-                          fontFamily: "serif",
+                          fontFamily: '"Great White Serif", serif',
                           lineHeight: "1",
                         }}
                       >
@@ -308,7 +308,7 @@ export default function Header() {
                       <Link
                         href={href}
                         onClick={handleNavClick}
-                        className={`text-3xl font-bold transition-all duration-300 block leading-none ${
+                        className={`text-4xl font-bold transition-all duration-300 block leading-none ${
                           activeNav === label
                             ? "text-red-500"
                             : "text-red-500/60"
@@ -318,7 +318,7 @@ export default function Header() {
                             activeNav === label
                               ? "0 0 20px rgba(239, 68, 68, 0.8), 0 0 40px rgba(239, 68, 68, 0.5)"
                               : "none",
-                          fontFamily: "serif",
+                          fontFamily: '"Great White Serif", serif',
                           lineHeight: "1",
                         }}
                       >
