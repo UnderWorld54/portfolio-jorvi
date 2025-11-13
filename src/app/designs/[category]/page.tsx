@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
+import BackButton from "@/components/ui/BackButton";
 
 const categoryData: Record<string, { title: string; items: Array<{ id: string; title: string; image: string }> }> = {
   logos: {
@@ -66,27 +66,7 @@ export default function CategoryPage() {
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12 py-12">
         {/* Header avec titre et retour */}
         <div className="mb-12">
-          <Link
-            href="/designs"
-            className="inline-flex items-center gap-2 text-red-500/60 hover:text-red-500 transition-colors mb-6"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M10 12L6 8L10 4"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            Retour
-          </Link>
+          <BackButton href="/designs" />
           <motion.h1
             className="text-4xl md:text-5xl lg:text-6xl font-bold text-white"
             initial={{ opacity: 0, y: -20 }}

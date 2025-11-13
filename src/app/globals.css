@@ -34,7 +34,6 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   overflow-x: hidden;
-  cursor: none;
 }
 
 /* Smooth scrolling */
@@ -62,9 +61,8 @@ html {
   background: #dc2626;
 }
 
-/* Curseur personnalisé et scrollbar Firefox */
+/* Scrollbar Firefox */
 * {
-  cursor: none;
   scrollbar-width: thin;
   scrollbar-color: #ef4444 #000000;
 }

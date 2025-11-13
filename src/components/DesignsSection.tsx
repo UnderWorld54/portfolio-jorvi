@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
+import PageTitle from "@/components/ui/PageTitle";
 
 interface CategoryCardProps {
   title: string;
@@ -277,44 +278,7 @@ export default function DesignsSection() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 md:py-12">
         {/* Titre avec étoiles et glow */}
-        <motion.div
-          className="mb-8 md:mb-12"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4 mb-4">
-            <Image
-              src="/logo/star.svg"
-              alt="Star"
-              width={24}
-              height={24}
-              className="w-5 h-5 sm:w-6 sm:h-6 hidden sm:block"
-              style={{ 
-                filter: "brightness(0) invert(1) drop-shadow(0 0 4px rgba(255, 255, 255, 0.6))",
-              }}
-            />
-            <h2
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-red-500 text-center tracking-tight uppercase"
-              style={{ 
-                fontFamily: '"Great White Serif", serif',
-                textShadow: "0 0 10px rgba(239, 68, 68, 0.5), 0 0 20px rgba(239, 68, 68, 0.3)"
-              }}
-            >
-              DESIGNS
-            </h2>
-            <Image
-              src="/logo/star.svg"
-              alt="Star"
-              width={24}
-              height={24}
-              className="w-5 h-5 sm:w-6 sm:h-6 hidden sm:block"
-              style={{ 
-                filter: "brightness(0) invert(1) drop-shadow(0 0 4px rgba(255, 255, 255, 0.6))",
-              }}
-            />
-          </div>
-        </motion.div>
+        <PageTitle title="DESIGNS" />
 
         {/* Grille asymétrique moderne */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 md:gap-4 lg:gap-5 w-full">
