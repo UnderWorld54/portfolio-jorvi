@@ -53,9 +53,7 @@ export default function CategoryPage() {
           <h1 className="text-4xl font-bold text-red-500 mb-4" style={{ fontFamily: '"Great White Serif", serif' }}>
             Catégorie non trouvée
           </h1>
-          <Link href="/designs" className="text-red-500/60 hover:text-red-500 transition-colors">
-            Retour aux designs
-          </Link>
+          <BackButton href="/designs" label="Retour aux designs" />
         </div>
       </div>
     );
