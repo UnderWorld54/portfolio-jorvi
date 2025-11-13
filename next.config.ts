@@ -17,8 +17,15 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: '**.strapi.app',
       },
-      // Ajoutez d'autres domaines Strapi si nécessaire
-      // Vous pouvez aussi utiliser une variable d'environnement pour le domaine
+      {
+        protocol: 'https',
+        hostname: '**.media.strapiapp.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.media.strapi.cloud',
+      },
+
       ...(process.env.NEXT_PUBLIC_STRAPI_IMAGE_DOMAIN
         ? [
             {
@@ -28,8 +35,7 @@ const nextConfig: NextConfig = {
           ]
         : []),
     ],
-    // Désactiver l'optimisation d'images en développement pour permettre localhost
-    // Cela évite les erreurs de résolution d'IP privée
+
     unoptimized: process.env.NODE_ENV === 'development',
   },
 };
