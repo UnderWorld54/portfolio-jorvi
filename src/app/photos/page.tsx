@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import LoadingScreen from "@/components/LoadingScreen";
 import PageContainer from "@/components/ui/PageContainer";
 import PageTitle from "@/components/ui/PageTitle";
@@ -15,121 +16,71 @@ interface Photo extends ImageCardData {
   description: string;
 }
 
-const photos: Photo[] = [
-  {
-    id: "1",
-    image: "/images/cover6.jpg",
-    artist: "Artiste 1",
-    projectName: "Projet Alpha",
-    date: "2024",
-    description: "Description du projet et de l'artiste",
-  },
-  {
-    id: "2",
-    image: "/images/cover2.jpg",
-    artist: "Artiste 2",
-    projectName: "Projet Beta",
-    date: "2024",
-    description: "Description du projet et de l'artiste",
-  },
-  {
-    id: "3",
-    image: "/images/cover3.jpg",
-    artist: "Artiste 3",
-    projectName: "Projet Gamma",
-    date: "2023",
-    description: "Description du projet et de l'artiste",
-  },
-  {
-    id: "4",
-    image: "/images/cover1.jpg",
-    artist: "Artiste 4",
-    projectName: "Projet Delta",
-    date: "2023",
-    description: "Description du projet et de l'artiste",
-  },
-  {
-    id: "5",
-    image: "/images/cover5.jpg",
-    artist: "Artiste 5",
-    projectName: "Projet Epsilon",
-    date: "2024",
-    description: "Description du projet et de l'artiste",
-  },
-  {
-    id: "6",
-    image: "/images/cover6.jpg",
-    artist: "Artiste 6",
-    projectName: "Projet Zeta",
-    date: "2024",
-    description: "Description du projet et de l'artiste",
-  },
-  {
-    id: "7",
-    image: "/images/cover1.jpg",
-    artist: "Artiste 1",
-    projectName: "Projet Alpha",
-    date: "2024",
-    description: "Description du projet et de l'artiste",
-  },
-  {
-    id: "8",
-    image: "/images/cover3.jpg",
-    artist: "Artiste 2",
-    projectName: "Projet Beta",
-    date: "2024",
-    description: "Description du projet et de l'artiste",
-  },
-  {
-    id: "9",
-    image: "/images/cover2.jpg",
-    artist: "Artiste 2",
-    projectName: "Projet Gamma",
-    date: "2023",
-    description: "Description du projet et de l'artiste",
-  },
-  {
-    id: "10",
-    image: "/images/cover4.jpg",
-    artist: "Artiste 4",
-    projectName: "Projet Delta",
-    date: "2023",
-    description: "Description du projet et de l'artiste",
-  },
-  {
-    id: "11",
-    image: "/images/cover6.jpg",
-    artist: "Artiste 5",
-    projectName: "Projet Epsilon",
-    date: "2024",
-    description: "Description du projet et de l'artiste",
-  },
-  {
-    id: "12",
-    image: "/images/cover4.jpg",
-    artist: "Artiste 6",
-    projectName: "Projet Zeta",
-    date: "2024",
-    description: "Description du projet et de l'artiste",
-  },
-];
-
 export default function PhotosPage() {
-  const { isLoading } = useImageLoader({ imageSelector: '.photo-image' });
+  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [isLoadingData, setIsLoadingData] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { isLoading: isLoadingImages } = useImageLoader({ 
+    imageSelector: '.photo-image',
+    timeout: 5000 
+  });
+
+  useEffect(() => {
+    async function fetchPhotos() {
+      try {
+        setIsLoadingData(true);
+        setError(null);
+        
+        const response = await fetch('/api/photos');
+        
+        if (!response.ok) {
+          throw new Error(`Failed to fetch photos: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        setPhotos(data);
+      } catch (err) {
+        console.error('Error fetching photos:', err);
+        setError(err instanceof Error ? err.message : 'Failed to load photos');
+        // En cas d'erreur, on peut garder un tableau vide ou afficher un message
+        setPhotos([]);
+      } finally {
+        setIsLoadingData(false);
+      }
+    }
+
+    fetchPhotos();
+  }, []);
+
+  const isLoading = isLoadingData || isLoadingImages;
 
   return (
     <>
       <LoadingScreen isLoading={isLoading} />
       <PageContainer isLoading={isLoading}>
         <PageTitle title="PHOTOS" />
-        <MasonryGrid 
-          items={photos} 
-          imageClassName="photo-image"
-          showInfo={false}
-        />
+        {error && (
+          <div className="text-red-500 text-center py-8">
+            <p>Erreur lors du chargement des photos: {error}</p>
+            <p className="text-sm text-white/60 mt-2">
+              Vérifiez votre configuration Strapi dans les variables d&apos;environnement.
+            </p>
+          </div>
+        )}
+        {!error && photos.length === 0 && !isLoadingData && (
+          <div className="text-white/60 text-center py-8">
+            <p>Aucune photo disponible pour le moment.</p>
+          </div>
+        )}
+        {photos.length > 0 && (
+          <MasonryGrid 
+            items={photos} 
+            imageClassName="photo-image"
+            showInfo={false}
+          />
+        )}
       </PageContainer>
       <ScrollToTopButton />
     </>
   );
 }
-
