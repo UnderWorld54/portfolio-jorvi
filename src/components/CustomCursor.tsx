@@ -8,6 +8,7 @@ export default function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -22,6 +23,22 @@ export default function CustomCursor() {
   const trailYSpring = useSpring(cursorY, { damping: 30, stiffness: 100 });
 
   useEffect(() => {
+    // Détecter si c'est un appareil tactile
+    const checkTouchDevice = () => {
+      return (
+        'ontouchstart' in window ||
+        navigator.maxTouchPoints > 0 ||
+        (navigator as any).msMaxTouchPoints > 0
+      );
+    };
+
+    setIsTouchDevice(checkTouchDevice());
+
+    // Si c'est un appareil tactile, ne pas initialiser le curseur
+    if (checkTouchDevice()) {
+      return;
+    }
+
     const updateCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
@@ -56,7 +73,8 @@ export default function CustomCursor() {
     };
   }, [cursorX, cursorY, isVisible]);
 
-  if (!isVisible) return null;
+  // Ne pas afficher le curseur sur les appareils tactiles
+  if (isTouchDevice || !isVisible) return null;
 
   return (
     <>

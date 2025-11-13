@@ -12,11 +12,31 @@ interface PageTransitionProps {
 export default function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const observerRef = useRef<MutationObserver | null>(null);
   const checkTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Détecter si c'est un appareil mobile/tactile une seule fois au montage
   useEffect(() => {
+    const checkTouchDevice = () => {
+      return (
+        typeof window !== 'undefined' && (
+          'ontouchstart' in window ||
+          navigator.maxTouchPoints > 0 ||
+          (navigator as any).msMaxTouchPoints > 0
+        )
+      );
+    };
+    setIsTouchDevice(checkTouchDevice());
+  }, []);
+
+  useEffect(() => {
+    // Sur mobile, désactiver complètement le loading screen pour éviter les problèmes
+    if (isTouchDevice) {
+      setIsLoading(false);
+      return;
+    }
     // Nettoyer les timeouts précédents
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -221,7 +241,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
         observerRef.current.disconnect();
       }
     };
-  }, [pathname]);
+  }, [pathname, isTouchDevice]);
 
   return (
     <>
