@@ -28,17 +28,39 @@ export default function PageTransition({ children }: PageTransitionProps) {
       clearTimeout(checkTimeoutRef.current);
     }
 
+    // Fonction pour vérifier si une image est dans le viewport ou proche
+    const isImageInViewport = (img: HTMLImageElement): boolean => {
+      const rect = img.getBoundingClientRect();
+      const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+      const windowWidth = window.innerWidth || document.documentElement.clientWidth;
+      
+      // Vérifier si l'image est dans le viewport ou proche (avec une marge de 200px)
+      return (
+        rect.top < windowHeight + 200 &&
+        rect.bottom > -200 &&
+        rect.left < windowWidth + 200 &&
+        rect.right > -200
+      );
+    };
+
     // Vérifier rapidement si le contenu est déjà prêt
     const quickCheck = () => {
       const images = document.querySelectorAll("img");
       let needsLoading = false;
       let allLoaded = true;
 
-      // Vérifier si des images sont en cours de chargement
+      // Vérifier si des images sont en cours de chargement (seulement celles dans le viewport)
       images.forEach((img) => {
         const imageElement = img as HTMLImageElement;
+        const isLazy = imageElement.loading === "lazy";
+        
         // Si l'image n'est pas complètement chargée et qu'elle a une source
         if (imageElement.src && !imageElement.complete) {
+          // Si l'image est lazy, vérifier si elle est dans le viewport
+          if (isLazy && !isImageInViewport(imageElement)) {
+            // Ignorer les images lazy hors viewport
+            return;
+          }
           needsLoading = true;
           allLoaded = false;
         } else if (imageElement.src && imageElement.complete && imageElement.naturalHeight === 0) {
@@ -76,14 +98,22 @@ export default function PageTransition({ children }: PageTransitionProps) {
       const checkImagesLoaded = () => {
         const images = document.querySelectorAll("img");
         let loadedCount = 0;
-        let totalImages = images.length;
+        let totalImages = 0;
         const loadedImages = new Set<HTMLImageElement>();
         let pendingImages = 0;
 
-        // Compter les images qui sont vraiment en cours de chargement
+        // Compter uniquement les images qui sont vraiment en cours de chargement et dans le viewport
         images.forEach((img) => {
           const imageElement = img as HTMLImageElement;
+          const isLazy = imageElement.loading === "lazy";
+          
           if (imageElement.src) {
+            // Ignorer les images lazy qui ne sont pas dans le viewport
+            if (isLazy && !isImageInViewport(imageElement)) {
+              return;
+            }
+            
+            totalImages++;
             if (imageElement.complete && imageElement.naturalHeight !== 0) {
               loadedCount++;
               loadedImages.add(imageElement);
@@ -93,7 +123,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
           }
         });
 
-        // Si pas d'images ou toutes déjà chargées, masquer le loading immédiatement
+        // Si pas d'images pertinentes ou toutes déjà chargées, masquer le loading immédiatement
         if (totalImages === 0 || (loadedCount === totalImages && pendingImages === 0)) {
           setIsLoading(false);
           return;
@@ -105,6 +135,9 @@ export default function PageTransition({ children }: PageTransitionProps) {
             loadedCount++;
             
             if (loadedCount >= totalImages) {
+              if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+              }
               timeoutRef.current = setTimeout(() => {
                 setIsLoading(false);
               }, 200);
@@ -112,10 +145,17 @@ export default function PageTransition({ children }: PageTransitionProps) {
           }
         };
 
-        // Écouter les images en cours de chargement
+        // Écouter les images en cours de chargement (seulement celles dans le viewport)
         images.forEach((img) => {
           const imageElement = img as HTMLImageElement;
+          const isLazy = imageElement.loading === "lazy";
+          
           if (imageElement.src && !imageElement.complete) {
+            // Ignorer les images lazy hors viewport
+            if (isLazy && !isImageInViewport(imageElement)) {
+              return;
+            }
+            
             imageElement.addEventListener("load", () => handleImageLoad(imageElement), { once: true });
             imageElement.addEventListener("error", () => handleImageLoad(imageElement), { once: true });
           }
@@ -130,7 +170,14 @@ export default function PageTransition({ children }: PageTransitionProps) {
                 const newImages = element.querySelectorAll("img");
                 newImages.forEach((img) => {
                   const imageElement = img as HTMLImageElement;
+                  const isLazy = imageElement.loading === "lazy";
+                  
                   if (imageElement.src) {
+                    // Ignorer les images lazy hors viewport
+                    if (isLazy && !isImageInViewport(imageElement)) {
+                      return;
+                    }
+                    
                     totalImages++;
                     if (imageElement.complete && imageElement.naturalHeight !== 0) {
                       handleImageLoad(imageElement);
@@ -151,10 +198,13 @@ export default function PageTransition({ children }: PageTransitionProps) {
           subtree: true,
         });
 
-        // Timeout de sécurité réduit (max 1.5 secondes)
+        // Timeout de sécurité réduit (max 1 seconde) pour éviter que le loading reste bloqué
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
         timeoutRef.current = setTimeout(() => {
           setIsLoading(false);
-        }, 1500);
+        }, 1000);
       };
 
       checkImagesLoaded();
