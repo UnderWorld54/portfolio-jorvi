@@ -25,6 +25,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: '**.media.strapi.cloud',
       },
+      {
+        protocol: 'https',
+        hostname: 'img.youtube.com',
+      },
 
       ...(process.env.NEXT_PUBLIC_STRAPI_IMAGE_DOMAIN
         ? [
