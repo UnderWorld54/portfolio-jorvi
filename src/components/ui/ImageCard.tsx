@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { memo, useMemo } from "react";
 
 export interface ImageCardData {
   id: string;
@@ -20,13 +21,13 @@ interface ImageCardProps {
   showInfo?: boolean;
 }
 
-export default function ImageCard({ 
+function ImageCard({ 
   item, 
   index, 
   imageClassName = "cover-image",
   showInfo = true 
 }: ImageCardProps) {
-  const imageContent = (
+  const imageContent = useMemo(() => (
     <div className="relative w-full overflow-hidden">
       <Image
         src={item.image}
@@ -49,6 +50,11 @@ export default function ImageCard({
         </div>
       )}
     </div>
+  ), [item.image, item.youtubeUrl, item.projectName, item.id, imageClassName]);
+
+  const hasInfo = useMemo(() => 
+    showInfo && (item.description || item.artist || item.projectName || item.date),
+    [showInfo, item.description, item.artist, item.projectName, item.date]
   );
 
   return (
@@ -74,7 +80,7 @@ export default function ImageCard({
         )}
 
         {/* Informations */}
-        {showInfo && (item.description || item.artist || item.projectName || item.date) && (
+        {hasInfo && (
           <div className="p-4 bg-black/90 backdrop-blur-sm">
             {item.description && (
               <p className="text-white/80 text-xs sm:text-sm mb-3 line-clamp-3">
@@ -106,4 +112,6 @@ export default function ImageCard({
     </motion.div>
   );
 }
+
+export default memo(ImageCard);
 

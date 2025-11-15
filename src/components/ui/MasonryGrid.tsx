@@ -1,5 +1,6 @@
 "use client";
 
+import { memo, useMemo } from "react";
 import ImageCard from "./ImageCard";
 import type { ImageCardData } from "./ImageCard";
 
@@ -10,17 +11,17 @@ interface MasonryGridProps {
   columns?: "2" | "3" | "4";
 }
 
-export default function MasonryGrid({ 
+function MasonryGrid({ 
   items, 
   imageClassName,
   showInfo = true,
   columns = "4"
 }: MasonryGridProps) {
-  const columnClasses = {
+  const columnClasses = useMemo(() => ({
     "2": "columns-2 sm:columns-2 md:columns-2 lg:columns-2",
     "3": "columns-2 sm:columns-2 md:columns-3 lg:columns-3",
     "4": "columns-2 sm:columns-2 md:columns-3 lg:columns-4",
-  }[columns];
+  }[columns]), [columns]);
 
   return (
     <div className={`${columnClasses} gap-3 sm:gap-4 md:gap-6`}>
@@ -36,4 +37,6 @@ export default function MasonryGrid({
     </div>
   );
 }
+
+export default memo(MasonryGrid);
 

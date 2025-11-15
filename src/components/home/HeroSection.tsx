@@ -71,11 +71,12 @@ export default function HeroSection() {
 
       {/* Particules animées */}
       {particles.length > 0 && (
-        <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {particles.map((particle, i) => (
             <motion.div
               key={i}
               className="absolute w-1 h-1 bg-red-500/30 rounded-full"
+              style={{ willChange: 'transform, opacity' }}
               initial={{
                 x: particle.x,
                 y: particle.y,

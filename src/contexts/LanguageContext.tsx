@@ -188,7 +188,7 @@ const translations: Record<Language, Record<string, string>> = {
     "cta.social": "Social Networks",
     "cta.email": "Email",
     "cta.email.value": "jorvikapela@gmail.com",
-    "cta.email.desc": "Response within 24h",
+    "cta.email.desc": "For your projects",
     "cta.phone": "Phone",
     "cta.phone.desc": "Call me",
     "cta.linkedin": "LinkedIn",

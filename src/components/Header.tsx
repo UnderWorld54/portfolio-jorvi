@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Linkedin, Instagram, Mail } from "lucide-react";
 import Image from "next/image";
@@ -8,28 +8,31 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-export default function Header() {
+function Header() {
   const pathname = usePathname();
   const { language, setLanguage, t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
-  const navItemsMobile = [
+  const navItemsMobile = useMemo(() => [
     { label: t("nav.designs"), href: "/designs", key: "designs" },
     { label: t("nav.covers"), href: "/covers", key: "covers" },
     { label: t("nav.photos"), href: "/photos", key: "photos" },
-  ];
+  ], [t]);
   
-  const navItemsDesktop = [
+  const navItemsDesktop = useMemo(() => [
     { label: t("nav.designs"), href: "/designs", key: "designs" },
     { label: t("nav.covers"), href: "/covers", key: "covers" },
     { label: t("nav.photos"), href: "/photos", key: "photos" },
     { label: t("nav.contact"), href: "mailto:jorvikapela@gmail.com", key: "contact" },
-  ];
+  ], [t]);
   
   const contactEmail = "jorvikapela@gmail.com";
 
   // Calculer activeNav directement depuis le pathname
-  const activeNav = pathname === "/designs" ? t("nav.designs") : pathname === "/covers" ? t("nav.covers") : pathname === "/photos" ? t("nav.photos") : "";
+  const activeNav = useMemo(() => 
+    pathname === "/designs" ? t("nav.designs") : pathname === "/covers" ? t("nav.covers") : pathname === "/photos" ? t("nav.photos") : "",
+    [pathname, t]
+  );
 
   const handleNavClick = () => {
     setMenuOpen(false);
@@ -389,3 +392,5 @@ export default function Header() {
     </>
   );
 }
+
+export default memo(Header);
