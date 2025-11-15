@@ -113,11 +113,19 @@ export default function Button({
         className="inline-block"
       >
         {isExternalLink ? (
-          <a href={href} className={buttonClasses}>
+          <a 
+            href={href} 
+            className={`${buttonClasses} focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black`}
+            aria-label={typeof children === 'string' ? children : undefined}
+          >
             {buttonContent}
           </a>
         ) : (
-          <Link href={href} className={buttonClasses}>
+          <Link 
+            href={href} 
+            className={`${buttonClasses} focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black`}
+            aria-label={typeof children === 'string' ? children : undefined}
+          >
             {buttonContent}
           </Link>
         )}
@@ -134,7 +142,8 @@ export default function Button({
       disabled={disabled}
       whileHover={{ scale: disabled ? 1 : 1.02 }}
       whileTap={{ scale: disabled ? 1 : 0.98 }}
-      className={buttonClasses}
+      className={`${buttonClasses} focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black`}
+      aria-disabled={disabled}
     >
       {buttonContent}
     </motion.button>

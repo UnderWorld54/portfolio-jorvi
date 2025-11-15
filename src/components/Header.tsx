@@ -40,7 +40,7 @@ function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-black">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-black" role="banner">
         {/* Mobile Header */}
         <div className="md:hidden flex items-center justify-between px-4 py-4 relative w-full">
           {/* Language Switcher - Top Left */}
@@ -50,11 +50,13 @@ function Header() {
                 key={lang}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setLanguage(lang)}
-                className={`text-md font-bold px-2 py-1 rounded transition-all ${
+                className={`text-md font-bold px-2 py-1 rounded transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
                   language === lang
                     ? "text-red-500 bg-red-500/10"
                     : "text-red-500/60"
                 }`}
+                aria-label={`Changer la langue en ${lang === "FR" ? "français" : "anglais"}`}
+                aria-pressed={language === lang}
                 style={{
                   textShadow:
                     language === lang
@@ -90,8 +92,10 @@ function Header() {
           <motion.button
             whileTap={{ scale: 0.9 }}
             onClick={() => setMenuOpen(!menuOpen)}
-            className="text-red-500 p-2 relative z-50"
-            aria-label="Toggle menu"
+            className="text-red-500 p-2 relative z-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded"
+            aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
           >
             <AnimatePresence mode="wait">
               {menuOpen ? (
@@ -131,11 +135,13 @@ function Header() {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setLanguage(lang)}
-                    className={`text-red-500 text-md md:text-lg font-medium transition-colors p-0 m-0 border-0 bg-transparent leading-none ${
+                    className={`text-red-500 text-md md:text-lg font-medium transition-colors p-0 m-0 border-0 bg-transparent leading-none focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded ${
                       language === lang
                         ? "text-red-500"
                         : "text-red-500/60 hover:text-red-400"
                     }`}
+                    aria-label={`Changer la langue en ${lang === "FR" ? "français" : "anglais"}`}
+                    aria-pressed={language === lang}
                     style={{
                       textShadow:
                         language === lang
@@ -206,17 +212,18 @@ function Header() {
           </div>
 
           {/* Right side - Desktop Nav */}
-          <nav className="flex items-center gap-4 md:gap-8 flex-1 justify-end min-w-0 z-10">
+          <nav className="flex items-center gap-4 md:gap-8 flex-1 justify-end min-w-0 z-10" role="navigation" aria-label="Navigation principale">
             {navItemsDesktop.map(({ label, href }) => (
               <motion.div key={label} className="relative flex items-center justify-center">
                 {href.startsWith("mailto:") ? (
                   <a
                     href={href}
-                    className={`text-red-500 text-lg md:text-lg font-medium transition-colors leading-none ${
+                    className={`text-red-500 text-lg md:text-lg font-medium transition-colors leading-none focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded ${
                       activeNav === label
                         ? "text-red-500"
                         : "text-red-500/60 hover:text-red-400"
                     }`}
+                    aria-current={activeNav === label ? "page" : undefined}
                     style={{
                       textShadow:
                         activeNav === label
@@ -231,11 +238,12 @@ function Header() {
                 ) : (
                   <Link
                     href={href}
-                    className={`text-red-500 text-base md:text-lg font-medium transition-colors leading-none ${
+                    className={`text-red-500 text-base md:text-lg font-medium transition-colors leading-none focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded ${
                       activeNav === label
                         ? "text-red-500"
                         : "text-red-500/60 hover:text-red-400"
                     }`}
+                    aria-current={activeNav === label ? "page" : undefined}
                     style={{
                       textShadow:
                         activeNav === label
@@ -270,6 +278,10 @@ function Header() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 md:hidden bg-black"
+            id="mobile-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu de navigation mobile"
             onClick={(e) => {
               // Ne pas fermer si on clique sur le contenu du menu
               if (e.target === e.currentTarget) {
@@ -279,7 +291,7 @@ function Header() {
           >
             <div className="flex flex-col h-full items-center justify-center relative">
               {/* Navigation Links - Centered */}
-              <nav className="flex flex-col items-center gap-8">
+              <nav className="flex flex-col items-center gap-8" role="navigation" aria-label="Menu mobile">
                 {navItemsMobile.map(({ label, href }, index) => (
                   <motion.div
                     key={label}

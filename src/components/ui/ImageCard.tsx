@@ -31,7 +31,11 @@ function ImageCard({
     <div className="relative w-full overflow-hidden">
       <Image
         src={item.image}
-        alt={item.projectName || item.id}
+        alt={
+          item.description
+            ? `${item.projectName || item.artist || "Création"} - ${item.description}`
+            : item.projectName || item.artist || `Création de ${item.artist || "Jorvi Kapela"}`
+        }
         width={800}
         height={1200}
         sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -58,11 +62,12 @@ function ImageCard({
   );
 
   return (
-    <motion.div
+    <motion.article
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
       className="break-inside-avoid mb-3 sm:mb-4 md:mb-6 group cursor-pointer"
+      aria-label={item.projectName || item.description || "Création"}
     >
       <div className="relative overflow-hidden rounded-lg bg-gray-900 border border-red-500/20 hover:border-red-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/20">
         {/* Image - conserve les dimensions d'origine pour effet mur de brique */}
@@ -71,7 +76,8 @@ function ImageCard({
             href={item.youtubeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="block"
+            className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-lg"
+            aria-label={`Voir la vidéo ${item.projectName || item.description || "sur YouTube"}`}
           >
             {imageContent}
           </a>
@@ -109,7 +115,7 @@ function ImageCard({
           </div>
         )}
       </div>
-    </motion.div>
+    </motion.article>
   );
 }
 
