@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, startTransition, ReactNode } from "react";
 
 type Language = "FR" | "ENG";
 
@@ -13,16 +13,23 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  // Initialisation paresseuse : lire depuis localStorage une seule fois à l'initialisation
-  const [language, setLanguageState] = useState<Language>(() => {
+  // Toujours initialiser avec "FR" pour éviter les différences d'hydratation
+  // Le serveur et le client commencent avec la même valeur
+  const [language, setLanguageState] = useState<Language>("FR");
+
+  // Charger la langue depuis localStorage après l'hydratation (côté client uniquement)
+  useEffect(() => {
     if (typeof window !== "undefined") {
       const savedLang = localStorage.getItem("language") as Language;
       if (savedLang === "FR" || savedLang === "ENG") {
-        return savedLang;
+        // Utiliser startTransition pour éviter les rendus en cascade
+        // Synchronisation avec système externe (localStorage) - pattern recommandé
+        startTransition(() => {
+          setLanguageState(savedLang);
+        });
       }
     }
-    return "FR";
-  });
+  }, []);
 
   // Sauvegarder la langue dans localStorage quand elle change
   const setLanguage = (lang: Language) => {
