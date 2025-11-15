@@ -8,6 +8,7 @@ import MasonryGrid from "@/components/ui/MasonryGrid";
 import type { ImageCardData } from "@/components/ui/ImageCard";
 import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
 import { useImageLoader } from "@/hooks/useImageLoader";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Photo extends ImageCardData {
   artist: string;
@@ -17,6 +18,7 @@ interface Photo extends ImageCardData {
 }
 
 export default function PhotosPage() {
+  const { t } = useLanguage();
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -59,12 +61,12 @@ export default function PhotosPage() {
     <>
       <LoadingScreen isLoading={isLoading} />
       <PageContainer isLoading={isLoading}>
-        <PageTitle title="PHOTOS" />
+        <PageTitle title={t("page.photos")} />
         {error && (
           <div className="text-red-500 text-center py-8">
-            <p>Erreur lors du chargement des photos: {error}</p>
+            <p>{t("message.error.loading", { type: t("content.type.photo") })}: {error}</p>
             <p className="text-sm text-white/60 mt-2">
-              Vérifiez votre configuration Strapi dans les variables d&apos;environnement.
+              {t("message.error.config")}
             </p>
           </div>
         )}
@@ -72,10 +74,10 @@ export default function PhotosPage() {
           <div className="text-center py-16 md:py-24">
             <div className="max-w-md mx-auto">
               <p className="text-white/80 text-lg md:text-xl mb-2" style={{ fontFamily: '"Great White Serif", serif' }}>
-                Aucune photo disponible
+                {t("message.noContent", { type: t("content.type.photo") })}
               </p>
               <p className="text-white/50 text-sm md:text-base">
-                Le contenu sera bientôt disponible.
+                {t("message.noContent.soon")}
               </p>
             </div>
           </div>

@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useRef, useState, useLayoutEffect, startTransition } from "react";
 import Button from "@/components/ui/Button";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type Particle = {
   x: number;
@@ -28,6 +29,7 @@ function generateParticles(): Particle[] {
 }
 
 export default function HeroSection() {
+  const { t } = useLanguage();
   const heroRef = useRef<HTMLDivElement>(null);
   const [particles, setParticles] = useState<Particle[]>([]);
   
@@ -112,7 +114,7 @@ export default function HeroSection() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2, duration: 1, ease: [0.22, 1, 0.36, 1] }}
             >
-              VOTRE VISION
+              {t("hero.title.line1")}
             </motion.span>
             <motion.span
               className="block text-red-500"
@@ -120,7 +122,7 @@ export default function HeroSection() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4, duration: 1, ease: [0.22, 1, 0.36, 1] }}
             >
-              EN VISUEL
+              {t("hero.title.line2")}
             </motion.span>
           </motion.h1>
 
@@ -130,7 +132,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
           >
-            Créateur visuel • Designer • Artiste
+            {t("hero.subtitle")}
           </motion.p>
 
           <motion.div
@@ -146,7 +148,7 @@ export default function HeroSection() {
               icon={ArrowRight}
               iconPosition="right"
             >
-              Découvrir mon travail
+              {t("hero.cta")}
             </Button>
           </motion.div>
         </motion.div>

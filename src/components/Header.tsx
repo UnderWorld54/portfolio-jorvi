@@ -6,29 +6,30 @@ import { Menu, X, Linkedin, Instagram, Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Header() {
   const pathname = usePathname();
-  const [activeLang, setActiveLang] = useState<string>("FR");
+  const { language, setLanguage, t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   const navItemsMobile = [
-    { label: "DESIGNS", href: "/designs" },
-    { label: "COVERS", href: "/covers" },
-    { label: "PHOTOS", href: "/photos" },
+    { label: t("nav.designs"), href: "/designs", key: "designs" },
+    { label: t("nav.covers"), href: "/covers", key: "covers" },
+    { label: t("nav.photos"), href: "/photos", key: "photos" },
   ];
   
   const navItemsDesktop = [
-    { label: "DESIGNS", href: "/designs" },
-    { label: "COVERS", href: "/covers" },
-    { label: "PHOTOS", href: "/photos" },
-    { label: "CONTACT", href: "mailto:jorvikapela@gmail.com" },
+    { label: t("nav.designs"), href: "/designs", key: "designs" },
+    { label: t("nav.covers"), href: "/covers", key: "covers" },
+    { label: t("nav.photos"), href: "/photos", key: "photos" },
+    { label: t("nav.contact"), href: "mailto:jorvikapela@gmail.com", key: "contact" },
   ];
   
   const contactEmail = "jorvikapela@gmail.com";
 
   // Calculer activeNav directement depuis le pathname
-  const activeNav = pathname === "/designs" ? "DESIGNS" : pathname === "/covers" ? "COVERS" : pathname === "/photos" ? "PHOTOS" : "";
+  const activeNav = pathname === "/designs" ? t("nav.designs") : pathname === "/covers" ? t("nav.covers") : pathname === "/photos" ? t("nav.photos") : "";
 
   const handleNavClick = () => {
     setMenuOpen(false);
@@ -41,19 +42,19 @@ export default function Header() {
         <div className="md:hidden flex items-center justify-between px-4 py-4 relative w-full">
           {/* Language Switcher - Top Left */}
           <div className="flex items-center gap-2">
-            {["FR", "ENG"].map((lang) => (
+            {(["FR", "ENG"] as const).map((lang) => (
               <motion.button
                 key={lang}
                 whileTap={{ scale: 0.9 }}
-                onClick={() => setActiveLang(lang)}
+                onClick={() => setLanguage(lang)}
                 className={`text-md font-bold px-2 py-1 rounded transition-all ${
-                  activeLang === lang
+                  language === lang
                     ? "text-red-500 bg-red-500/10"
                     : "text-red-500/60"
                 }`}
                 style={{
                   textShadow:
-                    activeLang === lang
+                    language === lang
                       ? "0 0 10px rgba(239, 68, 68, 0.8)"
                       : "none",
                   fontFamily: '"Great White Serif", serif',
@@ -121,20 +122,20 @@ export default function Header() {
           <div className="flex items-center gap-4 md:gap-6 flex-1 min-w-0 z-10">
             {/* Lang Switch */}
             <div className="flex items-center gap-2">
-              {["FR", "ENG"].map((lang) => (
+              {(["FR", "ENG"] as const).map((lang) => (
                 <div key={lang} className="relative">
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => setActiveLang(lang)}
+                    onClick={() => setLanguage(lang)}
                     className={`text-red-500 text-md md:text-lg font-medium transition-colors p-0 m-0 border-0 bg-transparent leading-none ${
-                      activeLang === lang
+                      language === lang
                         ? "text-red-500"
                         : "text-red-500/60 hover:text-red-400"
                     }`}
                     style={{
                       textShadow:
-                        activeLang === lang
+                        language === lang
                           ? "0 0 10px rgba(239,68,68,0.8), 0 0 20px rgba(239,68,68,0.5)"
                           : "none",
                       fontFamily: '"Great White Serif", serif',
@@ -143,7 +144,7 @@ export default function Header() {
                   >
                     {lang}
                   </motion.button>
-                  {activeLang === lang && (
+                  {language === lang && (
                     <motion.div
                       initial={{ opacity: 0, scaleX: 0 }}
                       animate={{ opacity: 1, scaleX: 1 }}

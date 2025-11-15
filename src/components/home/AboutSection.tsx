@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function AboutSection() {
+    const { t } = useLanguage();
     return (
         <section className="relative min-h-screen flex items-center px-4 sm:px-6 md:px-8 lg:px-12 overflow-hidden">
             {/* Éléments décoratifs rouges dans les coins supérieurs */}
@@ -83,7 +85,7 @@ export default function AboutSection() {
                             viewport={{ once: true, margin: "-100px" }}
                             transition={{ delay: 0.4, duration: 0.6 }}
                         >
-                            Bonjour moi c&apos;est
+                            {t("about.greeting")}
                         </motion.p>
 
                         <motion.h2
@@ -104,7 +106,7 @@ export default function AboutSection() {
                             viewport={{ once: true, margin: "-100px" }}
                             transition={{ delay: 0.6, duration: 0.6 }}
                         >
-                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                            {t("about.description")}
                         </motion.p>
 
                         <motion.div

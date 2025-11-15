@@ -3,8 +3,10 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Mail, Linkedin, Instagram, Phone } from "lucide-react";
 import Button from "@/components/ui/Button";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function CTASection() {
+  const { t } = useLanguage();
   const contactEmail = "jorvikapela@gmail.com";
   const linkedinUrl = "https://www.linkedin.com/in/jorvi-kapela-178823189/";
   const instagramUrl = "https://www.instagram.com/vyjor/";
@@ -13,10 +15,10 @@ export default function CTASection() {
   const directContact = [
     {
       icon: Mail,
-      label: "Email",
+      label: t("cta.email"),
       value: contactEmail,
       href: `mailto:${contactEmail}`,
-      description: "Pour vos projets",
+      description: t("cta.email.desc"),
     },
     {
       icon: Phone,
@@ -30,17 +32,17 @@ export default function CTASection() {
   const socialLinks = [
     {
       icon: Linkedin,
-      label: "LinkedIn",
+      label: t("cta.linkedin"),
       value: "Jorvi Kapela",
       href: linkedinUrl,
-      description: "Connectons-nous",
+      description: t("cta.linkedin.desc"),
     },
     {
       icon: Instagram,
-      label: "Instagram",
+      label: t("cta.instagram"),
       value: "@vyjor",
       href: instagramUrl,
-      description: "Suivez mon travail",
+      description: t("cta.instagram.desc"),
     },
   ];
 
@@ -100,8 +102,7 @@ export default function CTASection() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ delay: 0.1, duration: 0.8 }}
           >
-            TRAVAILLONS
-            <span className="block text-red-500 mt-2">ENSEMBLE</span>
+            {t("cta.title")}
           </motion.h2>
           <motion.p
             className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto"
@@ -110,7 +111,7 @@ export default function CTASection() {
             viewport={{ once: true }}
             transition={{ delay: 0.3, duration: 0.6 }}
           >
-            Vous avez un projet en tête ? Discutons-en et créons quelque chose d&apos;exceptionnel.
+            {t("cta.subtitle")}
           </motion.p>
         </motion.div>
 
@@ -124,7 +125,7 @@ export default function CTASection() {
             transition={{ delay: 0.4, duration: 0.8 }}
           >
             <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 text-center lg:text-left" style={{ fontFamily: '"Great White Serif", serif' }}>
-              Contact Direct
+              {t("cta.contact.direct")}
             </h3>
             <div className="space-y-4">
               {directContact.map((item, index) => {
@@ -183,7 +184,7 @@ export default function CTASection() {
             transition={{ delay: 0.4, duration: 0.8 }}
           >
             <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 text-center lg:text-left" style={{ fontFamily: '"Great White Serif", serif' }}>
-              Réseaux Sociaux
+              {t("cta.social")}
             </h3>
             <div className="space-y-4">
               {socialLinks.map((item, index) => {
@@ -250,7 +251,7 @@ export default function CTASection() {
             icon={ArrowRight}
             iconPosition="right"
           >
-            Envoyer un message
+            {t("cta.button")}
           </Button>
         </motion.div>
       </div>

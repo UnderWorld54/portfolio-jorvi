@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import PageTitle from "@/components/ui/PageTitle";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CategoryCardProps {
   title: string;
@@ -234,26 +235,27 @@ const CategoryCard = ({ title, slug, image, description, count, index }: Categor
 };
 
 export default function DesignsSection() {
+  const { t } = useLanguage();
   const categories = [
     {
-      title: "LOGOS",
+      title: t("designs.logos"),
       slug: "logos",
       image: "/images/logos.jpg",
-      description: "Identités visuelles uniques",
+      description: t("designs.logos.desc"),
       count: 12,
     },
     {
-      title: "PRINTS",
+      title: t("designs.prints"),
       slug: "prints",
       image: "/images/prints.jpg",
-      description: "Créations imprimées",
+      description: t("designs.prints.desc"),
       count: 8,
     },
     {
-      title: "VIDÉOS",
+      title: t("designs.videos"),
       slug: "videos",
       image: "/images/videos.jpg",
-      description: "Narratives visuelles",
+      description: t("designs.videos.desc"),
       count: 6,
     },
   ];
@@ -278,7 +280,7 @@ export default function DesignsSection() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 md:py-12">
         {/* Titre avec étoiles et glow */}
-        <PageTitle title="DESIGNS" />
+        <PageTitle title={t("designs.title")} />
 
         {/* Grille asymétrique moderne */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 md:gap-4 lg:gap-5 w-full">

@@ -2,29 +2,31 @@
 
 import { motion } from "framer-motion";
 import PortfolioCard from "./PortfolioCard";
-
-const portfolioItems = [
-  {
-    title: "DESIGNS",
-    description: "Logos, prints et vidéos",
-    image: "/images/logos.jpg",
-    href: "/designs",
-  },
-  {
-    title: "COVERS",
-    description: "Pochette d'albums et visuels musicaux",
-    image: "/images/cover1.jpg",
-    href: "/covers",
-  },
-  {
-    title: "PHOTOS",
-    description: "Photographie artistique",
-    image: "/images/photos.jpg",
-    href: "/photos",
-  },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function PortfolioSection() {
+  const { t } = useLanguage();
+  
+  const portfolioItems = [
+    {
+      title: t("portfolio.designs"),
+      description: t("portfolio.designs.desc"),
+      image: "/images/logos.jpg",
+      href: "/designs",
+    },
+    {
+      title: t("portfolio.covers"),
+      description: t("portfolio.covers.desc"),
+      image: "/images/cover1.jpg",
+      href: "/covers",
+    },
+    {
+      title: t("portfolio.photos"),
+      description: t("portfolio.photos.desc"),
+      image: "/images/photos.jpg",
+      href: "/photos",
+    },
+  ];
   return (
     <section
       id="portfolio"
@@ -42,7 +44,7 @@ export default function PortfolioSection() {
             className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4"
             style={{ fontFamily: '"Great White Serif", serif' }}
           >
-            PORTFOLIO
+            {t("portfolio.title")}
           </motion.h2>
           <motion.p
             className="text-white/70 text-lg md:text-xl"
@@ -51,7 +53,7 @@ export default function PortfolioSection() {
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            Explorez mes créations
+            {t("portfolio.subtitle")}
           </motion.p>
         </motion.div>
 

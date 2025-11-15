@@ -8,6 +8,7 @@ import MasonryGrid from "@/components/ui/MasonryGrid";
 import type { ImageCardData } from "@/components/ui/ImageCard";
 import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
 import { useImageLoader } from "@/hooks/useImageLoader";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Cover extends ImageCardData {
   artist?: string;
@@ -17,6 +18,7 @@ interface Cover extends ImageCardData {
 }
 
 export default function CoversPage() {
+  const { t } = useLanguage();
   const [covers, setCovers] = useState<Cover[]>([]);
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -73,12 +75,12 @@ export default function CoversPage() {
     <>
       <LoadingScreen isLoading={isLoading} />
       <PageContainer isLoading={isLoading}>
-        <PageTitle title="COVERS" />
+        <PageTitle title={t("page.covers")} />
         {error && hasLoaded && (
           <div className="text-red-500 text-center py-8">
-            <p>Erreur lors du chargement des covers: {error}</p>
+            <p>{t("message.error.loading", { type: t("content.type.cover") })}: {error}</p>
             <p className="text-sm text-white/60 mt-2">
-              Vérifiez votre configuration Strapi dans les variables d&apos;environnement.
+              {t("message.error.config")}
             </p>
           </div>
         )}
@@ -86,10 +88,10 @@ export default function CoversPage() {
           <div className="text-center py-16 md:py-24">
             <div className="max-w-md mx-auto">
               <p className="text-white/80 text-lg md:text-xl mb-2" style={{ fontFamily: '"Great White Serif", serif' }}>
-                Aucun cover disponible
+                {t("message.noContent", { type: t("content.type.cover") })}
               </p>
               <p className="text-white/50 text-sm md:text-base">
-                Le contenu sera bientôt disponible.
+                {t("message.noContent.soon")}
               </p>
             </div>
           </div>
