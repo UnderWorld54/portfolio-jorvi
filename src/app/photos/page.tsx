@@ -25,6 +25,9 @@ export default function PhotosPage() {
     timeout: 5000 
   });
 
+  // Ne pas attendre le chargement des images s'il n'y a pas de photos
+  const isLoading = isLoadingData || (photos.length > 0 && isLoadingImages);
+
   useEffect(() => {
     async function fetchPhotos() {
       try {
@@ -52,8 +55,6 @@ export default function PhotosPage() {
     fetchPhotos();
   }, []);
 
-  const isLoading = isLoadingData || isLoadingImages;
-
   return (
     <>
       <LoadingScreen isLoading={isLoading} />
@@ -68,15 +69,22 @@ export default function PhotosPage() {
           </div>
         )}
         {!error && photos.length === 0 && !isLoadingData && (
-          <div className="text-white/60 text-center py-8">
-            <p>Aucune photo disponible pour le moment.</p>
+          <div className="text-center py-16 md:py-24">
+            <div className="max-w-md mx-auto">
+              <p className="text-white/80 text-lg md:text-xl mb-2" style={{ fontFamily: '"Great White Serif", serif' }}>
+                Aucune photo disponible
+              </p>
+              <p className="text-white/50 text-sm md:text-base">
+                Le contenu sera bientôt disponible.
+              </p>
+            </div>
           </div>
         )}
         {photos.length > 0 && (
           <MasonryGrid 
             items={photos} 
             imageClassName="photo-image"
-            showInfo={false}
+            showInfo={true}
           />
         )}
       </PageContainer>

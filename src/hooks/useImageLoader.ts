@@ -11,10 +11,12 @@ export function useImageLoader({ imageSelector, timeout = 3000 }: UseImageLoader
   const [isLoading, setIsLoading] = useState(true);
   const imagesLoadedRef = useRef<Set<string>>(new Set());
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const attemptsRef = useRef<number>(0);
 
   useEffect(() => {
-    // Réinitialiser le compteur
+    // Réinitialiser les compteurs
     imagesLoadedRef.current.clear();
+    attemptsRef.current = 0;
     setIsLoading(true);
 
     // Nettoyer le timeout précédent
@@ -27,10 +29,23 @@ export function useImageLoader({ imageSelector, timeout = 3000 }: UseImageLoader
       const images = document.querySelectorAll(imageSelector);
       
       if (images.length === 0) {
-        // Si pas encore d'images dans le DOM, attendre un peu
-        timeoutRef.current = setTimeout(checkAllImagesLoaded, 100);
-        return;
+        // Si pas encore d'images dans le DOM après plusieurs tentatives, considérer comme chargé
+        // Cela permet d'afficher le message "vide" rapidement
+        const maxAttempts = 20; // 2 secondes max (20 * 100ms)
+        attemptsRef.current += 1;
+        
+        if (attemptsRef.current < maxAttempts) {
+          timeoutRef.current = setTimeout(checkAllImagesLoaded, 100);
+          return;
+        } else {
+          // Pas d'images trouvées après plusieurs tentatives, considérer comme chargé
+          setIsLoading(false);
+          return;
+        }
       }
+      
+      // Réinitialiser le compteur d'essais si on trouve des images
+      attemptsRef.current = 0;
 
       let loadedCount = 0;
       const totalCount = images.length;
