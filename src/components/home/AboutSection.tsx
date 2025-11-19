@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Button from "@/components/ui/Button";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -63,10 +64,14 @@ export default function AboutSection() {
                                 boxShadow: "0 0 30px rgba(239, 68, 68, 0.4), inset 0 0 30px rgba(239, 68, 68, 0.1)",
                             }}
                         >
-                            {/* Placeholder pour la photo */}
-                            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                                <span className="text-white/30 text-sm">Photo</span>
-                            </div>
+                            <Image
+                                src="/images/me.png"
+                                alt="Jorvi Kapela"
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                                priority
+                            />
                         </div>
                     </motion.div>
 
