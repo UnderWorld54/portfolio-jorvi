@@ -2,12 +2,14 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useModal } from "@/contexts/ModalContext";
 
 export default function ImageModal() {
   const { isOpen, currentItem, items, currentIndex, closeModal, goToNext, goToPrevious } = useModal();
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
 
   // Gérer la fermeture avec la touche ESC
   useEffect(() => {
@@ -36,6 +38,36 @@ export default function ImageModal() {
       window.removeEventListener("keydown", handleArrowKeys);
     };
   }, [isOpen, closeModal, goToNext, goToPrevious]);
+
+  // Gérer le swipe sur mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    const deltaX = touchEndX - touchStartX.current;
+    const deltaY = Math.abs(touchEndY - touchStartY.current);
+    const minSwipeDistance = 50; // Distance minimale pour déclencher un swipe
+
+    // Vérifier que le mouvement est principalement horizontal
+    if (Math.abs(deltaX) > deltaY && Math.abs(deltaX) > minSwipeDistance) {
+      if (deltaX > 0) {
+        // Swipe vers la droite -> image précédente
+        goToPrevious();
+      } else {
+        // Swipe vers la gauche -> image suivante
+        goToNext();
+      }
+    }
+
+    touchStartX.current = null;
+    touchStartY.current = null;
+  };
 
   if (!currentItem) return null;
 
@@ -96,7 +128,12 @@ export default function ImageModal() {
               )}
 
               {/* Image */}
-              <div className="relative w-full h-full flex items-center justify-center p-4">
+              <div 
+                className="relative w-full h-full flex items-center justify-center p-4"
+                style={{ touchAction: 'pan-x' }}
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+              >
                 <Image
                   src={currentItem.image}
                   alt={
