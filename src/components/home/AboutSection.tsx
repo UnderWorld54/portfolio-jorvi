@@ -127,7 +127,7 @@ export default function AboutSection() {
                                 size="md"
                                 download
                             >
-                                EN SAVOIR PLUS
+                                {t("cta.more")}                            
                             </Button>
                         </motion.div>
                     </motion.div>

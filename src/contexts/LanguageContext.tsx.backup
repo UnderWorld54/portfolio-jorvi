@@ -71,23 +71,16 @@ export function useLanguage() {
 // Traductions
 const translations: Record<Language, Record<string, string>> = {
   FR: {
-    // Navigation
     "nav.designs": "DESIGNS",
     "nav.covers": "COVERS",
     "nav.photos": "PHOTOS",
     "nav.contact": "CONTACT",
-    
-    // Hero Section
     "hero.title.line1": "VOTRE VISION",
     "hero.title.line2": "EN VISUEL",
     "hero.subtitle": "Créateur visuel • Designer • Artiste",
     "hero.cta": "Découvrir mon travail",
-    
-    // About Section
     "about.greeting": "Bonjour moi c'est",
     "about.description": "Je suis un créateur visuel passionné, spécialisé dans le design graphique, la photographie et la direction artistique. Mon approche combine esthétique moderne et sensibilité artistique pour donner vie à vos projets.",
-    
-    // Portfolio Section
     "portfolio.title": "PORTFOLIO",
     "portfolio.subtitle": "Explorez mes créations",
     "portfolio.designs": "DESIGNS",
@@ -96,8 +89,6 @@ const translations: Record<Language, Record<string, string>> = {
     "portfolio.covers.desc": "Pochette d'albums et visuels musicaux",
     "portfolio.photos": "PHOTOS",
     "portfolio.photos.desc": "Photographie artistique",
-    
-    // Designs Section
     "designs.title": "DESIGNS",
     "designs.logos": "LOGOS",
     "designs.logos.desc": "Identités visuelles uniques",
@@ -105,8 +96,6 @@ const translations: Record<Language, Record<string, string>> = {
     "designs.prints.desc": "Créations imprimées",
     "designs.videos": "VIDÉOS",
     "designs.videos.desc": "Narratives visuelles",
-    
-    // CTA Section
     "cta.title": "PRÊT À CRÉER ENSEMBLE ?",
     "cta.subtitle": "Discutons de votre projet",
     "cta.contact.direct": "Contact Direct",
@@ -121,15 +110,11 @@ const translations: Record<Language, Record<string, string>> = {
     "cta.instagram": "Instagram",
     "cta.instagram.desc": "Suivez mon travail",
     "cta.button": "Envoyer un message",
-    
-    // Pages
     "page.covers": "COVERS",
     "page.photos": "PHOTOS",
     "page.logos": "LOGOS",
     "page.prints": "PRINTS",
     "page.videos": "VIDÉOS",
-    
-    // Messages
     "message.noContent": "Aucun {type} disponible",
     "message.noContent.soon": "Le contenu sera bientôt disponible.",
     "message.error.loading": "Erreur lors du chargement des {type}",
@@ -137,42 +122,31 @@ const translations: Record<Language, Record<string, string>> = {
     "message.category.notFound": "Catégorie non trouvée",
     "message.back": "Retour",
     "message.back.designs": "Retour aux designs",
-    
-    // Types de contenu
     "content.type.cover": "cover",
     "content.type.photo": "photo",
     "content.type.logo": "logo",
     "content.type.print": "print",
-    "content.type.video": "vidéo",
+    "content.type.video": "vidéo"
   },
   ENG: {
-    // Navigation
     "nav.designs": "DESIGNS",
     "nav.covers": "COVERS",
     "nav.photos": "PHOTOS",
     "nav.contact": "CONTACT",
-    
-    // Hero Section
     "hero.title.line1": "YOUR VISION",
     "hero.title.line2": "IN VISUAL",
     "hero.subtitle": "Visual Creator • Designer • Artist",
     "hero.cta": "Discover my work",
-    
-    // About Section
-    "about.greeting": "Hello, I'm",
-    "about.description": "I am a passionate visual creator, specialized in graphic design, photography and art direction. My approach combines modern aesthetics and artistic sensibility to bring your projects to life.",
-    
-    // Portfolio Section
+    "about.greeting": "Hello, it's me",
+    "about.description": "I am a passionate visual creator, specializing in graphic design, photography and art direction. ",
     "portfolio.title": "PORTFOLIO",
     "portfolio.subtitle": "Explore my creations",
     "portfolio.designs": "DESIGNS",
     "portfolio.designs.desc": "Logos, prints and videos",
     "portfolio.covers": "COVERS",
-    "portfolio.covers.desc": "Album covers and music visuals",
+    "portfolio.covers.desc": "Album cover and musical visuals",
     "portfolio.photos": "PHOTOS",
     "portfolio.photos.desc": "Artistic photography",
-    
-    // Designs Section
     "designs.title": "DESIGNS",
     "designs.logos": "LOGOS",
     "designs.logos.desc": "Unique visual identities",
@@ -180,8 +154,6 @@ const translations: Record<Language, Record<string, string>> = {
     "designs.prints.desc": "Printed creations",
     "designs.videos": "VIDEOS",
     "designs.videos.desc": "Visual narratives",
-    
-    // CTA Section
     "cta.title": "READY TO CREATE TOGETHER?",
     "cta.subtitle": "Let's discuss your project",
     "cta.contact.direct": "Direct Contact",
@@ -196,15 +168,11 @@ const translations: Record<Language, Record<string, string>> = {
     "cta.instagram": "Instagram",
     "cta.instagram.desc": "Follow my work",
     "cta.button": "Send a message",
-    
-    // Pages
     "page.covers": "COVERS",
     "page.photos": "PHOTOS",
     "page.logos": "LOGOS",
     "page.prints": "PRINTS",
     "page.videos": "VIDEOS",
-    
-    // Messages
     "message.noContent": "No {type} available",
     "message.noContent.soon": "Content will be available soon.",
     "message.error.loading": "Error loading {type}",
@@ -212,13 +180,11 @@ const translations: Record<Language, Record<string, string>> = {
     "message.category.notFound": "Category not found",
     "message.back": "Back",
     "message.back.designs": "Back to designs",
-    
-    // Types de contenu
     "content.type.cover": "cover",
     "content.type.photo": "photo",
     "content.type.logo": "logo",
     "content.type.print": "print",
-    "content.type.video": "video",
+    "content.type.video": "video"
   },
 };
 

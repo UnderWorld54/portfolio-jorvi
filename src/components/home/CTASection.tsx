@@ -25,7 +25,7 @@ export default function CTASection() {
       label: "Téléphone",
       value: phoneNumber,
       href: `tel:${phoneNumber.replace(/\s/g, "")}`,
-      description: "Appelez-moi",
+      description: t("cta.phone.desc"),
     },
   ];
 
