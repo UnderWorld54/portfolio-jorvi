@@ -1,178 +1,152 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import { useRef, useState, useLayoutEffect, startTransition } from "react";
-import Button from "@/components/ui/Button";
-import { useLanguage } from "@/contexts/LanguageContext";
-
-type Particle = {
-  x: number;
-  y: number;
-  opacity: number;
-  delay: number;
-  duration: number;
-};
-
-// Fonction pour générer les particules
-function generateParticles(): Particle[] {
-  const windowWidth = window.innerWidth;
-  const windowHeight = window.innerHeight;
-  
-  return Array.from({ length: 20 }, () => ({
-    x: Math.random() * windowWidth,
-    y: Math.random() * windowHeight,
-    opacity: Math.random(),
-    delay: Math.random() * 2,
-    duration: Math.random() * 3 + 2,
-  }));
-}
+import { motion, useScroll, useTransform, useMotionValue, animate } from "framer-motion";
+import { useRef, useEffect } from "react";
+import Image from "next/image";
 
 export default function HeroSection() {
-  const { t } = useLanguage();
   const heroRef = useRef<HTMLDivElement>(null);
-  const [particles, setParticles] = useState<Particle[]>([]);
-  
-  // Générer les particules uniquement côté client après le montage
-  // Nécessaire pour éviter l'erreur d'hydratation (SSR vs client)
-  useLayoutEffect(() => {
-    if (typeof window !== "undefined") {
-      startTransition(() => {
-        setParticles(generateParticles());
-      });
-    }
-  }, []);
+
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
   });
 
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const scrollOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const initialOpacity = useMotionValue(0);
   const y = useTransform(scrollYProgress, [0, 0.5], [0, -100]);
+
+  const opacity = useTransform(
+    [initialOpacity, scrollOpacity],
+    ([initial, scroll]: number[]) => (initial as number) * (scroll as number)
+  );
+
+  useEffect(() => {
+    const controls = animate(initialOpacity, 1, {
+      duration: 0.8,
+      delay: 2.8,
+    });
+    return controls.stop;
+  }, [initialOpacity]);
 
   return (
     <section
       ref={heroRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
     >
-      {/* Background gradient animé */}
-      <motion.div
-        className="absolute inset-0"
-        animate={{
-          background: [
-            "radial-gradient(circle at 20% 50%, rgba(239, 68, 68, 0.15) 0%, transparent 50%)",
-            "radial-gradient(circle at 80% 50%, rgba(239, 68, 68, 0.2) 0%, transparent 50%)",
-            "radial-gradient(circle at 50% 20%, rgba(239, 68, 68, 0.15) 0%, transparent 50%)",
-            "radial-gradient(circle at 20% 50%, rgba(239, 68, 68, 0.15) 0%, transparent 50%)",
-          ],
-        }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-      />
-
-      {/* Particules animées */}
-      {particles.length > 0 && (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {particles.map((particle, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 bg-red-500/30 rounded-full"
-              style={{ willChange: 'transform, opacity' }}
-              initial={{
-                x: particle.x,
-                y: particle.y,
-                opacity: particle.opacity,
-              }}
-              animate={{
-                y: [null, -100],
-                opacity: [0.3, 0, 0.3],
-              }}
-              transition={{
-                duration: particle.duration,
-                repeat: Infinity,
-                delay: particle.delay,
-              }}
-            />
-          ))}
+      {/* --------------------------- */}
+      {/*   HALO ROUGE (DESKTOP ONLY) */}
+      {/* --------------------------- */}
+      <div className="absolute inset-0 sm:flex hidden items-center justify-center pointer-events-none z-10">
+        <div className="relative w-[70vw] h-[70vw] max-w-[900px] max-h-[900px]">
+          <Image
+            src="/images/hero/Cercle rouge.svg"
+            alt="Cercle rouge"
+            fill
+            className="object-contain opacity-90"
+            priority
+          />
         </div>
-      )}
+      </div>
 
+      {/* ----------------------------------- */}
+      {/*   CERCLE NOIR ANIMÉ (DESKTOP ONLY) */}
+      {/* ----------------------------------- */}
       <motion.div
-        style={{ opacity, y }}
-        className="relative z-10 text-center px-4 sm:px-6 md:px-8"
+        className="absolute inset-0 sm:flex hidden items-center justify-center pointer-events-none z-20"
+        initial={{ x: "-100%" }}
+        animate={{ x: "0%" }}
+        transition={{
+          duration: 2.5,
+          ease: [0.4, 0, 0.2, 1],
+          delay: 0.3,
+        }}
       >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <motion.h1
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white mb-6 md:mb-8 tracking-tight"
-            style={{ fontFamily: '"Great White Serif", serif' }}
-          >
-            <motion.span
-              className="block"
-              initial={{ opacity: 0, x: -200 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {t("hero.title.line1")}
-            </motion.span>
-            <motion.span
-              className="block text-red-500"
-              initial={{ opacity: 0, x: 200 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {t("hero.title.line2")}
-            </motion.span>
-          </motion.h1>
-
-          <motion.p
-            className="text-white/70 text-lg sm:text-xl md:text-2xl max-w-2xl mx-auto mb-8 md:mb-12 font-light"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-          >
-            {t("hero.subtitle")}
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
-          >
-            <Button
-              href="#portfolio"
-              variant="primary"
-              size="lg"
-              icon={ArrowRight}
-              iconPosition="right"
-            >
-              {t("hero.cta")}
-            </Button>
-          </motion.div>
-        </motion.div>
+        <div className="relative w-[60vw] h-[60vw] max-w-[750px] max-h-[750px]">
+          <Image
+            src="/images/hero/cercle noir.svg"
+            alt="Cercle noir"
+            fill
+            className="object-contain"
+            priority
+          />
+        </div>
       </motion.div>
 
-      {/* Scroll indicator */}
+      {/* ------------------------------ */}
+      {/*   TEXTE CENTRÉ (TOUJOURS)      */}
+      {/* ------------------------------ */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
+        style={{ opacity, y }}
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30"
       >
         <motion.div
-          className="w-6 h-10 border-2 border-red-500/50 rounded-full flex items-start justify-center p-2"
-          whileHover={{ borderColor: "rgba(239, 68, 68, 1)" }}
+          className="relative w-[75vw] max-w-[620px]"
+          initial={{ clipPath: "circle(0% at 0 50%)" }}
+          animate={{ clipPath: "circle(100% at 50% 50%)" }}
+          transition={{
+            duration: 2.5,
+            ease: [0.4, 0, 0.2, 1],
+            delay: 0.3,
+          }}
         >
-          <motion.div
-            className="w-1.5 h-1.5 bg-red-500 rounded-full"
-            animate={{ y: [0, 12, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          />
+          {/* VOTRE */}
+          <div className="mb-1 ml-2">
+            <Image
+              src="/images/hero/votre.svg"
+              alt="VOTRE"
+              width={200}
+              height={60}
+              className="h-[7vw] sm:h-10 w-auto"
+              priority
+            />
+          </div>
+
+          {/* VISION */}
+          <div className="mb-1 ml-6">
+            <Image
+              src="/images/hero/VISION.svg"
+              alt="VISION"
+              width={600}
+              height={260}
+              className="h-[14vw] sm:h-24 w-auto"
+              priority
+            />
+          </div>
+
+          {/* EN + VISUEL */}
+          <div className="flex items-center gap-4 ml-10 mb-2">
+            <Image
+              src="/images/hero/EN.svg"
+              alt="EN"
+              width={160}
+              height={100}
+              className="h-[7vw] sm:h-10 w-auto"
+              priority
+            />
+            <Image
+              src="/images/hero/VISUEL.svg"
+              alt="VISUEL"
+              width={600}
+              height={260}
+              className="h-[14vw] sm:h-24 w-auto"
+              priority
+            />
+          </div>
+
+          {/* TAGLINE */}
+          <div className="absolute right-0 mt-2">
+            <Image
+              src="/images/hero/TEXTE.svg"
+              alt="Graphisme. Identité. Message."
+              width={300}
+              height={30}
+              className="h-[5vw] sm:h-6 w-auto"
+              priority
+            />
+          </div>
         </motion.div>
       </motion.div>
     </section>
   );
 }
-

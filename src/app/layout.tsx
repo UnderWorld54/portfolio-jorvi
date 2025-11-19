@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import CursorProvider from "@/components/CursorProvider";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

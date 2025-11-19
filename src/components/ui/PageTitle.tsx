@@ -22,7 +22,7 @@ export default function PageTitle({ title, className = "" }: PageTitleProps) {
           alt="Star"
           width={24}
           height={24}
-          className="w-5 h-5 sm:w-6 sm:h-6 hidden sm:block"
+          className="w-5 h-5 sm:w-6 sm:h-6  sm:block"
           style={{ 
             filter: "brightness(0) invert(1) drop-shadow(0 0 4px rgba(255, 255, 255, 0.6))",
           }}
@@ -41,7 +41,7 @@ export default function PageTitle({ title, className = "" }: PageTitleProps) {
           alt="Star"
           width={24}
           height={24}
-          className="w-5 h-5 sm:w-6 sm:h-6 hidden sm:block"
+          className="w-5 h-5 sm:w-6 sm:h-6  sm:block"
           style={{ 
             filter: "brightness(0) invert(1) drop-shadow(0 0 4px rgba(255, 255, 255, 0.6))",
           }}
