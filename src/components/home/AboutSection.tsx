@@ -117,9 +117,10 @@ export default function AboutSection() {
                             className="pt-4"
                         >
                             <Button
-                                href="#"
+                                href="/CV.pdf"
                                 variant="primary"
                                 size="md"
+                                download
                             >
                                 EN SAVOIR PLUS
                             </Button>

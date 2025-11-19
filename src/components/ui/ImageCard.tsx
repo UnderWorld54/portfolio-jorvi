@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { memo, useMemo } from "react";
+import { useModal } from "@/contexts/ModalContext";
 
 export interface ImageCardData {
   id: string;
@@ -17,18 +18,30 @@ export interface ImageCardData {
 interface ImageCardProps {
   item: ImageCardData;
   index: number;
+  items?: ImageCardData[];
   imageClassName?: string;
   showInfo?: boolean;
+  imageAspectRatio?: string;
 }
 
 function ImageCard({ 
   item, 
   index, 
+  items = [],
   imageClassName = "cover-image",
-  showInfo = true 
+  showInfo = true,
+  imageAspectRatio
 }: ImageCardProps) {
+  const { openModal } = useModal();
+
+  const handleClick = () => {
+    // Ne pas ouvrir la modal si c'est une vidéo (on garde le lien YouTube)
+    if (!item.youtubeUrl) {
+      openModal(item, items.length > 0 ? items : [item], index);
+    }
+  };
   const imageContent = useMemo(() => (
-    <div className="relative w-full overflow-hidden">
+    <div className={`relative w-full overflow-hidden flex-shrink-0 ${imageAspectRatio || ''}`}>
       <Image
         src={item.image}
         alt={
@@ -38,8 +51,8 @@ function ImageCard({
         }
         width={800}
         height={1200}
-        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-        className={`${imageClassName} w-full h-auto block transition-transform duration-500 group-hover:scale-105`}
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        className={`${imageClassName} w-full ${imageAspectRatio ? 'h-full object-cover' : 'h-auto'} block transition-transform duration-500 group-hover:scale-105`}
         loading="lazy"
         onError={(e) => {
           const target = e.target as HTMLImageElement;
@@ -54,7 +67,7 @@ function ImageCard({
         </div>
       )}
     </div>
-  ), [item.image, item.youtubeUrl, item.projectName, item.id, imageClassName]);
+  ), [item.image, item.youtubeUrl, item.projectName, item.id, imageClassName, imageAspectRatio]);
 
   const hasInfo = useMemo(() => 
     showInfo && (item.description || item.artist || item.projectName || item.date),
@@ -66,10 +79,11 @@ function ImageCard({
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="break-inside-avoid mb-3 sm:mb-4 md:mb-6 group cursor-pointer"
+      className="group cursor-pointer h-full"
       aria-label={item.projectName || item.description || "Création"}
+      onClick={handleClick}
     >
-      <div className="relative overflow-hidden rounded-lg bg-gray-900 border border-red-500/20 hover:border-red-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/20">
+      <div className="relative overflow-hidden rounded-lg bg-gray-900 border border-red-500/20 hover:border-red-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/20 h-full flex flex-col">
         {/* Image - conserve les dimensions d'origine pour effet mur de brique */}
         {item.youtubeUrl ? (
           <a
@@ -78,6 +92,7 @@ function ImageCard({
             rel="noopener noreferrer"
             className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-lg"
             aria-label={`Voir la vidéo ${item.projectName || item.description || "sur YouTube"}`}
+            onClick={(e) => e.stopPropagation()}
           >
             {imageContent}
           </a>

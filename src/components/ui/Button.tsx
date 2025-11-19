@@ -16,6 +16,7 @@ interface ButtonProps {
   className?: string;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
+  download?: boolean;
 }
 
 export default function Button({
@@ -29,6 +30,7 @@ export default function Button({
   className = "",
   disabled = false,
   type = "button",
+  download = false,
 }: ButtonProps) {
   const baseStyles =
     "inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-300 relative overflow-hidden group";
@@ -102,8 +104,8 @@ export default function Button({
     disabled ? "opacity-50 cursor-not-allowed" : ""
   }`;
 
-  // Vérifier si c'est un lien externe (mailto, http, https)
-  const isExternalLink = href && (href.startsWith("mailto:") || href.startsWith("http://") || href.startsWith("https://") || href.startsWith("#"));
+  // Vérifier si c'est un lien externe (mailto, http, https) ou si c'est un téléchargement
+  const isExternalLink = href && (href.startsWith("mailto:") || href.startsWith("http://") || href.startsWith("https://") || href.startsWith("#") || download);
 
   if (href) {
     const motionWrapper = (
@@ -117,6 +119,7 @@ export default function Button({
             href={href} 
             className={`${buttonClasses} focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black`}
             aria-label={typeof children === 'string' ? children : undefined}
+            {...(download && { download: true })}
           >
             {buttonContent}
           </a>

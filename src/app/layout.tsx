@@ -4,6 +4,8 @@ import "./globals.css";
 import Header from "@/components/Header";
 import CursorProvider from "@/components/CursorProvider";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { ModalProvider } from "@/contexts/ModalContext";
+import ImageModal from "@/components/ui/ImageModal";
 import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({
@@ -153,9 +155,12 @@ export default function RootLayout({
           Aller au contenu principal
         </a>
         <LanguageProvider>
-          <CursorProvider />
-          <Header />
-          <main id="main-content">{children}</main>
+          <ModalProvider>
+            <CursorProvider />
+            <Header />
+            <main id="main-content">{children}</main>
+            <ImageModal />
+          </ModalProvider>
         </LanguageProvider>
       </body>
     </html>

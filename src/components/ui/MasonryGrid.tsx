@@ -26,13 +26,15 @@ function MasonryGrid({
   return (
     <div className={`${columnClasses} gap-3 sm:gap-4 md:gap-6`}>
       {items.map((item, index) => (
-        <ImageCard
-          key={item.id}
-          item={item}
-          index={index}
-          imageClassName={imageClassName}
-          showInfo={showInfo}
-        />
+        <div key={item.id} className="break-inside-avoid mb-3 sm:mb-4 md:mb-6">
+          <ImageCard
+            item={item}
+            index={index}
+            items={items}
+            imageClassName={imageClassName}
+            showInfo={showInfo}
+          />
+        </div>
       ))}
     </div>
   );

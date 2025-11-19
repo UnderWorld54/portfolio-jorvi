@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import LoadingScreen from "@/components/LoadingScreen";
 import PageContainer from "@/components/ui/PageContainer";
 import PageTitle from "@/components/ui/PageTitle";
-import MasonryGrid from "@/components/ui/MasonryGrid";
+import ClassicGrid from "@/components/ui/ClassicGrid";
 import type { ImageCardData } from "@/components/ui/ImageCard";
 import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
 import BackButton from "@/components/ui/BackButton";
@@ -134,10 +134,11 @@ export default function CategoryPage() {
           </div>
         )}
         {!error && items.length > 0 && (
-          <MasonryGrid 
+          <ClassicGrid 
             items={items} 
             imageClassName={`${category}-image`}
             showInfo={true}
+            columns="3"
           />
         )}
       </PageContainer>
