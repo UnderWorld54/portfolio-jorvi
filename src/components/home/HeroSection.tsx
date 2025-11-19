@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useScroll, useTransform, useMotionValue, animate } from "framer-motion";
-import { useRef, useEffect } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import Image from "next/image";
 
 export default function HeroSection() {
@@ -13,21 +13,9 @@ export default function HeroSection() {
   });
 
   const scrollOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const initialOpacity = useMotionValue(0);
   const y = useTransform(scrollYProgress, [0, 0.5], [0, -100]);
 
-  const opacity = useTransform(
-    [initialOpacity, scrollOpacity],
-    ([initial, scroll]: number[]) => (initial as number) * (scroll as number)
-  );
-
-  useEffect(() => {
-    const controls = animate(initialOpacity, 1, {
-      duration: 0.8,
-      delay: 2.8,
-    });
-    return controls.stop;
-  }, [initialOpacity]);
+  const opacity = scrollOpacity;
 
   return (
     <section
@@ -74,78 +62,86 @@ export default function HeroSection() {
       </motion.div>
 
       {/* ------------------------------ */}
-      {/*   TEXTE CENTRÉ (TOUJOURS)      */}
+      {/*   TEXTE CENTRÉ (DESKTOP ONLY)  */}
       {/* ------------------------------ */}
       <motion.div
         style={{ opacity, y }}
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30"
+        className="hidden sm:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 px-4 sm:px-0"
       >
-        <motion.div
-          className="relative w-[75vw] max-w-[620px]"
-          initial={{ clipPath: "circle(0% at 0 50%)" }}
-          animate={{ clipPath: "circle(100% at 50% 50%)" }}
-          transition={{
-            duration: 2.5,
-            ease: [0.4, 0, 0.2, 1],
-            delay: 0.3,
-          }}
-        >
+        <div className="relative w-[90vw] sm:w-[75vw] max-w-[620px]">
           {/* VOTRE */}
-          <div className="mb-1 ml-2">
+          <div className="mb-0.5 sm:mb-1 ml-0 sm:ml-2">
             <Image
               src="/images/hero/votre.svg"
               alt="VOTRE"
               width={200}
               height={60}
-              className="h-[7vw] sm:h-10 w-auto"
+              className="h-[5vw] sm:h-10 w-auto min-h-[24px]"
               priority
             />
           </div>
 
           {/* VISION */}
-          <div className="mb-1 ml-6">
+          <motion.div
+            className="mb-0.5 sm:mb-1 ml-2 sm:ml-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 0.5,
+              delay: 1.5,
+            }}
+          >
             <Image
               src="/images/hero/VISION.svg"
               alt="VISION"
               width={600}
               height={260}
-              className="h-[14vw] sm:h-24 w-auto"
+              className="h-[10vw] sm:h-24 w-auto min-h-[40px]"
               priority
             />
-          </div>
+          </motion.div>
 
           {/* EN + VISUEL */}
-          <div className="flex items-center gap-4 ml-10 mb-2">
+          <div className="flex items-center gap-2 sm:gap-4 ml-4 sm:ml-10 mb-1 sm:mb-2">
             <Image
               src="/images/hero/EN.svg"
               alt="EN"
               width={160}
               height={100}
-              className="h-[7vw] sm:h-10 w-auto"
+              className="h-[5vw] sm:h-10 w-auto min-h-[24px]"
               priority
             />
-            <Image
-              src="/images/hero/VISUEL.svg"
-              alt="VISUEL"
-              width={600}
-              height={260}
-              className="h-[14vw] sm:h-24 w-auto"
-              priority
-            />
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: 0.5,
+                delay: 1.5,
+              }}
+            >
+              <Image
+                src="/images/hero/VISUEL.svg"
+                alt="VISUEL"
+                width={600}
+                height={260}
+                className="h-[10vw] sm:h-24 w-auto min-h-[40px]"
+                priority
+              />
+            </motion.div>
           </div>
 
           {/* TAGLINE */}
-          <div className="absolute right-0 mt-2">
+          <div className="absolute right-0 sm:right-0 mt-1 sm:mt-2 max-w-[60%] sm:max-w-none">
             <Image
               src="/images/hero/TEXTE.svg"
               alt="Graphisme. Identité. Message."
               width={300}
               height={30}
-              className="h-[5vw] sm:h-6 w-auto"
+              className="h-[3.5vw] sm:h-6 w-auto min-h-[16px]"
               priority
             />
           </div>
-        </motion.div>
+        </div>
       </motion.div>
     </section>
   );
