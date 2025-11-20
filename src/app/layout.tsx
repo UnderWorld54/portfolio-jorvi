@@ -123,7 +123,7 @@ export default function RootLayout({
       "https://www.linkedin.com/in/jorvi-kapela-178823189/",
       "https://www.instagram.com/vyjor/",
     ],
-    email: "jorvikapela@gmail.com",
+    email: "Dezignby.j@gmail.com",
     knowsAbout: [
       "Graphic Design",
       "Photography",

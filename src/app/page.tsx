@@ -77,12 +77,12 @@ export default function Home() {
   }, [handleWheel]);
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black ">
       <div
         ref={(el) => {
           if (el) sectionsRef.current[0] = el;
         }}
-        className="snap-start snap-always min-h-screen"
+        className="snap-start snap-always min-h-screen "
       >
         <HeroSection />
       </div>

@@ -23,10 +23,10 @@ function Header() {
     { label: t("nav.designs"), href: "/designs", key: "designs" },
     { label: t("nav.covers"), href: "/covers", key: "covers" },
     { label: t("nav.photos"), href: "/photos", key: "photos" },
-    { label: t("nav.contact"), href: "mailto:jorvikapela@gmail.com", key: "contact" },
+    { label: t("nav.contact"), href: "mailto:Dezignby.j@gmail.com", key: "contact" },
   ], [t]);
   
-  const contactEmail = "jorvikapela@gmail.com";
+  const contactEmail = "Dezignby.j@gmail.com";
 
   // Calculer activeNav directement depuis le pathname
   const activeNav = useMemo(() => 

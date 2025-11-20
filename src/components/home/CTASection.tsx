@@ -7,7 +7,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function CTASection() {
   const { t } = useLanguage();
-  const contactEmail = "jorvikapela@gmail.com";
+  const contactEmail = "Dezignby.j@gmail.com";
   const linkedinUrl = "https://www.linkedin.com/in/jorvi-kapela-178823189/";
   const instagramUrl = "https://www.instagram.com/vyjor/";
   const phoneNumber = "+33 6 XX XX XX XX"; // À remplacer par le vrai numéro

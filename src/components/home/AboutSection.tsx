@@ -50,28 +50,54 @@ export default function AboutSection() {
 
             <div className="max-w-6xl mx-auto relative z-10">
                 {/* Layout en deux colonnes */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
+                <div className="grid grid-cols-1 md:grid-cols-[0.8fr_1.2fr] gap-8 md:gap-12 items-start">
                     {/* Colonne gauche - Photo */}
                     <motion.div
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="relative"
+                        className="relative w-full"
                     >
-                        <div className="relative w-full aspect-3/4 border-2 border-red-500 rounded-lg overflow-hidden"
-                            style={{
-                                boxShadow: "0 0 30px rgba(239, 68, 68, 0.4), inset 0 0 30px rgba(239, 68, 68, 0.1)",
-                            }}
+                        <div
+                            className="relative w-full aspect-3/4 group max-w-xs mx-auto md:max-w-sm"
+                            style={{ perspective: "1400px" }}
                         >
-                            <Image
-                                src="/images/me.png"
-                                alt="Jorvi Kapela"
-                                fill
-                                className="object-cover"
-                                sizes="(max-width: 768px) 100vw, 50vw"
-                                priority
+                            <div
+                                className="absolute -inset-6 rounded-[36px] opacity-70 blur-2xl pointer-events-none"
+                                style={{
+                                    background:
+                                        "linear-gradient(135deg, rgba(239,68,68,0.35) 0%, rgba(59,130,246,0.2) 45%, rgba(255,255,255,0.08) 100%)",
+                                    filter: "drop-shadow(0 40px 80px rgba(0,0,0,0.35))",
+                                }}
+                                aria-hidden="true"
                             />
+                            <div
+                                className="relative h-full w-full rounded-[32px] overflow-hidden transition-[transform,box-shadow] duration-500 ease-out transform-3d transform-[rotateY(0deg)_rotateX(0deg)] group-hover:transform-[rotateY(-10deg)_rotateX(4deg)] [box-shadow:0_18px_36px_rgba(0,0,0,0.35)] group-hover:[box-shadow:0_35px_60px_rgba(0,0,0,0.45),0_0_80px_rgba(239,68,68,0.35)]"
+                                style={{
+                                    background:
+                                        "linear-gradient(180deg, rgba(15,15,20,0.8) 0%, rgba(15,15,20,0.4) 100%)",
+                                }}
+                            >
+                                <Image
+                                    src="/images/me.png"
+                                    alt="Jorvi Kapela"
+                                    fill
+                                    className="object-cover transition-transform duration-500 ease-out transform-[translateZ(0px)] group-hover:transform-[translateZ(35px)]"
+                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                    priority
+                                />
+                                <div
+                                    className="absolute inset-0"
+                                    style={{
+                                        background:
+                                            "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.25), transparent 55%)",
+                                        mixBlendMode: "screen",
+                                        opacity: 0.6,
+                                    }}
+                                    aria-hidden="true"
+                                />
+                            </div>
                         </div>
                     </motion.div>
 
@@ -84,7 +110,7 @@ export default function AboutSection() {
                         className="flex flex-col justify-start space-y-6"
                     >
                         <motion.p
-                            className="text-white text-lg md:text-xl"
+                            className="text-white text-xl md:text-2xl"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-100px" }}
@@ -94,7 +120,7 @@ export default function AboutSection() {
                         </motion.p>
 
                         <motion.h2
-                            className="text-5xl md:text-7xl font-bold text-red-500 mb-4"
+                            className="text-6xl md:text-8xl font-bold text-red-500 mb-4"
                             style={{ fontFamily: '"Great White Serif", serif' }}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -105,7 +131,7 @@ export default function AboutSection() {
                         </motion.h2>
 
                         <motion.p
-                            className="text-white/80 text-base md:text-lg leading-relaxed"
+                            className="text-white/80 text-lg md:text-xl leading-relaxed"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-100px" }}
