@@ -1,19 +1,11 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 
 export default function HeroSection() {
   const heroRef = useRef<HTMLDivElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-
-  const scrollOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.5], [0, -100]);
 
   return (
     <section
@@ -36,7 +28,7 @@ export default function HeroSection() {
       </div>
 
       {/* ----------------------------------- */}
-      {/*   CERCLE NOIR ANIMÉ (RESPONSIVE)   */}
+      {/*       CERCLE NOIR (ANIMATION)       */}
       {/* ----------------------------------- */}
       <motion.div
         className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
@@ -47,7 +39,6 @@ export default function HeroSection() {
           ease: [0.4, 0, 0.2, 1],
           delay: 0.3,
         }}
-        style={{ opacity: scrollOpacity, y }}
       >
         <div className="relative w-[75vw] h-[75vw] max-w-[750px] max-h-[750px]">
           <Image
