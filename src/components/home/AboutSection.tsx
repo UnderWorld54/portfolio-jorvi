@@ -57,7 +57,7 @@ export default function AboutSection() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="relative w-full"
+                        className="relative mt-10 md:mt-0 w-full"
                     >
                         <div
                             className="relative w-full aspect-3/4 group max-w-xs mx-auto md:max-w-sm"
