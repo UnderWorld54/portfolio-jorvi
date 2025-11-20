@@ -159,6 +159,7 @@ export default function RootLayout({
             <CursorProvider />
             <Header />
             <main id="main-content">{children}</main>
+            <Analytics />
             <ImageModal />
           </ModalProvider>
         </LanguageProvider>
