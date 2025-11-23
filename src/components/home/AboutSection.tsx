@@ -83,20 +83,7 @@ export default function AboutSection() {
                             style={{ perspective: "1400px" }}
                         >
                             <div
-                                className="absolute -inset-6 rounded-[36px] opacity-70 blur-2xl pointer-events-none"
-                                style={{
-                                    background:
-                                        "linear-gradient(135deg, rgba(239,68,68,0.35) 0%, rgba(59,130,246,0.2) 45%, rgba(255,255,255,0.08) 100%)",
-                                    filter: "drop-shadow(0 40px 80px rgba(0,0,0,0.35))",
-                                }}
-                                aria-hidden="true"
-                            />
-                            <div
-                                className="relative h-full w-full rounded-[32px] overflow-hidden transition-[transform,box-shadow] duration-500 ease-out transform-3d transform-[rotateY(0deg)_rotateX(0deg)] group-hover:transform-[rotateY(-10deg)_rotateX(4deg)] [box-shadow:0_18px_36px_rgba(0,0,0,0.35)] group-hover:[box-shadow:0_35px_60px_rgba(0,0,0,0.45),0_0_80px_rgba(239,68,68,0.35)]"
-                                style={{
-                                    background:
-                                        "linear-gradient(180deg, rgba(15,15,20,0.8) 0%, rgba(15,15,20,0.4) 100%)",
-                                }}
+                                className="relative h-full w-full rounded-[32px] overflow-hidden transition-[transform,box-shadow] duration-500 ease-out transform-3d transform-[rotateY(0deg)_rotateX(0deg)] group-hover:transform-[rotateY(-10deg)_rotateX(4deg)] [box-shadow:0_18px_36px_rgba(0,0,0,0.35)] group-hover:[box-shadow:0_35px_60px_rgba(0,0,0,0.45)]"
                             >
                                 <Image
                                     src="/images/me.png"
@@ -105,16 +92,6 @@ export default function AboutSection() {
                                     className="object-cover transition-transform duration-500 ease-out transform-[translateZ(0px)] group-hover:transform-[translateZ(35px)]"
                                     sizes="(max-width: 768px) 100vw, 50vw"
                                     priority
-                                />
-                                <div
-                                    className="absolute inset-0"
-                                    style={{
-                                        background:
-                                            "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.25), transparent 55%)",
-                                        mixBlendMode: "screen",
-                                        opacity: 0.6,
-                                    }}
-                                    aria-hidden="true"
                                 />
                             </div>
                         </div>
