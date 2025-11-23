@@ -8,7 +8,10 @@ import { useLanguage } from "@/contexts/LanguageContext";
 export default function AboutSection() {
     const { t } = useLanguage();
     return (
-        <section className="relative min-h-screen flex items-center px-4 sm:px-6 md:px-8 lg:px-12 overflow-hidden">
+        <section 
+            id="about"
+            className="relative py-20 md:py-32 px-4 sm:px-6 md:px-8 lg:px-12 overflow-hidden"
+        >
             {/* Éléments décoratifs rouges dans les coins supérieurs */}
             <div className="absolute top-0 left-0 w-32 h-32 md:w-48 md:h-48 pointer-events-none">
                 <motion.div
@@ -48,7 +51,23 @@ export default function AboutSection() {
                 />
             </div>
 
-            <div className="max-w-6xl mx-auto relative z-10">
+            <div className="max-w-7xl mx-auto">
+                {/* Titre horizontal centré */}
+                <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.8 }}
+                    className="text-center mb-12 md:mb-16"
+                >
+                    <motion.h2
+                        className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4"
+                        style={{ fontFamily: '"Great White Serif", serif' }}
+                    >
+                        {t("about.title")}
+                    </motion.h2>
+                </motion.div>
+
                 {/* Layout en deux colonnes */}
                 <div className="grid grid-cols-1 md:grid-cols-[0.8fr_1.2fr] gap-8 md:gap-12 items-start">
                     {/* Colonne gauche - Photo */}
@@ -119,7 +138,7 @@ export default function AboutSection() {
                             {t("about.greeting")}
                         </motion.p>
 
-                        <motion.h2
+                        <motion.h3
                             className="text-6xl md:text-8xl font-bold text-red-500 mb-4"
                             style={{ fontFamily: '"Great White Serif", serif' }}
                             initial={{ opacity: 0, y: 20 }}
@@ -128,7 +147,7 @@ export default function AboutSection() {
                             transition={{ delay: 0.5, duration: 0.6 }}
                         >
                             JORVI
-                        </motion.h2>
+                        </motion.h3>
 
                         <motion.p
                             className="text-white/80 text-lg md:text-xl leading-relaxed"
@@ -162,4 +181,3 @@ export default function AboutSection() {
         </section>
     );
 }
-

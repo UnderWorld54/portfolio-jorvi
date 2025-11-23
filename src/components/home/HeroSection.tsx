@@ -50,6 +50,22 @@ export default function HeroSection() {
           />
         </div>
       </motion.div>
+
+      {/* --------------------------- */}
+      {/*         VISU CENTRÉ        */}
+      {/* --------------------------- */}
+      <div className="absolute z-30 flex items-center justify-center">
+        <div className="relative w-[45vw] max-w-[550px] min-w-[240px]">
+          <Image
+            src="/images/VISU.svg"
+            alt="VISU"
+            width={2000}
+            height={200}
+            className="w-full h-auto object-contain"
+            priority
+          />
+        </div>
+      </div>
     </section>
   );
 }
