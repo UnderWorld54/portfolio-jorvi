@@ -7,6 +7,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ModalProvider } from "@/contexts/ModalContext";
 import ImageModal from "@/components/ui/ImageModal";
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -161,6 +162,7 @@ export default function RootLayout({
             <main id="main-content">{children}</main>
             <Analytics />
             <ImageModal />
+            <SpeedInsights />
           </ModalProvider>
         </LanguageProvider>
       </body>
