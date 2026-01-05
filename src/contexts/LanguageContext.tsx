@@ -118,7 +118,7 @@ const translations: Record<Language, Record<string, string>> = {
     "page.logos": "LOGOS",
     "page.prints": "PRINTS",
     "page.videos": "VIDÉOS",
-    "message.noContent": "Aucun {type} disponible",
+    "message.noContent": "Pas de {type}s disponible",
     "message.noContent.soon": "Le contenu sera bientôt disponible.",
     "message.error.loading": "Erreur lors du chargement des {type}",
     "message.error.config": "Vérifiez votre configuration Strapi dans les variables d'environnement.",
