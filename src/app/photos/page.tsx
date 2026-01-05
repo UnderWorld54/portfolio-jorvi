@@ -22,9 +22,9 @@ export default function PhotosPage() {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { isLoading: isLoadingImages } = useImageLoader({ 
+  const { isLoading: isLoadingImages } = useImageLoader({
     imageSelector: '.photo-image',
-    timeout: 5000 
+    timeout: 3000
   });
 
   // Ne pas attendre le chargement des images s'il n'y a pas de photos

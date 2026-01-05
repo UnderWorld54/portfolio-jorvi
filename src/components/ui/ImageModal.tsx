@@ -128,7 +128,7 @@ export default function ImageModal() {
               )}
 
               {/* Image */}
-              <div 
+              <div
                 className="relative w-full h-full flex items-center justify-center p-4"
                 style={{ touchAction: 'pan-x' }}
                 onTouchStart={handleTouchStart}
@@ -144,8 +144,8 @@ export default function ImageModal() {
                   width={1920}
                   height={1080}
                   className="max-w-full max-h-[calc(90vh-120px)] object-contain"
-                  priority
-                  unoptimized
+                  loading="eager"
+                  quality={90}
                 />
               </div>
 

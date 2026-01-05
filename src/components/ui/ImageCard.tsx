@@ -24,9 +24,9 @@ interface ImageCardProps {
   imageAspectRatio?: string;
 }
 
-function ImageCard({ 
-  item, 
-  index, 
+function ImageCard({
+  item,
+  index,
   items = [],
   imageClassName = "cover-image",
   showInfo = true,
@@ -41,7 +41,7 @@ function ImageCard({
     }
   };
   const imageContent = useMemo(() => (
-    <div className={`relative w-full overflow-hidden flex-shrink-0 ${imageAspectRatio || ''}`}>
+    <div className={`relative w-full overflow-hidden shrink-0 ${imageAspectRatio || ''} bg-gray-900`}>
       <Image
         src={item.image}
         alt={
@@ -53,7 +53,11 @@ function ImageCard({
         height={1200}
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         className={`${imageClassName} w-full ${imageAspectRatio ? 'h-full object-cover' : 'h-auto'} block transition-transform duration-500 group-hover:scale-105`}
-        loading="lazy"
+        loading={index < 4 ? "eager" : "lazy"}
+        priority={index < 4}
+        placeholder="blur"
+        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+        quality={85}
         onError={(e) => {
           const target = e.target as HTMLImageElement;
           target.style.display = 'none';
@@ -67,7 +71,7 @@ function ImageCard({
         </div>
       )}
     </div>
-  ), [item.image, item.youtubeUrl, item.projectName, item.id, imageClassName, imageAspectRatio]);
+  ), [item.image, item.youtubeUrl, item.projectName, item.id, imageClassName, imageAspectRatio, index]);
 
   const hasInfo = useMemo(() => 
     showInfo && (item.description || item.artist || item.projectName || item.date),
@@ -76,9 +80,9 @@ function ImageCard({
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 50 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
+      transition={{ duration: 0.4, delay: index * 0.05 }}
       className="group cursor-pointer h-full"
       aria-label={item.projectName || item.description || "Création"}
       onClick={handleClick}
