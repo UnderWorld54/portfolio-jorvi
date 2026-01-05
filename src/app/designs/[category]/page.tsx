@@ -30,9 +30,9 @@ export default function CategoryPage() {
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [hasLoaded, setHasLoaded] = useState(false);
-  const { isLoading: isLoadingImages } = useImageLoader({ 
+  const { isLoading: isLoadingImages } = useImageLoader({
     imageSelector: `.${category}-image`,
-    timeout: 5000 
+    timeout: 3000
   });
 
   const categoryTitles: Record<string, string> = {

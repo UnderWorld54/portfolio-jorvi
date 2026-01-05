@@ -236,27 +236,61 @@ const CategoryCard = ({ title, slug, image, description, count, index }: Categor
 
 export default function DesignsSection() {
   const { t } = useLanguage();
+  const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({
+    logos: 0,
+    prints: 0,
+    videos: 0,
+  });
+
+  useEffect(() => {
+    async function fetchCategoryCounts() {
+      try {
+        const [logosRes, printsRes, videosRes] = await Promise.all([
+          fetch('/api/logos'),
+          fetch('/api/prints'),
+          fetch('/api/videos'),
+        ]);
+
+        const [logosData, printsData, videosData] = await Promise.all([
+          logosRes.ok ? logosRes.json() : [],
+          printsRes.ok ? printsRes.json() : [],
+          videosRes.ok ? videosRes.json() : [],
+        ]);
+
+        setCategoryCounts({
+          logos: Array.isArray(logosData) ? logosData.length : 0,
+          prints: Array.isArray(printsData) ? printsData.length : 0,
+          videos: Array.isArray(videosData) ? videosData.length : 0,
+        });
+      } catch (error) {
+        console.error('Error fetching category counts:', error);
+      }
+    }
+
+    fetchCategoryCounts();
+  }, []);
+
   const categories = [
     {
       title: t("designs.logos"),
       slug: "logos",
       image: "/images/logos.jpg",
       description: t("designs.logos.desc"),
-      count: 12,
+      count: categoryCounts.logos,
     },
     {
       title: t("designs.prints"),
       slug: "prints",
       image: "/images/prints.jpg",
       description: t("designs.prints.desc"),
-      count: 8,
+      count: categoryCounts.prints,
     },
     {
       title: t("designs.videos"),
       slug: "videos",
       image: "/images/videos.jpg",
       description: t("designs.videos.desc"),
-      count: 6,
+      count: categoryCounts.videos,
     },
   ];
 
