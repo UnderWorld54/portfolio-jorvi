@@ -106,6 +106,20 @@ body {
   outline-offset: 2px;
 }
 
+/* Skeleton loader shimmer animation */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
 /* Réduction des animations pour les utilisateurs qui préfèrent */
 @media (prefers-reduced-motion: reduce) {
   *,

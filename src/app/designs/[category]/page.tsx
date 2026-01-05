@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import LoadingScreen from "@/components/LoadingScreen";
 import PageContainer from "@/components/ui/PageContainer";
 import PageTitle from "@/components/ui/PageTitle";
 import ClassicGrid from "@/components/ui/ClassicGrid";
+import ErrorMessage from "@/components/ui/ErrorMessage";
 import type { ImageCardData } from "@/components/ui/ImageCard";
 import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
 import BackButton from "@/components/ui/BackButton";
@@ -44,51 +45,51 @@ export default function CategoryPage() {
   // Ne pas attendre le chargement des images s'il n'y a pas d'items
   const isLoading = isLoadingData || (items.length > 0 && isLoadingImages);
 
-  useEffect(() => {
-    async function fetchCategoryData() {
-      if (!category || !categoryApiRoutes[category]) {
-        return;
-      }
-
-      try {
-        setIsLoadingData(true);
-        setError(null);
-        setHasLoaded(false);
-        
-        const apiRoute = categoryApiRoutes[category];
-        const response = await fetch(apiRoute);
-        
-        if (!response.ok) {
-          throw new Error(`Failed to fetch ${category}: ${response.statusText}`);
-        }
-        
-        const data = await response.json();
-        
-        // Vérifier que la réponse est bien un tableau
-        if (Array.isArray(data)) {
-          console.log(`[${category}] Données reçues:`, data.length, 'éléments');
-          if (data.length > 0) {
-            console.log(`[${category}] Premier élément:`, data[0]);
-          }
-          setItems(data);
-          setHasLoaded(true);
-        } else {
-          // Si la réponse n'est pas un tableau, considérer comme erreur
-          console.error(`[${category}] Format de réponse invalide:`, data);
-          throw new Error('Invalid response format');
-        }
-      } catch (err) {
-        console.error(`Error fetching ${category}:`, err);
-        setError(err instanceof Error ? err.message : `Failed to load ${category}`);
-        setItems([]);
-        setHasLoaded(true);
-      } finally {
-        setIsLoadingData(false);
-      }
+  const fetchCategoryData = useCallback(async () => {
+    if (!category || !categoryApiRoutes[category]) {
+      return;
     }
 
-    fetchCategoryData();
+    try {
+      setIsLoadingData(true);
+      setError(null);
+      setHasLoaded(false);
+
+      const apiRoute = categoryApiRoutes[category];
+      const response = await fetch(apiRoute);
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch ${category}: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      // Vérifier que la réponse est bien un tableau
+      if (Array.isArray(data)) {
+        console.log(`[${category}] Données reçues:`, data.length, 'éléments');
+        if (data.length > 0) {
+          console.log(`[${category}] Premier élément:`, data[0]);
+        }
+        setItems(data);
+        setHasLoaded(true);
+      } else {
+        // Si la réponse n'est pas un tableau, considérer comme erreur
+        console.error(`[${category}] Format de réponse invalide:`, data);
+        throw new Error('Invalid response format');
+      }
+    } catch (err) {
+      console.error(`Error fetching ${category}:`, err);
+      setError(err instanceof Error ? err.message : `Failed to load ${category}`);
+      setItems([]);
+      setHasLoaded(true);
+    } finally {
+      setIsLoadingData(false);
+    }
   }, [category]);
+
+  useEffect(() => {
+    fetchCategoryData();
+  }, [fetchCategoryData]);
 
   if (!category || !categoryTitles[category]) {
     return (
@@ -112,12 +113,12 @@ export default function CategoryPage() {
         <BackButton href="/designs" />
         <PageTitle title={categoryTitles[category]} />
         {error && hasLoaded && (
-          <div className="text-red-500 text-center py-8">
-            <p>{t("message.error.loading", { type: categoryTitles[category] || category })}: {error}</p>
-            <p className="text-sm text-white/60 mt-2">
-              {t("message.error.config")}
-            </p>
-          </div>
+          <ErrorMessage
+            message={error}
+            onRetry={fetchCategoryData}
+            showDetails={process.env.NODE_ENV === 'development'}
+            type={`les ${category}`}
+          />
         )}
         {!error && hasLoaded && items.length === 0 && (
           <div className="text-center py-16 md:py-24">

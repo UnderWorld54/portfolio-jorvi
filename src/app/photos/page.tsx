@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import LoadingScreen from "@/components/LoadingScreen";
 import PageContainer from "@/components/ui/PageContainer";
 import PageTitle from "@/components/ui/PageTitle";
 import MasonryGrid from "@/components/ui/MasonryGrid";
+import ErrorMessage from "@/components/ui/ErrorMessage";
 import type { ImageCardData } from "@/components/ui/ImageCard";
 import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
 import { useImageLoader } from "@/hooks/useImageLoader";
@@ -30,32 +31,31 @@ export default function PhotosPage() {
   // Ne pas attendre le chargement des images s'il n'y a pas de photos
   const isLoading = isLoadingData || (photos.length > 0 && isLoadingImages);
 
-  useEffect(() => {
-    async function fetchPhotos() {
-      try {
-        setIsLoadingData(true);
-        setError(null);
-        
-        const response = await fetch('/api/photos');
-        
-        if (!response.ok) {
-          throw new Error(`Failed to fetch photos: ${response.statusText}`);
-        }
-        
-        const data = await response.json();
-        setPhotos(data);
-      } catch (err) {
-        console.error('Error fetching photos:', err);
-        setError(err instanceof Error ? err.message : 'Failed to load photos');
-        // En cas d'erreur, on peut garder un tableau vide ou afficher un message
-        setPhotos([]);
-      } finally {
-        setIsLoadingData(false);
-      }
-    }
+  const fetchPhotos = useCallback(async () => {
+    try {
+      setIsLoadingData(true);
+      setError(null);
 
-    fetchPhotos();
+      const response = await fetch('/api/photos');
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch photos: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      setPhotos(data);
+    } catch (err) {
+      console.error('Error fetching photos:', err);
+      setError(err instanceof Error ? err.message : 'Failed to load photos');
+      setPhotos([]);
+    } finally {
+      setIsLoadingData(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchPhotos();
+  }, [fetchPhotos]);
 
   return (
     <>
@@ -63,12 +63,12 @@ export default function PhotosPage() {
       <PageContainer isLoading={isLoading}>
         <PageTitle title={t("page.photos")} />
         {error && (
-          <div className="text-red-500 text-center py-8">
-            <p>{t("message.error.loading", { type: t("content.type.photo") })}: {error}</p>
-            <p className="text-sm text-white/60 mt-2">
-              {t("message.error.config")}
-            </p>
-          </div>
+          <ErrorMessage
+            message={error}
+            onRetry={fetchPhotos}
+            showDetails={process.env.NODE_ENV === 'development'}
+            type="les photos"
+          />
         )}
         {!error && photos.length === 0 && !isLoadingData && (
           <div className="text-center py-16 md:py-24">

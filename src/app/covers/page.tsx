@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import LoadingScreen from "@/components/LoadingScreen";
 import PageContainer from "@/components/ui/PageContainer";
 import PageTitle from "@/components/ui/PageTitle";
 import MasonryGrid from "@/components/ui/MasonryGrid";
+import ErrorMessage from "@/components/ui/ErrorMessage";
 import type { ImageCardData } from "@/components/ui/ImageCard";
 import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
 import { useImageLoader } from "@/hooks/useImageLoader";
@@ -31,45 +32,45 @@ export default function CoversPage() {
   // Ne pas attendre le chargement des images s'il n'y a pas de covers
   const isLoading = isLoadingData || (covers.length > 0 && isLoadingImages);
 
-  useEffect(() => {
-    async function fetchCovers() {
-      try {
-        setIsLoadingData(true);
-        setError(null);
-        setHasLoaded(false);
-        
-        const response = await fetch('/api/covers');
-        
-        if (!response.ok) {
-          throw new Error(`Failed to fetch covers: ${response.statusText}`);
-        }
-        
-        const data = await response.json();
-        
-        // Vérifier que la réponse est bien un tableau
-        if (Array.isArray(data)) {
-          console.log('[covers] Données reçues:', data.length, 'éléments');
-          if (data.length > 0) {
-            console.log('[covers] Premier élément:', data[0]);
-          }
-          setCovers(data);
-          setHasLoaded(true);
-        } else {
-          console.error('[covers] Format de réponse invalide:', data);
-          throw new Error('Invalid response format');
-        }
-      } catch (err) {
-        console.error('Error fetching covers:', err);
-        setError(err instanceof Error ? err.message : 'Failed to load covers');
-        setCovers([]);
-        setHasLoaded(true);
-      } finally {
-        setIsLoadingData(false);
-      }
-    }
+  const fetchCovers = useCallback(async () => {
+    try {
+      setIsLoadingData(true);
+      setError(null);
+      setHasLoaded(false);
 
-    fetchCovers();
+      const response = await fetch('/api/covers');
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch covers: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      // Vérifier que la réponse est bien un tableau
+      if (Array.isArray(data)) {
+        console.log('[covers] Données reçues:', data.length, 'éléments');
+        if (data.length > 0) {
+          console.log('[covers] Premier élément:', data[0]);
+        }
+        setCovers(data);
+        setHasLoaded(true);
+      } else {
+        console.error('[covers] Format de réponse invalide:', data);
+        throw new Error('Invalid response format');
+      }
+    } catch (err) {
+      console.error('Error fetching covers:', err);
+      setError(err instanceof Error ? err.message : 'Failed to load covers');
+      setCovers([]);
+      setHasLoaded(true);
+    } finally {
+      setIsLoadingData(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchCovers();
+  }, [fetchCovers]);
 
   return (
     <>
@@ -77,12 +78,12 @@ export default function CoversPage() {
       <PageContainer isLoading={isLoading}>
         <PageTitle title={t("page.covers")} />
         {error && hasLoaded && (
-          <div className="text-red-500 text-center py-8">
-            <p>{t("message.error.loading", { type: t("content.type.cover") })}: {error}</p>
-            <p className="text-sm text-white/60 mt-2">
-              {t("message.error.config")}
-            </p>
-          </div>
+          <ErrorMessage
+            message={error}
+            onRetry={fetchCovers}
+            showDetails={process.env.NODE_ENV === 'development'}
+            type="les covers"
+          />
         )}
         {!error && hasLoaded && covers.length === 0 && (
           <div className="text-center py-16 md:py-24">

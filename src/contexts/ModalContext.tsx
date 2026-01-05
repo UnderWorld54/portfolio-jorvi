@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useCallback, useMemo } from "react";
 import type { ImageCardData } from "@/components/ui/ImageCard";
 
 interface ModalContextType {
@@ -22,53 +22,69 @@ export function ModalProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<ImageCardData[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const openModal = (item: ImageCardData, allItems: ImageCardData[], index: number) => {
+  const openModal = useCallback((item: ImageCardData, allItems: ImageCardData[], index: number) => {
     setCurrentItem(item);
     setItems(allItems);
     setCurrentIndex(index);
     setIsOpen(true);
     // Empêcher le scroll du body quand la modal est ouverte
     document.body.style.overflow = "hidden";
-  };
+  }, []);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsOpen(false);
     setCurrentItem(null);
     setItems([]);
     setCurrentIndex(0);
     // Réactiver le scroll du body
     document.body.style.overflow = "unset";
-  };
+  }, []);
 
-  const goToNext = () => {
-    if (currentIndex < items.length - 1) {
-      const nextIndex = currentIndex + 1;
-      setCurrentIndex(nextIndex);
-      setCurrentItem(items[nextIndex]);
-    }
-  };
+  const goToNext = useCallback(() => {
+    setCurrentIndex((prevIndex) => {
+      setItems((prevItems) => {
+        if (prevIndex < prevItems.length - 1) {
+          const nextIndex = prevIndex + 1;
+          setCurrentItem(prevItems[nextIndex]);
+          return prevItems;
+        }
+        return prevItems;
+      });
+      return prevIndex < items.length - 1 ? prevIndex + 1 : prevIndex;
+    });
+  }, [items.length]);
 
-  const goToPrevious = () => {
-    if (currentIndex > 0) {
-      const prevIndex = currentIndex - 1;
-      setCurrentIndex(prevIndex);
-      setCurrentItem(items[prevIndex]);
-    }
-  };
+  const goToPrevious = useCallback(() => {
+    setCurrentIndex((prevIndex) => {
+      setItems((prevItems) => {
+        if (prevIndex > 0) {
+          const previousIndex = prevIndex - 1;
+          setCurrentItem(prevItems[previousIndex]);
+          return prevItems;
+        }
+        return prevItems;
+      });
+      return prevIndex > 0 ? prevIndex - 1 : prevIndex;
+    });
+  }, []);
+
+  // Memoize la valeur du context pour éviter les re-renders inutiles
+  const contextValue = useMemo(
+    () => ({
+      isOpen,
+      currentItem,
+      items,
+      currentIndex,
+      openModal,
+      closeModal,
+      goToNext,
+      goToPrevious,
+    }),
+    [isOpen, currentItem, items, currentIndex, openModal, closeModal, goToNext, goToPrevious]
+  );
 
   return (
-    <ModalContext.Provider
-      value={{
-        isOpen,
-        currentItem,
-        items,
-        currentIndex,
-        openModal,
-        closeModal,
-        goToNext,
-        goToPrevious,
-      }}
-    >
+    <ModalContext.Provider value={contextValue}>
       {children}
     </ModalContext.Provider>
   );

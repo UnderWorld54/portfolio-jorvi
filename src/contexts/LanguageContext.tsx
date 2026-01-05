@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, startTransition, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, startTransition, ReactNode, useCallback, useMemo } from "react";
 
 type Language = "FR" | "ENG";
 
@@ -39,22 +39,28 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Fonction de traduction avec support des variables
-  const t = (key: string, variables?: Record<string, string>): string => {
+  // Fonction de traduction avec support des variables - memoize pour éviter les re-renders
+  const t = useCallback((key: string, variables?: Record<string, string>): string => {
     let translation = translations[language][key] || key;
-    
+
     // Remplacer les variables {variable} par leurs valeurs
     if (variables) {
       Object.entries(variables).forEach(([varKey, varValue]) => {
         translation = translation.replace(new RegExp(`\\{${varKey}\\}`, 'g'), varValue);
       });
     }
-    
+
     return translation;
-  };
+  }, [language]);
+
+  // Memoize la valeur du context pour éviter les re-renders inutiles
+  const contextValue = useMemo(
+    () => ({ language, setLanguage, t }),
+    [language, t]
+  );
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={contextValue}>
       {children}
     </LanguageContext.Provider>
   );

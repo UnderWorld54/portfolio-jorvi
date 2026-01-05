@@ -6,6 +6,7 @@ import CursorProvider from "@/components/CursorProvider";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ModalProvider } from "@/contexts/ModalContext";
 import ImageModal from "@/components/ui/ImageModal";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
@@ -155,16 +156,18 @@ export default function RootLayout({
         >
           Aller au contenu principal
         </a>
-        <LanguageProvider>
-          <ModalProvider>
-            <CursorProvider />
-            <Header />
-            <main id="main-content">{children}</main>
-            <Analytics />
-            <ImageModal />
-            <SpeedInsights />
-          </ModalProvider>
-        </LanguageProvider>
+        <ErrorBoundary>
+          <LanguageProvider>
+            <ModalProvider>
+              <CursorProvider />
+              <Header />
+              <main id="main-content">{children}</main>
+              <Analytics />
+              <ImageModal />
+              <SpeedInsights />
+            </ModalProvider>
+          </LanguageProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );
