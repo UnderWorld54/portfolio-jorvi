@@ -11,6 +11,33 @@ export default function ImageModal() {
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
 
+  // Préchargement des images adjacentes pour une navigation fluide
+  useEffect(() => {
+    if (!isOpen || items.length === 0) return;
+
+    const preloadImages: HTMLImageElement[] = [];
+
+    // Précharger l'image suivante
+    if (currentIndex < items.length - 1) {
+      const nextImg = new window.Image();
+      nextImg.src = items[currentIndex + 1].image;
+      preloadImages.push(nextImg);
+    }
+
+    // Précharger l'image précédente
+    if (currentIndex > 0) {
+      const prevImg = new window.Image();
+      prevImg.src = items[currentIndex - 1].image;
+      preloadImages.push(prevImg);
+    }
+
+    return () => {
+      preloadImages.forEach(img => {
+        img.src = '';
+      });
+    };
+  }, [isOpen, currentIndex, items]);
+
   // Gérer la fermeture avec la touche ESC
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -88,11 +115,7 @@ export default function ImageModal() {
             onClick={closeModal}
           >
             {/* Modal Content */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.3 }}
+            <div
               className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center"
               onClick={(e) => e.stopPropagation()}
             >
@@ -129,12 +152,13 @@ export default function ImageModal() {
 
               {/* Image */}
               <div
-                className="relative w-full h-full flex items-center justify-center p-4"
-                style={{ touchAction: 'pan-x' }}
+                className="relative w-full h-full flex items-center justify-center p-4 bg-black"
+                style={{ touchAction: 'pan-x', willChange: 'transform' }}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
               >
                 <Image
+                  key={currentItem.id}
                   src={currentItem.image}
                   alt={
                     currentItem.description
@@ -143,20 +167,18 @@ export default function ImageModal() {
                   }
                   width={1920}
                   height={1080}
+                  sizes="100vw"
                   className="max-w-full max-h-[calc(90vh-120px)] object-contain"
                   loading="eager"
+                  priority
                   quality={90}
+                  unoptimized={false}
                 />
               </div>
 
               {/* Image Info */}
               {(currentItem.description || currentItem.projectName || currentItem.artist || currentItem.date) && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                  className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-sm rounded-lg p-4 max-w-2xl w-full mx-4"
-                >
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-sm rounded-lg p-4 max-w-2xl w-full mx-4">
                   {currentItem.description && (
                     <p className="text-white/90 text-sm md:text-base mb-2 text-center">
                       {currentItem.description}
@@ -184,17 +206,12 @@ export default function ImageModal() {
                       {currentIndex + 1} / {items.length}
                     </div>
                   )}
-                </motion.div>
+                </div>
               )}
 
               {/* Video Link Overlay */}
               {currentItem.youtubeUrl && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                  className="absolute inset-0 flex items-center justify-center"
-                >
+                <div className="absolute inset-0 flex items-center justify-center">
                   <a
                     href={currentItem.youtubeUrl}
                     target="_blank"
@@ -203,9 +220,9 @@ export default function ImageModal() {
                   >
                     Voir la vidéo sur YouTube
                   </a>
-                </motion.div>
+                </div>
               )}
-            </motion.div>
+            </div>
           </motion.div>
         </>
       )}

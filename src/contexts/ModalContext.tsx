@@ -42,31 +42,25 @@ export function ModalProvider({ children }: { children: ReactNode }) {
 
   const goToNext = useCallback(() => {
     setCurrentIndex((prevIndex) => {
-      setItems((prevItems) => {
-        if (prevIndex < prevItems.length - 1) {
-          const nextIndex = prevIndex + 1;
-          setCurrentItem(prevItems[nextIndex]);
-          return prevItems;
-        }
-        return prevItems;
-      });
-      return prevIndex < items.length - 1 ? prevIndex + 1 : prevIndex;
+      if (prevIndex < items.length - 1) {
+        const nextIndex = prevIndex + 1;
+        setCurrentItem(items[nextIndex]);
+        return nextIndex;
+      }
+      return prevIndex;
     });
-  }, [items.length]);
+  }, [items]);
 
   const goToPrevious = useCallback(() => {
     setCurrentIndex((prevIndex) => {
-      setItems((prevItems) => {
-        if (prevIndex > 0) {
-          const previousIndex = prevIndex - 1;
-          setCurrentItem(prevItems[previousIndex]);
-          return prevItems;
-        }
-        return prevItems;
-      });
-      return prevIndex > 0 ? prevIndex - 1 : prevIndex;
+      if (prevIndex > 0) {
+        const previousIndex = prevIndex - 1;
+        setCurrentItem(items[previousIndex]);
+        return previousIndex;
+      }
+      return prevIndex;
     });
-  }, []);
+  }, [items]);
 
   // Memoize la valeur du context pour éviter les re-renders inutiles
   const contextValue = useMemo(
