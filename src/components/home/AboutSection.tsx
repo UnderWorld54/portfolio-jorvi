@@ -141,15 +141,22 @@ export default function AboutSection() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-100px" }}
                             transition={{ delay: 0.7, duration: 0.6 }}
-                            className="pt-4"
+                            className="pt-4 flex flex-wrap gap-4"
                         >
                             <Button
-                                href="/CV.pdf"
+                                href="/about"
                                 variant="primary"
+                                size="md"
+                            >
+                                {t("cta.more")}                            
+                            </Button>
+                            <Button
+                                href="/CV.pdf"
+                                variant="outline"
                                 size="md"
                                 download
                             >
-                                {t("cta.more")}                            
+                                {t("cta.cv")}
                             </Button>
                         </motion.div>
                     </motion.div>

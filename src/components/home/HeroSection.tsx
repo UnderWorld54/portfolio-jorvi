@@ -3,9 +3,13 @@
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function HeroSection() {
   const heroRef = useRef<HTMLDivElement>(null);
+  const { language } = useLanguage();
+  const logoSrc = language === "ENG" ? "/images/VISU_EN.svg" : "/images/VISU.svg";
+  const logoAlt = language === "ENG" ? "VISUAL" : "VISUEL";
 
   return (
     <section
@@ -57,11 +61,12 @@ export default function HeroSection() {
       <div className="absolute z-30 flex items-center justify-center">
         <div className="relative w-[45vw] max-w-[550px] min-w-[240px]">
           <Image
-            src="/images/VISU.svg"
-            alt="VISU"
+            src={logoSrc}
+            alt={logoAlt}
             width={2000}
             height={200}
             className="w-full h-auto object-contain"
+            sizes="(max-width: 768px) 70vw, 45vw"
             priority
           />
         </div>
