@@ -41,7 +41,7 @@ function ImageCard({
     }
   };
   const imageContent = useMemo(() => (
-    <div className={`relative w-full overflow-hidden shrink-0 ${imageAspectRatio || ''} bg-gray-900`}>
+    <div className={`relative w-full overflow-hidden shrink-0 ${imageAspectRatio || ''} bg-black flex items-center justify-center`}>
       <Image
         src={item.image}
         alt={
@@ -52,7 +52,7 @@ function ImageCard({
         width={800}
         height={1200}
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        className={`${imageClassName} w-full ${imageAspectRatio ? 'h-full object-cover' : 'h-auto'} block transition-transform duration-500 group-hover:scale-105`}
+        className={`${imageClassName} w-full ${imageAspectRatio ? 'h-full object-contain' : 'h-auto object-contain'} block transition-transform duration-500 group-hover:scale-105`}
         loading={index < 4 ? "eager" : "lazy"}
         priority={index < 4}
         placeholder="blur"
@@ -87,7 +87,7 @@ function ImageCard({
       aria-label={item.projectName || item.description || "Création"}
       onClick={handleClick}
     >
-      <div className="relative overflow-hidden rounded-lg bg-gray-900 border border-red-500/20 hover:border-red-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/20 h-full flex flex-col">
+      <div className="relative overflow-hidden rounded-lg bg-black border border-red-500/20 hover:border-red-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/20 h-full flex flex-col">
         {/* Image - conserve les dimensions d'origine pour effet mur de brique */}
         {item.youtubeUrl ? (
           <a
