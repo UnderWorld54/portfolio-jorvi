@@ -92,7 +92,7 @@ export interface StrapiVideo {
 export interface StrapiCover {
   id: number;
   documentId?: string;
-  image?: {
+  images?: Array<{
     id: number;
     documentId?: string;
     url: string;
@@ -100,7 +100,7 @@ export interface StrapiCover {
     width: number;
     height: number;
     formats?: Record<string, unknown>;
-  } | null;
+  }> | null;
   artist?: string;
   projectName?: string;
   date?: string;
@@ -563,7 +563,7 @@ export async function getCovers(): Promise<StrapiCover[]> {
 
   const populateOptions = [
     'populate=*',
-    'populate=image',
+    'populate=images',
   ];
 
   let lastError: Error | null = null;
@@ -605,30 +605,34 @@ export async function getCovers(): Promise<StrapiCover[]> {
 }
 
 /**
- * Convertit un cover Strapi v5 en format ImageCardData
+ * Convertit un cover Strapi v5 en format avec plusieurs images
  */
 export function transformStrapiCover(cover: StrapiCover): {
   id: string;
   image: string;
+  images: string[];
   artist?: string;
   projectName?: string;
   date?: string;
   description?: string;
 } | null {
   try {
-    if (!cover.image || !cover.image.url) {
-      console.warn(`Cover ${cover.id} has no image, skipping`);
+    if (!cover.images || cover.images.length === 0) {
+      console.warn(`Cover ${cover.id} has no images, skipping`);
       return null;
     }
 
-    const imageUrl = cover.image.url;
-    const fullImageUrl = imageUrl.startsWith('http')
-      ? imageUrl
-      : `${STRAPI_API_URL}${imageUrl}`;
+    const images = cover.images.map(img => {
+      const imageUrl = img.url;
+      return imageUrl.startsWith('http')
+        ? imageUrl
+        : `${STRAPI_API_URL}${imageUrl}`;
+    });
 
     return {
       id: cover.id.toString(),
-      image: fullImageUrl,
+      image: images[0], // Première image pour l'affichage dans la grille
+      images: images, // Toutes les images pour la modal
       artist: cover.artist || undefined,
       projectName: cover.projectName || undefined,
       date: cover.date || undefined,

@@ -12,6 +12,7 @@ import { useImageLoader } from "@/hooks/useImageLoader";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Cover extends ImageCardData {
+  images?: string[];
   artist?: string;
   projectName?: string;
   date?: string;

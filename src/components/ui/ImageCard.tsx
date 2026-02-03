@@ -8,6 +8,7 @@ import { useModal } from "@/contexts/ModalContext";
 export interface ImageCardData {
   id: string;
   image: string;
+  images?: string[];
   artist?: string;
   projectName?: string;
   date?: string;
@@ -37,7 +38,20 @@ function ImageCard({
   const handleClick = () => {
     // Ne pas ouvrir la modal si c'est une vidéo (on garde le lien YouTube)
     if (!item.youtubeUrl) {
-      openModal(item, items.length > 0 ? items : [item], index);
+      // Si l'item a plusieurs images (comme une cover), afficher uniquement ces images
+      if (item.images && item.images.length > 0) {
+        const coverImages: ImageCardData[] = item.images.map((imgUrl, idx) => ({
+          id: `${item.id}-img-${idx}`,
+          image: imgUrl,
+          artist: item.artist,
+          projectName: item.projectName,
+          date: item.date,
+          description: item.description,
+        }));
+        openModal(coverImages[0], coverImages, 0);
+      } else {
+        openModal(item, items.length > 0 ? items : [item], index);
+      }
     }
   };
   const imageContent = useMemo(() => (
