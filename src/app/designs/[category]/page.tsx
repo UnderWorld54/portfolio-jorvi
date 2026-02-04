@@ -12,9 +12,13 @@ import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
 import BackButton from "@/components/ui/BackButton";
 import { useImageLoader } from "@/hooks/useImageLoader";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslatedContent } from "@/hooks/useTranslatedContent";
 
 interface CategoryItem extends ImageCardData {
   youtubeUrl?: string;
+  artist?: string;
+  projectName?: string;
+  description?: string;
 }
 
 const categoryApiRoutes: Record<string, string> = {
@@ -36,6 +40,9 @@ export default function CategoryPage() {
     timeout: 3000
   });
 
+  // Traduire automatiquement le contenu
+  const { translatedItems, isTranslating } = useTranslatedContent(items);
+
   const categoryTitles: Record<string, string> = {
     logos: t("page.logos"),
     prints: t("page.prints"),
@@ -43,7 +50,7 @@ export default function CategoryPage() {
   };
 
   // Ne pas attendre le chargement des images s'il n'y a pas d'items
-  const isLoading = isLoadingData || (items.length > 0 && isLoadingImages);
+  const isLoading = isLoadingData || isTranslating || (items.length > 0 && isLoadingImages);
 
   const fetchCategoryData = useCallback(async () => {
     if (!category || !categoryApiRoutes[category]) {
@@ -134,9 +141,9 @@ export default function CategoryPage() {
             </div>
           </div>
         )}
-        {!error && items.length > 0 && (
-          <ClassicGrid 
-            items={items} 
+        {!error && translatedItems.length > 0 && (
+          <ClassicGrid
+            items={translatedItems}
             imageClassName={`${category}-image`}
             showInfo={true}
             columns="3"

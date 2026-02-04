@@ -10,6 +10,7 @@ import type { ImageCardData } from "@/components/ui/ImageCard";
 import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
 import { useImageLoader } from "@/hooks/useImageLoader";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslatedContent } from "@/hooks/useTranslatedContent";
 
 interface Cover extends ImageCardData {
   images?: string[];
@@ -30,8 +31,11 @@ export default function CoversPage() {
     timeout: 3000
   });
 
+  // Traduire automatiquement le contenu des covers
+  const { translatedItems: translatedCovers, isTranslating } = useTranslatedContent(covers);
+
   // Ne pas attendre le chargement des images s'il n'y a pas de covers
-  const isLoading = isLoadingData || (covers.length > 0 && isLoadingImages);
+  const isLoading = isLoadingData || isTranslating || (covers.length > 0 && isLoadingImages);
 
   const fetchCovers = useCallback(async () => {
     try {
@@ -98,9 +102,9 @@ export default function CoversPage() {
             </div>
           </div>
         )}
-        {!error && covers.length > 0 && (
-          <MasonryGrid 
-            items={covers} 
+        {!error && translatedCovers.length > 0 && (
+          <MasonryGrid
+            items={translatedCovers}
             imageClassName="cover-image"
             showInfo={true}
           />

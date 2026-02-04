@@ -10,6 +10,7 @@ import type { ImageCardData } from "@/components/ui/ImageCard";
 import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
 import { useImageLoader } from "@/hooks/useImageLoader";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslatedContent } from "@/hooks/useTranslatedContent";
 
 interface Photo extends ImageCardData {
   artist: string;
@@ -28,8 +29,11 @@ export default function PhotosPage() {
     timeout: 3000
   });
 
+  // Traduire automatiquement le contenu des photos
+  const { translatedItems: translatedPhotos, isTranslating } = useTranslatedContent(photos);
+
   // Ne pas attendre le chargement des images s'il n'y a pas de photos
-  const isLoading = isLoadingData || (photos.length > 0 && isLoadingImages);
+  const isLoading = isLoadingData || isTranslating || (photos.length > 0 && isLoadingImages);
 
   const fetchPhotos = useCallback(async () => {
     try {
@@ -82,9 +86,9 @@ export default function PhotosPage() {
             </div>
           </div>
         )}
-        {photos.length > 0 && (
-          <MasonryGrid 
-            items={photos} 
+        {translatedPhotos.length > 0 && (
+          <MasonryGrid
+            items={translatedPhotos}
             imageClassName="photo-image"
             showInfo={true}
           />
