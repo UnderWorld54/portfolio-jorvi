@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
 import LoadingScreen from "@/components/LoadingScreen";
 import PageContainer from "@/components/ui/PageContainer";
 import PageTitle from "@/components/ui/PageTitle";
@@ -11,6 +10,7 @@ import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
 import { useImageLoader } from "@/hooks/useImageLoader";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTranslatedContent } from "@/hooks/useTranslatedContent";
+import { useCachedFetch } from "@/hooks/useCachedFetch";
 
 interface Photo extends ImageCardData {
   artist: string;
@@ -21,45 +21,30 @@ interface Photo extends ImageCardData {
 
 export default function PhotosPage() {
   const { t } = useLanguage();
-  const [photos, setPhotos] = useState<Photo[]>([]);
-  const [isLoadingData, setIsLoadingData] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+
+  // Utiliser le cache client pour réduire l'impact du cold start
+  const {
+    data: photos,
+    isLoading: isLoadingData,
+    isStale,
+    error,
+    refetch
+  } = useCachedFetch<Photo[]>('/api/photos', {
+    cacheTime: 60 * 60 * 1000, // 1 heure de cache "frais"
+    staleTime: 24 * 60 * 60 * 1000, // 24h de cache "stale" acceptable
+  });
+
   const { isLoading: isLoadingImages } = useImageLoader({
     imageSelector: '.photo-image',
     timeout: 3000
   });
 
   // Traduire automatiquement le contenu des photos
-  const { translatedItems: translatedPhotos, isTranslating } = useTranslatedContent(photos);
+  const { translatedItems: translatedPhotos, isTranslating } = useTranslatedContent(photos || []);
 
   // Ne pas attendre le chargement des images s'il n'y a pas de photos
-  const isLoading = isLoadingData || isTranslating || (photos.length > 0 && isLoadingImages);
-
-  const fetchPhotos = useCallback(async () => {
-    try {
-      setIsLoadingData(true);
-      setError(null);
-
-      const response = await fetch('/api/photos');
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch photos: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      setPhotos(data);
-    } catch (err) {
-      console.error('Error fetching photos:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load photos');
-      setPhotos([]);
-    } finally {
-      setIsLoadingData(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchPhotos();
-  }, [fetchPhotos]);
+  // Si on a des données stale, ne pas montrer le loading
+  const isLoading = (isLoadingData && !isStale) || isTranslating || ((photos?.length ?? 0) > 0 && isLoadingImages);
 
   return (
     <>
@@ -69,12 +54,12 @@ export default function PhotosPage() {
         {error && (
           <ErrorMessage
             message={error}
-            onRetry={fetchPhotos}
+            onRetry={refetch}
             showDetails={process.env.NODE_ENV === 'development'}
             type="les photos"
           />
         )}
-        {!error && photos.length === 0 && !isLoadingData && (
+        {!error && (photos?.length ?? 0) === 0 && !isLoadingData && (
           <div className="text-center py-16 md:py-24">
             <div className="max-w-md mx-auto">
               <p className="text-white/80 text-lg md:text-xl mb-2" style={{ fontFamily: '"Great White Serif", serif' }}>

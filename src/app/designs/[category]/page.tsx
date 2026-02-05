@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import LoadingScreen from "@/components/LoadingScreen";
 import PageContainer from "@/components/ui/PageContainer";
@@ -13,6 +12,7 @@ import BackButton from "@/components/ui/BackButton";
 import { useImageLoader } from "@/hooks/useImageLoader";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTranslatedContent } from "@/hooks/useTranslatedContent";
+import { useCachedFetch } from "@/hooks/useCachedFetch";
 
 interface CategoryItem extends ImageCardData {
   youtubeUrl?: string;
@@ -31,17 +31,31 @@ export default function CategoryPage() {
   const params = useParams();
   const category = params?.category as string;
   const { t } = useLanguage();
-  const [items, setItems] = useState<CategoryItem[]>([]);
-  const [isLoadingData, setIsLoadingData] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [hasLoaded, setHasLoaded] = useState(false);
+
+  const apiRoute = category && categoryApiRoutes[category] ? categoryApiRoutes[category] : "";
+
+  // Utiliser le cache client pour réduire l'impact du cold start
+  const {
+    data: items,
+    isLoading: isLoadingData,
+    isStale,
+    error,
+    refetch
+  } = useCachedFetch<CategoryItem[]>(apiRoute, {
+    cacheTime: 60 * 60 * 1000,
+    staleTime: 24 * 60 * 60 * 1000,
+    enableCache: !!apiRoute,
+  });
+
+  const hasLoaded = !isLoadingData || isStale;
+
   const { isLoading: isLoadingImages } = useImageLoader({
     imageSelector: `.${category}-image`,
     timeout: 3000
   });
 
   // Traduire automatiquement le contenu
-  const { translatedItems, isTranslating } = useTranslatedContent(items);
+  const { translatedItems, isTranslating } = useTranslatedContent(items || []);
 
   const categoryTitles: Record<string, string> = {
     logos: t("page.logos"),
@@ -50,53 +64,7 @@ export default function CategoryPage() {
   };
 
   // Ne pas attendre le chargement des images s'il n'y a pas d'items
-  const isLoading = isLoadingData || isTranslating || (items.length > 0 && isLoadingImages);
-
-  const fetchCategoryData = useCallback(async () => {
-    if (!category || !categoryApiRoutes[category]) {
-      return;
-    }
-
-    try {
-      setIsLoadingData(true);
-      setError(null);
-      setHasLoaded(false);
-
-      const apiRoute = categoryApiRoutes[category];
-      const response = await fetch(apiRoute);
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch ${category}: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-
-      // Vérifier que la réponse est bien un tableau
-      if (Array.isArray(data)) {
-        console.log(`[${category}] Données reçues:`, data.length, 'éléments');
-        if (data.length > 0) {
-          console.log(`[${category}] Premier élément:`, data[0]);
-        }
-        setItems(data);
-        setHasLoaded(true);
-      } else {
-        // Si la réponse n'est pas un tableau, considérer comme erreur
-        console.error(`[${category}] Format de réponse invalide:`, data);
-        throw new Error('Invalid response format');
-      }
-    } catch (err) {
-      console.error(`Error fetching ${category}:`, err);
-      setError(err instanceof Error ? err.message : `Failed to load ${category}`);
-      setItems([]);
-      setHasLoaded(true);
-    } finally {
-      setIsLoadingData(false);
-    }
-  }, [category]);
-
-  useEffect(() => {
-    fetchCategoryData();
-  }, [fetchCategoryData]);
+  const isLoading = (isLoadingData && !isStale) || isTranslating || ((items?.length ?? 0) > 0 && isLoadingImages);
 
   if (!category || !categoryTitles[category]) {
     return (
@@ -122,12 +90,12 @@ export default function CategoryPage() {
         {error && hasLoaded && (
           <ErrorMessage
             message={error}
-            onRetry={fetchCategoryData}
+            onRetry={refetch}
             showDetails={process.env.NODE_ENV === 'development'}
             type={`les ${category}`}
           />
         )}
-        {!error && hasLoaded && items.length === 0 && (
+        {!error && hasLoaded && (items?.length ?? 0) === 0 && (
           <div className="text-center py-16 md:py-24">
             <div className="max-w-md mx-auto">
               <p className="text-white/80 text-lg md:text-xl mb-2" style={{ fontFamily: '"Great White Serif", serif' }}>

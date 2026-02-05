@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
 import LoadingScreen from "@/components/LoadingScreen";
 import PageContainer from "@/components/ui/PageContainer";
 import PageTitle from "@/components/ui/PageTitle";
@@ -11,6 +10,7 @@ import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
 import { useImageLoader } from "@/hooks/useImageLoader";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTranslatedContent } from "@/hooks/useTranslatedContent";
+import { useCachedFetch } from "@/hooks/useCachedFetch";
 
 interface Cover extends ImageCardData {
   images?: string[];
@@ -22,60 +22,31 @@ interface Cover extends ImageCardData {
 
 export default function CoversPage() {
   const { t } = useLanguage();
-  const [covers, setCovers] = useState<Cover[]>([]);
-  const [isLoadingData, setIsLoadingData] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [hasLoaded, setHasLoaded] = useState(false);
+
+  // Utiliser le cache client pour réduire l'impact du cold start
+  const {
+    data: covers,
+    isLoading: isLoadingData,
+    isStale,
+    error,
+    refetch
+  } = useCachedFetch<Cover[]>('/api/covers', {
+    cacheTime: 60 * 60 * 1000,
+    staleTime: 24 * 60 * 60 * 1000,
+  });
+
+  const hasLoaded = !isLoadingData || isStale;
+
   const { isLoading: isLoadingImages } = useImageLoader({
     imageSelector: '.cover-image',
     timeout: 3000
   });
 
   // Traduire automatiquement le contenu des covers
-  const { translatedItems: translatedCovers, isTranslating } = useTranslatedContent(covers);
+  const { translatedItems: translatedCovers, isTranslating } = useTranslatedContent(covers || []);
 
   // Ne pas attendre le chargement des images s'il n'y a pas de covers
-  const isLoading = isLoadingData || isTranslating || (covers.length > 0 && isLoadingImages);
-
-  const fetchCovers = useCallback(async () => {
-    try {
-      setIsLoadingData(true);
-      setError(null);
-      setHasLoaded(false);
-
-      const response = await fetch('/api/covers');
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch covers: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-
-      // Vérifier que la réponse est bien un tableau
-      if (Array.isArray(data)) {
-        console.log('[covers] Données reçues:', data.length, 'éléments');
-        if (data.length > 0) {
-          console.log('[covers] Premier élément:', data[0]);
-        }
-        setCovers(data);
-        setHasLoaded(true);
-      } else {
-        console.error('[covers] Format de réponse invalide:', data);
-        throw new Error('Invalid response format');
-      }
-    } catch (err) {
-      console.error('Error fetching covers:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load covers');
-      setCovers([]);
-      setHasLoaded(true);
-    } finally {
-      setIsLoadingData(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchCovers();
-  }, [fetchCovers]);
+  const isLoading = (isLoadingData && !isStale) || isTranslating || ((covers?.length ?? 0) > 0 && isLoadingImages);
 
   return (
     <>
@@ -85,12 +56,12 @@ export default function CoversPage() {
         {error && hasLoaded && (
           <ErrorMessage
             message={error}
-            onRetry={fetchCovers}
+            onRetry={refetch}
             showDetails={process.env.NODE_ENV === 'development'}
             type="les covers"
           />
         )}
-        {!error && hasLoaded && covers.length === 0 && (
+        {!error && hasLoaded && (covers?.length ?? 0) === 0 && (
           <div className="text-center py-16 md:py-24">
             <div className="max-w-md mx-auto">
               <p className="text-white/80 text-lg md:text-xl mb-2" style={{ fontFamily: '"Great White Serif", serif' }}>
