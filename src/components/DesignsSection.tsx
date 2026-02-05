@@ -274,21 +274,21 @@ export default function DesignsSection() {
     {
       title: t("designs.logos"),
       slug: "logos",
-      image: "/images/logos.jpg",
+      image: "/images/LOGOS.png",
       description: t("designs.logos.desc"),
       count: categoryCounts.logos,
     },
     {
       title: t("designs.prints"),
       slug: "prints",
-      image: "/images/prints.jpg",
+      image: "/images/PRINTS.png",
       description: t("designs.prints.desc"),
       count: categoryCounts.prints,
     },
     {
       title: t("designs.videos"),
       slug: "videos",
-      image: "/images/videos.jpg",
+      image: "/images/VIDEOS.png",
       description: t("designs.videos.desc"),
       count: categoryCounts.videos,
     },
@@ -298,9 +298,9 @@ export default function DesignsSection() {
     <section id="designs" className="min-h-screen bg-black relative overflow-x-hidden pt-20 sm:pt-24 md:pt-28">
       {/* Background gradient animé */}
       <motion.div
-        className="absolute inset-0 opacity-20 sm:opacity-30"
+        className="absolute inset-0 opacity-20 sm:opacity-10"
         style={{
-          background: "radial-gradient(circle at 30% 50%, rgba(239, 68, 68, 0.1) 0%, transparent 50%)",
+          background: "radial-gradient(circle at 30% 50%, rgba(239, 68, 68, 0.1) 0%, transparent 60%)",
         }}
         animate={{
           background: [
