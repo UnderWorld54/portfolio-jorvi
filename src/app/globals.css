@@ -3,18 +3,16 @@
 @font-face {
   font-family: "Great White Serif";
   src:
-    url("/fonts/great-white-elegant-serif-classy-script-font-2025-07-01-15-33-59-utc-1/Great White Serif.woff")
-      format("woff"),
-    url("/fonts/great-white-elegant-serif-classy-script-font-2025-07-01-15-33-59-utc-1/Great White Serif.ttf")
-      format("truetype");
+    url("/fonts/great-white-elegant-serif-classy-script-font-2025-07-01-15-33-59-utc-1/Great White Serif.woff") format("woff"),
+    url("/fonts/great-white-elegant-serif-classy-script-font-2025-07-01-15-33-59-utc-1/Great White Serif.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #000000;
+  --foreground: #ededed;
   --font-great-white: "Great White Serif", serif;
 }
 
@@ -25,15 +23,8 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  background: var(--background);
+  background: #000000;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   overflow-x: hidden;
@@ -103,6 +94,7 @@ html {
   0% {
     transform: translateX(-100%);
   }
+
   100% {
     transform: translateX(100%);
   }
@@ -114,6 +106,7 @@ html {
 
 /* Réduction des animations pour les utilisateurs qui préfèrent */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {

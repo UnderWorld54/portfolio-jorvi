@@ -22,10 +22,14 @@ export default function PortfolioCard({
 }: PortfolioCardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 60 }}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay }}
+      transition={{
+        duration: 0.6,
+        delay: delay * 0.6,
+        ease: [0.25, 0.1, 0.25, 1],
+      }}
       className="group relative h-[400px] md:h-[500px] overflow-hidden rounded-xl md:rounded-2xl border border-red-500/20 cursor-pointer"
       whileHover={{ borderColor: "rgba(239, 68, 68, 0.5)" }}
     >

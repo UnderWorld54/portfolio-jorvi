@@ -53,7 +53,8 @@ export default function CTASection() {
         <motion.div
           className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full"
           style={{
-            background: "radial-gradient(circle, rgba(239, 68, 68, 0.1) 0%, transparent 70%)",
+            background:
+              "radial-gradient(circle, rgba(239, 68, 68, 0.1) 0%, transparent 70%)",
             filter: "blur(60px)",
           }}
           animate={{
@@ -69,7 +70,8 @@ export default function CTASection() {
         <motion.div
           className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full"
           style={{
-            background: "radial-gradient(circle, rgba(239, 68, 68, 0.08) 0%, transparent 70%)",
+            background:
+              "radial-gradient(circle, rgba(239, 68, 68, 0.08) 0%, transparent 70%)",
             filter: "blur(80px)",
           }}
           animate={{
@@ -89,18 +91,22 @@ export default function CTASection() {
         {/* En-tête */}
         <motion.div
           className="text-center mb-16 md:mb-20"
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         >
           <motion.h2
             className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-6 md:mb-8"
             style={{ fontFamily: '"Great White Serif", serif' }}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ delay: 0.1, duration: 0.8 }}
+            transition={{
+              delay: 0.08,
+              duration: 0.6,
+              ease: [0.25, 0.1, 0.25, 1],
+            }}
           >
             {t("cta.title")}
           </motion.h2>
@@ -109,7 +115,11 @@ export default function CTASection() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.6 }}
+            transition={{
+              delay: 0.18,
+              duration: 0.5,
+              ease: [0.25, 0.1, 0.25, 1],
+            }}
           >
             {t("cta.subtitle")}
           </motion.p>
@@ -119,12 +129,19 @@ export default function CTASection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 mb-12 md:mb-16">
           {/* Contact direct */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -25 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ delay: 0.4, duration: 0.8 }}
+            transition={{
+              delay: 0.15,
+              duration: 0.6,
+              ease: [0.25, 0.1, 0.25, 1],
+            }}
           >
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 text-center lg:text-left" style={{ fontFamily: '"Great White Serif", serif' }}>
+            <h3
+              className="text-2xl md:text-3xl font-bold text-white mb-6 text-center lg:text-left"
+              style={{ fontFamily: '"Great White Serif", serif' }}
+            >
               {t("cta.contact.direct")}
             </h3>
             <div className="space-y-4">
@@ -135,12 +152,20 @@ export default function CTASection() {
                     key={item.label}
                     href={item.href}
                     target={item.href.startsWith("http") ? "_blank" : undefined}
-                    rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                    initial={{ opacity: 0, x: -20 }}
+                    rel={
+                      item.href.startsWith("http")
+                        ? "noopener noreferrer"
+                        : undefined
+                    }
+                    initial={{ opacity: 0, x: -12 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
-                    transition={{ delay: 0.5 + index * 0.1, duration: 0.6 }}
-                    whileHover={{ x: 10, scale: 1.02 }}
+                    transition={{
+                      delay: 0.22 + index * 0.08,
+                      duration: 0.5,
+                      ease: [0.25, 0.1, 0.25, 1],
+                    }}
+                    whileHover={{ x: 6, scale: 1.01 }}
                     className="group flex items-center gap-6 p-6 bg-black/30 border border-red-500/20 rounded-xl backdrop-blur-sm transition-all duration-300 hover:border-red-500/50 hover:bg-black/50"
                     style={{
                       boxShadow: "0 4px 20px rgba(239, 68, 68, 0.1)",
@@ -151,7 +176,8 @@ export default function CTASection() {
                         size={32}
                         className="text-red-500"
                         style={{
-                          filter: "drop-shadow(0 0 10px rgba(239, 68, 68, 0.6))",
+                          filter:
+                            "drop-shadow(0 0 10px rgba(239, 68, 68, 0.6))",
                         }}
                       />
                     </div>
@@ -178,12 +204,19 @@ export default function CTASection() {
 
           {/* Réseaux sociaux */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 25 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ delay: 0.4, duration: 0.8 }}
+            transition={{
+              delay: 0.2,
+              duration: 0.6,
+              ease: [0.25, 0.1, 0.25, 1],
+            }}
           >
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 text-center lg:text-left" style={{ fontFamily: '"Great White Serif", serif' }}>
+            <h3
+              className="text-2xl md:text-3xl font-bold text-white mb-6 text-center lg:text-left"
+              style={{ fontFamily: '"Great White Serif", serif' }}
+            >
               {t("cta.social")}
             </h3>
             <div className="space-y-4">
@@ -195,11 +228,15 @@ export default function CTASection() {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    initial={{ opacity: 0, x: 20 }}
+                    initial={{ opacity: 0, x: 12 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
-                    transition={{ delay: 0.5 + index * 0.1, duration: 0.6 }}
-                    whileHover={{ x: -10, scale: 1.02 }}
+                    transition={{
+                      delay: 0.28 + index * 0.08,
+                      duration: 0.5,
+                      ease: [0.25, 0.1, 0.25, 1],
+                    }}
+                    whileHover={{ x: -6, scale: 1.01 }}
                     className="group flex items-center gap-6 p-6 bg-black/30 border border-red-500/20 rounded-xl backdrop-blur-sm transition-all duration-300 hover:border-red-500/50 hover:bg-black/50"
                     style={{
                       boxShadow: "0 4px 20px rgba(239, 68, 68, 0.1)",
@@ -210,7 +247,8 @@ export default function CTASection() {
                         size={32}
                         className="text-red-500"
                         style={{
-                          filter: "drop-shadow(0 0 10px rgba(239, 68, 68, 0.6))",
+                          filter:
+                            "drop-shadow(0 0 10px rgba(239, 68, 68, 0.6))",
                         }}
                       />
                     </div>
@@ -239,10 +277,14 @@ export default function CTASection() {
         {/* Bouton CTA principal centré */}
         <motion.div
           className="flex justify-center"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.8, duration: 0.6 }}
+          transition={{
+            delay: 0.35,
+            duration: 0.5,
+            ease: [0.25, 0.1, 0.25, 1],
+          }}
         >
           <Button
             href={`mailto:${contactEmail}`}
@@ -258,4 +300,3 @@ export default function CTASection() {
     </section>
   );
 }
-

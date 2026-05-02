@@ -77,7 +77,7 @@ export default function Home() {
       });
       setTimeout(() => {
         isScrollingRef.current = false;
-      }, 900);
+      }, 700);
     } else if (delta < 0 && currentIndex > 0) {
       e.preventDefault();
       isScrollingRef.current = true;
@@ -87,7 +87,7 @@ export default function Home() {
       });
       setTimeout(() => {
         isScrollingRef.current = false;
-      }, 900);
+      }, 700);
     }
   }, []);
 
