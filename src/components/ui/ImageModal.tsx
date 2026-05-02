@@ -21,6 +21,9 @@ const imageVariants = {
   }),
 };
 
+const FOCUSABLE_SELECTOR =
+  'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
 export default function ImageModal() {
   const {
     isOpen,
@@ -34,6 +37,8 @@ export default function ImageModal() {
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
   const directionRef = useRef(0);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   const handleNext = useCallback(() => {
     directionRef.current = 1;
@@ -69,13 +74,56 @@ export default function ImageModal() {
     };
   }, [isOpen, currentIndex, items]);
 
+  // Focus trap + restore focus on close
+  useEffect(() => {
+    if (isOpen) {
+      previousFocusRef.current = document.activeElement as HTMLElement;
+      requestAnimationFrame(() => {
+        const closeBtn = dialogRef.current?.querySelector<HTMLElement>(
+          'button[aria-label="Fermer"]',
+        );
+        closeBtn?.focus();
+      });
+    } else if (previousFocusRef.current) {
+      previousFocusRef.current.focus();
+      previousFocusRef.current = null;
+    }
+  }, [isOpen]);
+
   useEffect(() => {
     if (!isOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeModal();
-      else if (e.key === "ArrowRight") handleNext();
-      else if (e.key === "ArrowLeft") handlePrevious();
+      if (e.key === "Escape") {
+        closeModal();
+      } else if (e.key === "ArrowRight") {
+        handleNext();
+      } else if (e.key === "ArrowLeft") {
+        handlePrevious();
+      } else if (e.key === "Tab") {
+        const dialog = dialogRef.current;
+        if (!dialog) return;
+
+        const focusable = Array.from(
+          dialog.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
+        ).filter((el) => !el.hasAttribute("disabled"));
+
+        if (focusable.length === 0) {
+          e.preventDefault();
+          return;
+        }
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -107,11 +155,20 @@ export default function ImageModal() {
 
   const hasNext = currentIndex < items.length - 1;
   const hasPrevious = currentIndex > 0;
+  const hasInfo =
+    currentItem.description ||
+    currentItem.projectName ||
+    currentItem.artist ||
+    currentItem.date;
 
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
+          ref={dialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Visionneuse d'images"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -151,7 +208,6 @@ export default function ImageModal() {
               </button>
             )}
 
-            {/* Image with crossfade + slide transition */}
             <div
               className="relative w-full h-full flex items-center justify-center p-4 bg-black overflow-hidden"
               style={{ touchAction: "pan-x" }}
@@ -182,6 +238,7 @@ export default function ImageModal() {
                           currentItem.artist ||
                           "Image"
                     }
+                    aria-describedby={hasInfo ? "modal-image-info" : undefined}
                     width={1920}
                     height={1080}
                     sizes="100vw"
@@ -194,12 +251,9 @@ export default function ImageModal() {
               </AnimatePresence>
             </div>
 
-            {/* Image Info */}
-            {(currentItem.description ||
-              currentItem.projectName ||
-              currentItem.artist ||
-              currentItem.date) && (
+            {hasInfo && (
               <motion.div
+                id="modal-image-info"
                 key={`info-${currentItem.id}`}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
