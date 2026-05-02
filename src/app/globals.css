@@ -2,8 +2,11 @@
 
 @font-face {
   font-family: "Great White Serif";
-  src: url("/fonts/great-white-elegant-serif-classy-script-font-2025-07-01-15-33-59-utc-1/Great White Serif.woff") format("woff"),
-       url("/fonts/great-white-elegant-serif-classy-script-font-2025-07-01-15-33-59-utc-1/Great White Serif.ttf") format("truetype");
+  src:
+    url("/fonts/great-white-elegant-serif-classy-script-font-2025-07-01-15-33-59-utc-1/Great White Serif.woff")
+      format("woff"),
+    url("/fonts/great-white-elegant-serif-classy-script-font-2025-07-01-15-33-59-utc-1/Great White Serif.ttf")
+      format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -41,25 +44,14 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Scroll snap pour le diaporama */
-html {
-  scroll-snap-type: y mandatory;
-  overflow-y: scroll;
-}
-
-body {
-  scroll-snap-type: y mandatory;
-}
-
-/* Masquer la barre de scroll */
-::-webkit-scrollbar {
+/* Masquer la barre de scroll uniquement sur la home */
+.hide-scrollbar::-webkit-scrollbar {
   display: none;
   width: 0;
   height: 0;
 }
 
-/* Scrollbar Firefox - masquer */
-* {
+.hide-scrollbar {
   scrollbar-width: none;
 }
 

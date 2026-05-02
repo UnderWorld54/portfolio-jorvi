@@ -42,13 +42,7 @@ export default function PortfolioCard({
             sizes="(max-width: 768px) 100vw, 33vw"
             className="object-cover"
           />
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"
-            animate={{
-              opacity: [0.7, 0.5, 0.7],
-            }}
-            transition={{ duration: 3, repeat: Infinity }}
-          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-50" />
           <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-10">
             <motion.h3
               className="text-3xl md:text-4xl font-bold text-white mb-2"
@@ -79,7 +73,3 @@ export default function PortfolioCard({
     </motion.div>
   );
 }
-
-
-
-

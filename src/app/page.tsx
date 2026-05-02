@@ -3,26 +3,31 @@
 import { useEffect, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 
-// Lazy load des sections pour améliorer le First Contentful Paint
-const HeroSection = dynamic(() => import("@/components/home").then(mod => ({ default: mod.HeroSection })), {
-  loading: () => <div className="min-h-screen bg-black" />,
-  ssr: true, // Garder le SSR pour le SEO
-});
+const HeroSection = dynamic(
+  () =>
+    import("@/components/home").then((mod) => ({ default: mod.HeroSection })),
+  { loading: () => <div className="min-h-screen bg-black" />, ssr: true },
+);
 
-const AboutSection = dynamic(() => import("@/components/home").then(mod => ({ default: mod.AboutSection })), {
-  loading: () => <div className="min-h-screen bg-black" />,
-  ssr: true,
-});
+const AboutSection = dynamic(
+  () =>
+    import("@/components/home").then((mod) => ({ default: mod.AboutSection })),
+  { loading: () => <div className="min-h-screen bg-black" />, ssr: true },
+);
 
-const PortfolioSection = dynamic(() => import("@/components/home").then(mod => ({ default: mod.PortfolioSection })), {
-  loading: () => <div className="min-h-screen bg-black" />,
-  ssr: true,
-});
+const PortfolioSection = dynamic(
+  () =>
+    import("@/components/home").then((mod) => ({
+      default: mod.PortfolioSection,
+    })),
+  { loading: () => <div className="min-h-screen bg-black" />, ssr: true },
+);
 
-const CTASection = dynamic(() => import("@/components/home").then(mod => ({ default: mod.CTASection })), {
-  loading: () => <div className="min-h-screen bg-black" />,
-  ssr: true,
-});
+const CTASection = dynamic(
+  () =>
+    import("@/components/home").then((mod) => ({ default: mod.CTASection })),
+  { loading: () => <div className="min-h-screen bg-black" />, ssr: true },
+);
 
 export default function Home() {
   const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -34,7 +39,6 @@ export default function Home() {
     const sections = sectionsRef.current.filter(Boolean) as HTMLDivElement[];
     if (sections.length === 0) return;
 
-    // Trouver la section actuellement visible
     let currentIndex = 0;
     const viewportMiddle = window.innerHeight / 2;
 
@@ -46,73 +50,56 @@ export default function Home() {
     });
 
     const delta = e.deltaY;
+    const threshold = 5;
+    if (Math.abs(delta) < threshold) return;
 
     if (delta > 0 && currentIndex < sections.length - 1) {
-      // Scroll vers le bas - aller à la section suivante
       e.preventDefault();
       isScrollingRef.current = true;
-      sections[currentIndex + 1].scrollIntoView({ behavior: "smooth", block: "start" });
-      
+      sections[currentIndex + 1].scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
       setTimeout(() => {
         isScrollingRef.current = false;
-      }, 800);
+      }, 900);
     } else if (delta < 0 && currentIndex > 0) {
-      // Scroll vers le haut - aller à la section précédente
       e.preventDefault();
       isScrollingRef.current = true;
-      sections[currentIndex - 1].scrollIntoView({ behavior: "smooth", block: "start" });
-      
+      sections[currentIndex - 1].scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
       setTimeout(() => {
         isScrollingRef.current = false;
-      }, 800);
+      }, 900);
     }
   }, []);
 
   useEffect(() => {
+    document.documentElement.classList.add("hide-scrollbar");
     window.addEventListener("wheel", handleWheel, { passive: false });
-
     return () => {
+      document.documentElement.classList.remove("hide-scrollbar");
       window.removeEventListener("wheel", handleWheel);
     };
   }, [handleWheel]);
 
   return (
-    <div className="min-h-screen bg-black ">
-      <div
-        ref={(el) => {
-          if (el) sectionsRef.current[0] = el;
-        }}
-        className="snap-start snap-always min-h-screen "
-      >
-        <HeroSection />
-      </div>
-      
-      <div
-        ref={(el) => {
-          if (el) sectionsRef.current[1] = el;
-        }}
-        className="snap-start snap-always min-h-screen"
-      >
-        <AboutSection />
-      </div>
-
-      <div
-        ref={(el) => {
-          if (el) sectionsRef.current[2] = el;
-        }}
-        className="snap-start snap-always min-h-screen"
-      >
-        <PortfolioSection />
-      </div>
-
-      <div
-        ref={(el) => {
-          if (el) sectionsRef.current[3] = el;
-        }}
-        className="snap-start snap-always min-h-screen"
-      >
-        <CTASection />
-      </div>
+    <div className="min-h-screen bg-black">
+      {[HeroSection, AboutSection, PortfolioSection, CTASection].map(
+        (Section, i) => (
+          <div
+            key={i}
+            ref={(el) => {
+              if (el) sectionsRef.current[i] = el;
+            }}
+            className="min-h-screen"
+          >
+            <Section />
+          </div>
+        ),
+      )}
     </div>
   );
 }

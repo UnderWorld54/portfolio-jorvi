@@ -31,7 +31,7 @@ function ImageCard({
   items = [],
   imageClassName = "cover-image",
   showInfo = true,
-  imageAspectRatio
+  imageAspectRatio,
 }: ImageCardProps) {
   const { openModal } = useModal();
 
@@ -54,49 +54,67 @@ function ImageCard({
       }
     }
   };
-  const imageContent = useMemo(() => (
-    <div className={`relative w-full overflow-hidden shrink-0 ${imageAspectRatio || ''} bg-black flex items-center justify-center`}>
-      <Image
-        src={item.image}
-        alt={
-          item.description
-            ? `${item.projectName || item.artist || "Création"} - ${item.description}`
-            : item.projectName || item.artist || `Création de ${item.artist || "Jorvi Kapela"}`
-        }
-        width={800}
-        height={1200}
-        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        className={`${imageClassName} w-full ${imageAspectRatio ? 'h-full object-contain' : 'h-auto object-contain'} block transition-transform duration-500 group-hover:scale-105`}
-        loading={index < 4 ? "eager" : "lazy"}
-        priority={index < 4}
-        placeholder="blur"
-        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-        quality={85}
-        onError={(e) => {
-          const target = e.target as HTMLImageElement;
-          target.style.display = 'none';
-        }}
-      />
-      {item.youtubeUrl && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 transition-colors">
-          <div className="text-white/90 text-4xl font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-            ▶
+  const imageContent = useMemo(
+    () => (
+      <div
+        className={`relative w-full overflow-hidden shrink-0 ${imageAspectRatio || ""} bg-black flex items-center justify-center`}
+      >
+        <Image
+          src={item.image}
+          alt={
+            item.description
+              ? `${item.projectName || item.artist || "Création"} - ${item.description}`
+              : item.projectName ||
+                item.artist ||
+                `Création de ${item.artist || "Jorvi Kapela"}`
+          }
+          width={800}
+          height={1200}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className={`${imageClassName} w-full ${imageAspectRatio ? "h-full object-contain" : "h-auto object-contain"} block transition-transform duration-500 group-hover:scale-105`}
+          loading={index < 4 ? "eager" : "lazy"}
+          priority={index < 4}
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+          quality={85}
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.style.display = "none";
+          }}
+        />
+        {item.youtubeUrl && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 transition-colors">
+            <div className="text-white/90 text-4xl font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+              ▶
+            </div>
           </div>
-        </div>
-      )}
-    </div>
-  ), [item.image, item.youtubeUrl, item.projectName, item.id, imageClassName, imageAspectRatio, index]);
+        )}
+      </div>
+    ),
+    [
+      item.image,
+      item.youtubeUrl,
+      item.projectName,
+      item.id,
+      imageClassName,
+      imageAspectRatio,
+      index,
+    ],
+  );
 
-  const hasInfo = useMemo(() => 
-    showInfo && (item.description || item.artist || item.projectName || item.date),
-    [showInfo, item.description, item.artist, item.projectName, item.date]
+  const hasInfo = useMemo(
+    () =>
+      showInfo &&
+      (item.description || item.artist || item.projectName || item.date),
+    [showInfo, item.description, item.artist, item.projectName, item.date],
   );
 
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.05 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.4) }}
       className="group cursor-pointer h-full"
       aria-label={item.projectName || item.description || "Création"}
       onClick={handleClick}
@@ -139,9 +157,7 @@ function ImageCard({
                   </div>
                 )}
                 {item.date && (
-                  <div className="text-white/50 text-xs">
-                    {item.date}
-                  </div>
+                  <div className="text-white/50 text-xs">{item.date}</div>
                 )}
               </div>
             )}
@@ -153,4 +169,3 @@ function ImageCard({
 }
 
 export default memo(ImageCard);
-
