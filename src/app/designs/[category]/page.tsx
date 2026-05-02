@@ -53,12 +53,14 @@ export default async function CategoryPage({
     error = e instanceof Error ? e.message : `Failed to fetch ${category}`;
   }
 
+  const grid = category === "prints" ? "masonry" : "classic";
+
   return (
     <GalleryContent
       items={items}
       titleKey={config.titleKey}
       contentTypeKey={config.contentTypeKey}
-      grid="classic"
+      grid={grid}
       columns="3"
       imageClassName={`${category}-image`}
       backHref="/designs"

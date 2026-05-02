@@ -7,10 +7,10 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function CTASection() {
   const { t } = useLanguage();
-  const contactEmail = "Dezignby.j@gmail.com";
+  const contactEmail = "kapelajorvi@gmail.com";
   const linkedinUrl = "https://www.linkedin.com/in/jorvi-kapela-178823189/";
   const instagramUrl = "https://www.instagram.com/vyjor/";
-  const phoneNumber = "+33 6 XX XX XX XX"; // À remplacer par le vrai numéro
+  const phoneNumber = "+33 6 XX XX XX XX";
 
   const directContact = [
     {
@@ -20,13 +20,13 @@ export default function CTASection() {
       href: `mailto:${contactEmail}`,
       description: t("cta.email.desc"),
     },
-    {
-      icon: Phone,
-      label: "Téléphone",
-      value: phoneNumber,
-      href: `tel:${phoneNumber.replace(/\s/g, "")}`,
-      description: t("cta.phone.desc"),
-    },
+    // {
+    //   icon: Phone,
+    //   label: "Téléphone",
+    //   value: phoneNumber,
+    //   href: `tel:${phoneNumber.replace(/\s/g, "")}`,
+    //   description: t("cta.phone.desc"),
+    // },
   ];
 
   const socialLinks = [
