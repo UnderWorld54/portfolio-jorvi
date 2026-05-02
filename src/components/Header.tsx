@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, memo } from "react";
+import { useState, useEffect, useMemo, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Linkedin, Instagram, Mail } from "lucide-react";
 import Image from "next/image";
@@ -12,26 +12,51 @@ function Header() {
   const pathname = usePathname();
   const { language, setLanguage, t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  const navItemsMobile = useMemo(() => [
-    { label: t("nav.designs"), href: "/designs", key: "designs" },
-    { label: t("nav.covers"), href: "/covers", key: "covers" },
-    { label: t("nav.photos"), href: "/photos", key: "photos" },
-  ], [t]);
-  
-  const navItemsDesktop = useMemo(() => [
-    { label: t("nav.designs"), href: "/designs", key: "designs" },
-    { label: t("nav.covers"), href: "/covers", key: "covers" },
-    { label: t("nav.photos"), href: "/photos", key: "photos" },
-    { label: t("nav.contact"), href: "mailto:Dezignby.j@gmail.com", key: "contact" },
-  ], [t]);
-  
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const navItemsMobile = useMemo(
+    () => [
+      { label: t("nav.designs"), href: "/designs", key: "designs" },
+      { label: t("nav.covers"), href: "/covers", key: "covers" },
+      { label: t("nav.photos"), href: "/photos", key: "photos" },
+    ],
+    [t],
+  );
+
+  const navItemsDesktop = useMemo(
+    () => [
+      { label: t("nav.designs"), href: "/designs", key: "designs" },
+      { label: t("nav.covers"), href: "/covers", key: "covers" },
+      { label: t("nav.photos"), href: "/photos", key: "photos" },
+      {
+        label: t("nav.contact"),
+        href: "mailto:Dezignby.j@gmail.com",
+        key: "contact",
+      },
+    ],
+    [t],
+  );
+
   const contactEmail = "Dezignby.j@gmail.com";
 
   // Calculer activeNav directement depuis le pathname
-  const activeNav = useMemo(() => 
-    pathname === "/designs" ? t("nav.designs") : pathname === "/covers" ? t("nav.covers") : pathname === "/photos" ? t("nav.photos") : "",
-    [pathname, t]
+  const activeNav = useMemo(
+    () =>
+      pathname === "/designs"
+        ? t("nav.designs")
+        : pathname === "/covers"
+          ? t("nav.covers")
+          : pathname === "/photos"
+            ? t("nav.photos")
+            : "",
+    [pathname, t],
   );
 
   const handleNavClick = () => {
@@ -40,7 +65,14 @@ function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-black" role="banner">
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          scrolled
+            ? "bg-black/70 backdrop-blur-md shadow-lg shadow-black/20"
+            : "bg-transparent"
+        }`}
+        role="banner"
+      >
         {/* Mobile Header */}
         <div className="md:hidden flex items-center justify-between px-4 py-4 relative w-full">
           {/* Language Switcher - Top Left */}
@@ -165,7 +197,10 @@ function Header() {
             </div>
 
             {/* Socials */}
-            <div className="flex items-center gap-3 md:gap-4 text-base md:text-lg" style={{ lineHeight: "1" }}>
+            <div
+              className="flex items-center gap-3 md:gap-4 text-base md:text-lg"
+              style={{ lineHeight: "1" }}
+            >
               <motion.a
                 href="https://www.linkedin.com/in/jorvi-kapela-178823189/"
                 target="_blank"
@@ -205,16 +240,26 @@ function Header() {
                   width={32}
                   height={32}
                   className="w-8 h-8"
-                  style={{ filter: "brightness(0) invert(1)", display: "block" }}
+                  style={{
+                    filter: "brightness(0) invert(1)",
+                    display: "block",
+                  }}
                 />
               </Link>
             </motion.div>
           </div>
 
           {/* Right side - Desktop Nav */}
-          <nav className="flex items-center gap-4 md:gap-8 flex-1 justify-end min-w-0 z-10" role="navigation" aria-label="Navigation principale">
+          <nav
+            className="flex items-center gap-4 md:gap-8 flex-1 justify-end min-w-0 z-10"
+            role="navigation"
+            aria-label="Navigation principale"
+          >
             {navItemsDesktop.map(({ label, href }) => (
-              <motion.div key={label} className="relative flex items-center justify-center">
+              <motion.div
+                key={label}
+                className="relative flex items-center justify-center"
+              >
                 {href.startsWith("mailto:") ? (
                   <a
                     href={href}
@@ -291,7 +336,11 @@ function Header() {
           >
             <div className="flex flex-col h-full items-center justify-center relative">
               {/* Navigation Links - Centered */}
-              <nav className="flex flex-col items-center gap-8" role="navigation" aria-label="Menu mobile">
+              <nav
+                className="flex flex-col items-center gap-8"
+                role="navigation"
+                aria-label="Menu mobile"
+              >
                 {navItemsMobile.map(({ label, href }, index) => (
                   <motion.div
                     key={label}

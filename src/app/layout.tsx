@@ -2,14 +2,15 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import CursorProvider from "@/components/CursorProvider";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ModalProvider } from "@/contexts/ModalContext";
 import ImageModal from "@/components/ui/ImageModal";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import StrapiWarmup from "@/components/StrapiWarmup";
-import { Analytics } from "@vercel/analytics/next"
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,7 +26,8 @@ const geistMono = Geist_Mono({
   preload: false, // Moins prioritaire
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://portfolio-jorvi.vercel.app";
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://portfolio-jorvi.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -33,7 +35,8 @@ export const metadata: Metadata = {
     default: "Jorvi Kapela - Créateur Visuel | Designer | Artiste",
     template: "%s | Jorvi Kapela",
   },
-  description: "Portfolio de Jorvi Kapela, créateur visuel spécialisé en design graphique, photographie et direction artistique. Découvrez mes créations : logos, covers, photos et vidéos.",
+  description:
+    "Portfolio de Jorvi Kapela, créateur visuel spécialisé en design graphique, photographie et direction artistique. Découvrez mes créations : logos, covers, photos et vidéos.",
   keywords: [
     "Jorvi Kapela",
     "designer",
@@ -69,7 +72,8 @@ export const metadata: Metadata = {
     url: siteUrl,
     siteName: "Jorvi Kapela Portfolio",
     title: "Jorvi Kapela - Créateur Visuel | Designer | Artiste",
-    description: "Portfolio de Jorvi Kapela, créateur visuel spécialisé en design graphique, photographie et direction artistique. Découvrez mes créations : logos, covers, photos et vidéos.",
+    description:
+      "Portfolio de Jorvi Kapela, créateur visuel spécialisé en design graphique, photographie et direction artistique. Découvrez mes créations : logos, covers, photos et vidéos.",
     images: [
       {
         url: `${siteUrl}/og-image.jpg`,
@@ -82,7 +86,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Jorvi Kapela - Créateur Visuel | Designer | Artiste",
-    description: "Portfolio de Jorvi Kapela, créateur visuel spécialisé en design graphique, photographie et direction artistique.",
+    description:
+      "Portfolio de Jorvi Kapela, créateur visuel spécialisé en design graphique, photographie et direction artistique.",
     images: [`${siteUrl}/og-image.jpg`],
     creator: "@vyjor",
   },
@@ -103,9 +108,7 @@ export const metadata: Metadata = {
       { url: "/logo/star.svg", type: "image/svg+xml" },
       { url: "/logo/star.svg", type: "image/svg+xml", sizes: "any" },
     ],
-    apple: [
-      { url: "/logo/star.svg", type: "image/svg+xml" },
-    ],
+    apple: [{ url: "/logo/star.svg", type: "image/svg+xml" }],
     shortcut: "/logo/star.svg",
   },
 };
@@ -120,7 +123,8 @@ export default function RootLayout({
     "@type": "Person",
     name: "Jorvi Kapela",
     jobTitle: "Créateur Visuel",
-    description: "Créateur visuel spécialisé en design graphique, photographie et direction artistique",
+    description:
+      "Créateur visuel spécialisé en design graphique, photographie et direction artistique",
     url: siteUrl,
     sameAs: [
       "https://www.linkedin.com/in/jorvi-kapela-178823189/",
@@ -140,7 +144,11 @@ export default function RootLayout({
     <html lang="fr" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -164,6 +172,7 @@ export default function RootLayout({
               <CursorProvider />
               <Header />
               <main id="main-content">{children}</main>
+              <Footer />
               <Analytics />
               <ImageModal />
               <SpeedInsights />
