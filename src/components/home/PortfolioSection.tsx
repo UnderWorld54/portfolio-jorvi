@@ -6,24 +6,24 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function PortfolioSection() {
   const { t } = useLanguage();
-  
+
   const portfolioItems = [
     {
       title: t("portfolio.designs"),
       description: t("portfolio.designs.desc"),
-      image: "/images/logos.jpg",
+      image: "/images/DESIGNS.svg",
       href: "/designs",
     },
     {
       title: t("portfolio.covers"),
       description: t("portfolio.covers.desc"),
-      image: "/images/cover1.jpg",
+      image: "/images/COVERS.svg",
       href: "/covers",
     },
     {
       title: t("portfolio.photos"),
       description: t("portfolio.photos.desc"),
-      image: "/images/photos.jpg",
+      image: "/images/PHOTOS.svg",
       href: "/photos",
     },
   ];

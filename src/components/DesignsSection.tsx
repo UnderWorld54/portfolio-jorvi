@@ -282,13 +282,13 @@ export default function DesignsSection({
       description: t("designs.prints.desc"),
       count: categoryCounts.prints,
     },
-    {
-      title: t("designs.videos"),
-      slug: "videos",
-      image: "/images/VIDEOS.png",
-      description: t("designs.videos.desc"),
-      count: categoryCounts.videos,
-    },
+    // {
+    //   title: t("designs.videos"),
+    //   slug: "videos",
+    //   image: "/images/VIDEOS.png",
+    //   description: t("designs.videos.desc"),
+    //   count: categoryCounts.videos,
+    // },
   ];
 
   return (

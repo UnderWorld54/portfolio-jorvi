@@ -27,6 +27,13 @@ export default function CTASection() {
     //   href: `tel:${phoneNumber.replace(/\s/g, "")}`,
     //   description: t("cta.phone.desc"),
     // },
+    {
+      icon: Instagram,
+      label: t("cta.instagram"),
+      value: "@vyjor",
+      href: instagramUrl,
+      description: t("cta.instagram.desc"),
+    },
   ];
 
   const socialLinks = [
@@ -36,13 +43,6 @@ export default function CTASection() {
       value: "Jorvi Kapela",
       href: linkedinUrl,
       description: t("cta.linkedin.desc"),
-    },
-    {
-      icon: Instagram,
-      label: t("cta.instagram"),
-      value: "@vyjor",
-      href: instagramUrl,
-      description: t("cta.instagram.desc"),
     },
   ];
 

@@ -44,7 +44,7 @@ export default function PortfolioCard({
             alt={title}
             fill
             sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover"
+            className="object-contain p-8"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-50" />
           <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-10">
