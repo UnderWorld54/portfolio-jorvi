@@ -7,7 +7,6 @@ import PageContainer from "@/components/ui/PageContainer";
 import PageTitle from "@/components/ui/PageTitle";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const ease: "easeOut" = [0.25, 0.1, 0.25, 1];
 
 const methods = [
   {
