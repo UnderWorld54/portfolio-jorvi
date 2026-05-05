@@ -7,7 +7,7 @@ import PageContainer from "@/components/ui/PageContainer";
 import PageTitle from "@/components/ui/PageTitle";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const ease = [0.25, 0.1, 0.25, 1];
+const ease: "easeOut" = [0.25, 0.1, 0.25, 1];
 
 const methods = [
   {
@@ -40,7 +40,7 @@ export default function AboutPage() {
           className="text-center text-xl md:text-2xl text-white/50 -mt-4 mb-16 md:mb-24 tracking-wide"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3, ease }}
+          transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
         >
           {t("about.page.subtitle")}
         </motion.p>
@@ -51,7 +51,7 @@ export default function AboutPage() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7, ease }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
         >
           {t("about.page.intro")}
         </motion.p>
@@ -62,7 +62,7 @@ export default function AboutPage() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <div className="flex-1 h-px bg-gradient-to-r from-transparent via-red-500/40 to-transparent" />
         </motion.div>
@@ -73,7 +73,7 @@ export default function AboutPage() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7, ease }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
         >
           <h2
             className="text-3xl md:text-4xl font-bold text-white mb-6"
@@ -92,7 +92,7 @@ export default function AboutPage() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7, ease }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
         >
           <h2
             className="text-3xl md:text-4xl font-bold text-white mb-10"
@@ -109,7 +109,7 @@ export default function AboutPage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.5, delay: i * 0.1, ease }}
+                transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
                 whileHover={{
                   boxShadow: "0 0 30px rgba(239, 68, 68, 0.08)",
                 }}
@@ -137,7 +137,7 @@ export default function AboutPage() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7, ease }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
         >
           <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 via-transparent to-red-500/5 pointer-events-none" />
           <div className="relative border border-red-500/20 rounded-2xl p-8 md:p-12">
@@ -159,7 +159,7 @@ export default function AboutPage() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.6, ease }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <Button href="/CV.pdf" variant="primary" size="md" download>
             {t("cta.cv")}
