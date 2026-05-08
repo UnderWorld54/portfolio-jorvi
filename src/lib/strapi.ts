@@ -29,13 +29,15 @@ export interface StrapiVideo extends StrapiSingleImageItem {
   youtubeUrl?: string;
 }
 
-export interface StrapiCover extends StrapiBaseItem {
+export interface StrapiMultiImageItem extends StrapiBaseItem {
   images?: StrapiImage[] | null;
+  image?: StrapiImage | null;
 }
 
+export type StrapiCover = StrapiMultiImageItem;
 export type StrapiPhoto = StrapiSingleImageItem;
-export type StrapiLogo = StrapiSingleImageItem;
-export type StrapiPrint = StrapiSingleImageItem;
+export type StrapiLogo = StrapiMultiImageItem;
+export type StrapiPrint = StrapiMultiImageItem;
 
 export interface StrapiResponse<T> {
   data: T;
@@ -95,10 +97,11 @@ async function fetchCollection<T>(
 // --- Typed collection fetchers ---
 
 export const getPhotos = () => fetchCollection<StrapiSingleImageItem>("photos");
-export const getLogos = () => fetchCollection<StrapiSingleImageItem>("logos");
-export const getPrints = () => fetchCollection<StrapiSingleImageItem>("prints");
+export const getLogos = () => fetchCollection<StrapiMultiImageItem>("logos");
+export const getPrints = () => fetchCollection<StrapiMultiImageItem>("prints");
 export const getVideos = () => fetchCollection<StrapiVideo>("videos");
-export const getCovers = () => fetchCollection<StrapiCover>("covers", "images");
+export const getCovers = () =>
+  fetchCollection<StrapiMultiImageItem>("covers", "images");
 
 // --- Transform helpers ---
 
@@ -145,8 +148,23 @@ export function transformStrapiItem(
 }
 
 export const transformStrapiPhoto = transformStrapiItem;
-export const transformStrapiLogo = transformStrapiItem;
-export const transformStrapiPrint = transformStrapiItem;
+
+function transformMultiImageItem(
+  item: StrapiMultiImageItem,
+): TransformedCover | null {
+  if (item.images && item.images.length > 0) {
+    const images = item.images.map((img) => buildFullUrl(img.url));
+    return { ...transformBaseFields(item), image: images[0], images };
+  }
+  if (item.image?.url) {
+    const url = buildFullUrl(item.image.url);
+    return { ...transformBaseFields(item), image: url, images: [url] };
+  }
+  return null;
+}
+
+export const transformStrapiLogo = transformMultiImageItem;
+export const transformStrapiPrint = transformMultiImageItem;
 
 export function transformStrapiVideo(
   video: StrapiVideo,
@@ -176,19 +194,7 @@ export function transformStrapiVideo(
   };
 }
 
-export function transformStrapiCover(
-  cover: StrapiCover,
-): TransformedCover | null {
-  if (!cover.images || cover.images.length === 0) return null;
-
-  const images = cover.images.map((img) => buildFullUrl(img.url));
-
-  return {
-    ...transformBaseFields(cover),
-    image: images[0],
-    images,
-  };
-}
+export const transformStrapiCover = transformMultiImageItem;
 
 // --- Convenience: fetch + transform ---
 
@@ -201,14 +207,14 @@ export async function getTransformedPhotos(): Promise<TransformedItem[]> {
   return filterNull(items.map(transformStrapiItem));
 }
 
-export async function getTransformedLogos(): Promise<TransformedItem[]> {
+export async function getTransformedLogos(): Promise<TransformedCover[]> {
   const items = await getLogos();
-  return filterNull(items.map(transformStrapiItem));
+  return filterNull(items.map(transformMultiImageItem));
 }
 
-export async function getTransformedPrints(): Promise<TransformedItem[]> {
+export async function getTransformedPrints(): Promise<TransformedCover[]> {
   const items = await getPrints();
-  return filterNull(items.map(transformStrapiItem));
+  return filterNull(items.map(transformMultiImageItem));
 }
 
 export async function getTransformedVideos(): Promise<TransformedVideo[]> {
@@ -218,5 +224,5 @@ export async function getTransformedVideos(): Promise<TransformedVideo[]> {
 
 export async function getTransformedCovers(): Promise<TransformedCover[]> {
   const items = await getCovers();
-  return filterNull(items.map(transformStrapiCover));
+  return filterNull(items.map(transformMultiImageItem));
 }
