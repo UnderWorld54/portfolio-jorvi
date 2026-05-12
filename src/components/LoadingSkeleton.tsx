@@ -1,26 +1,24 @@
-import Image from "next/image";
-
 export default function LoadingSkeleton() {
   return (
-    <div className="fixed inset-0 z-[100] bg-black flex items-center justify-center">
-      <div className="relative">
-        <Image
-          src="/logo/star.svg"
-          alt="Chargement"
-          width={64}
-          height={64}
-          className="w-16 h-16 animate-pulse"
-          priority
-          unoptimized
-          style={{ filter: "brightness(0) invert(1)" }}
-        />
-        <div
-          className="absolute inset-0 -z-10 animate-pulse"
-          style={{
-            background:
-              "radial-gradient(circle, rgba(239, 68, 68, 0.4) 0%, transparent 70%)",
-          }}
-        />
+    <div className="min-h-screen bg-black px-6 pt-32 pb-16">
+      {/* Title skeleton */}
+      <div className="max-w-7xl mx-auto mb-12">
+        <div className="h-10 w-48 bg-white/5 rounded-lg animate-pulse" />
+      </div>
+
+      {/* Grid skeleton */}
+      <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div
+            key={i}
+            className="relative bg-white/5 rounded-lg overflow-hidden animate-pulse"
+            style={{ aspectRatio: i % 3 === 0 ? "3/4" : "4/3" }}
+          >
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="h-full w-full bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer" />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
