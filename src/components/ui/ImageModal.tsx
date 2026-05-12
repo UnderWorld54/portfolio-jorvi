@@ -191,20 +191,20 @@ export default function ImageModal() {
             {hasPrevious && (
               <button
                 onClick={handlePrevious}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-4 rounded-full bg-white/15 border border-white/30 hover:bg-red-500 hover:border-red-500 text-white transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 backdrop-blur-sm"
                 aria-label="Image précédente"
               >
-                <ChevronLeft size={24} />
+                <ChevronLeft size={32} />
               </button>
             )}
 
             {hasNext && (
               <button
                 onClick={handleNext}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-4 rounded-full bg-white/15 border border-white/30 hover:bg-red-500 hover:border-red-500 text-white transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 backdrop-blur-sm"
                 aria-label="Image suivante"
               >
-                <ChevronRight size={24} />
+                <ChevronRight size={32} />
               </button>
             )}
 

@@ -33,70 +33,56 @@ export default function Button({
   download = false,
 }: ButtonProps) {
   const baseStyles =
-    "inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-300 relative overflow-hidden group";
-  
+    "inline-flex items-center justify-center gap-2 rounded-full transition-all duration-300 relative overflow-hidden group uppercase tracking-wider";
+
   const sizeStyles = {
-    sm: "px-4 py-2 text-base",
-    md: "px-6 py-3 text-lg",
-    lg: "px-8 py-4 text-xl",
+    sm: "px-5 py-2.5 text-sm",
+    md: "px-7 py-3.5 text-base",
+    lg: "px-9 py-4.5 text-lg",
   };
 
   const variantStyles = {
-    primary: "bg-red-500 text-white hover:bg-red-600",
+    primary:
+      "bg-white/10 backdrop-blur-lg border border-white/20 text-white hover:bg-red-500 hover:border-red-500",
     outline:
-      "bg-transparent border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white",
-    ghost: "bg-transparent text-red-500 hover:bg-red-500/10",
+      "bg-white/5 backdrop-blur-lg border border-white/15 text-white/80 hover:bg-red-500 hover:border-red-500 hover:text-white",
+    ghost: "bg-transparent text-white/70 hover:bg-white/10 hover:text-white",
   };
 
   const glowStyles = {
-    primary: "shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]",
-    outline: "hover:shadow-[0_0_20px_rgba(239,68,68,0.4)]",
+    primary: "hover:shadow-[0_0_25px_rgba(239,68,68,0.4)]",
+    outline: "hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]",
     ghost: "",
   };
 
   const buttonContent = (
     <>
-      {/* Effet de brillance au hover */}
       <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full"
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full"
         transition={{ duration: 0.6, ease: "easeInOut" }}
       />
 
-      {/* Contenu */}
-      <span className="relative z-10 flex items-center gap-2" style={{ fontFamily: '"Great White Serif", serif' }}>
+      <span className="relative z-10 flex items-center gap-2.5 font-bold">
         {Icon && iconPosition === "left" && (
-          <motion.div
-            animate={{ x: [0, -3, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <Icon size={size === "sm" ? 16 : size === "md" ? 20 : 24} />
-          </motion.div>
+          <Icon
+            size={size === "sm" ? 14 : size === "md" ? 18 : 22}
+            strokeWidth={2.5}
+          />
         )}
         <span>{children}</span>
         {Icon && iconPosition === "right" && (
-          <motion.div
-            animate={{ x: [0, 3, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          <motion.span
+            className="inline-flex"
+            whileHover={{ x: 3 }}
+            transition={{ duration: 0.2 }}
           >
-            <Icon size={size === "sm" ? 16 : size === "md" ? 20 : 24} />
-          </motion.div>
+            <Icon
+              size={size === "sm" ? 14 : size === "md" ? 18 : 22}
+              strokeWidth={2.5}
+            />
+          </motion.span>
         )}
       </span>
-
-      {/* Effet de glow animé pour primary */}
-      {variant === "primary" && (
-        <motion.div
-          className="absolute inset-0 rounded-lg"
-          animate={{
-            boxShadow: [
-              "0 0 20px rgba(239, 68, 68, 0.3)",
-              "0 0 30px rgba(239, 68, 68, 0.5)",
-              "0 0 20px rgba(239, 68, 68, 0.3)",
-            ],
-          }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-        />
-      )}
     </>
   );
 
@@ -105,7 +91,13 @@ export default function Button({
   }`;
 
   // Vérifier si c'est un lien externe (mailto, http, https) ou si c'est un téléchargement
-  const isExternalLink = href && (href.startsWith("mailto:") || href.startsWith("http://") || href.startsWith("https://") || href.startsWith("#") || download);
+  const isExternalLink =
+    href &&
+    (href.startsWith("mailto:") ||
+      href.startsWith("http://") ||
+      href.startsWith("https://") ||
+      href.startsWith("#") ||
+      download);
 
   if (href) {
     const motionWrapper = (
@@ -115,19 +107,19 @@ export default function Button({
         className="inline-block"
       >
         {isExternalLink ? (
-          <a 
-            href={href} 
+          <a
+            href={href}
             className={`${buttonClasses} focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black`}
-            aria-label={typeof children === 'string' ? children : undefined}
+            aria-label={typeof children === "string" ? children : undefined}
             {...(download && { download: true })}
           >
             {buttonContent}
           </a>
         ) : (
-          <Link 
-            href={href} 
+          <Link
+            href={href}
             className={`${buttonClasses} focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black`}
-            aria-label={typeof children === 'string' ? children : undefined}
+            aria-label={typeof children === "string" ? children : undefined}
           >
             {buttonContent}
           </Link>
@@ -152,4 +144,3 @@ export default function Button({
     </motion.button>
   );
 }
-
