@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(npm run build:*)",
-      "Bash(grep -E '\\\\.\\(jpg|jpeg|png|webp\\)$')"
+      "Bash(grep -E '\\\\.\\(jpg|jpeg|png|webp\\)$')",
+      "Bash(xargs ls -la)"
     ]
   }
 }

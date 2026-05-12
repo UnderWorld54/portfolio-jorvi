@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useModal } from "@/contexts/ModalContext";
 
@@ -34,6 +34,7 @@ export default function ImageModal() {
     goToNext,
     goToPrevious,
   } = useModal();
+  const [showSwipeHint, setShowSwipeHint] = useState(true);
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
   const directionRef = useRef(0);
@@ -143,6 +144,7 @@ export default function ImageModal() {
     const minSwipeDistance = 50;
 
     if (Math.abs(deltaX) > deltaY && Math.abs(deltaX) > minSwipeDistance) {
+      if (showSwipeHint) setShowSwipeHint(false);
       if (deltaX > 0) handlePrevious();
       else handleNext();
     }
@@ -191,20 +193,20 @@ export default function ImageModal() {
             {hasPrevious && (
               <button
                 onClick={handlePrevious}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-4 rounded-full bg-white/15 border border-white/30 hover:bg-red-500 hover:border-red-500 text-white transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 backdrop-blur-sm"
+                className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-10 p-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 hover:border-white/40 text-white items-center justify-center transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                 aria-label="Image précédente"
               >
-                <ChevronLeft size={32} />
+                <ChevronLeft size={28} strokeWidth={2.5} />
               </button>
             )}
 
             {hasNext && (
               <button
                 onClick={handleNext}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-4 rounded-full bg-white/15 border border-white/30 hover:bg-red-500 hover:border-red-500 text-white transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 backdrop-blur-sm"
+                className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-10 p-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 hover:border-white/40 text-white items-center justify-center transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                 aria-label="Image suivante"
               >
-                <ChevronRight size={32} />
+                <ChevronRight size={28} strokeWidth={2.5} />
               </button>
             )}
 
@@ -250,6 +252,43 @@ export default function ImageModal() {
                 </motion.div>
               </AnimatePresence>
             </div>
+
+            {/* Swipe hint mobile */}
+            <AnimatePresence>
+              {showSwipeHint && items.length > 1 && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ delay: 0.5, duration: 0.3 }}
+                  className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 md:hidden flex items-center gap-3 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/15"
+                >
+                  <motion.div
+                    animate={{ x: [0, -6, 0, 6, 0] }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  >
+                    <ChevronLeft size={16} className="text-white/70" />
+                  </motion.div>
+                  <span className="text-white/60 text-xs tracking-wide">
+                    Swipe
+                  </span>
+                  <motion.div
+                    animate={{ x: [0, 6, 0, -6, 0] }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  >
+                    <ChevronRight size={16} className="text-white/70" />
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {hasInfo && (
               <motion.div

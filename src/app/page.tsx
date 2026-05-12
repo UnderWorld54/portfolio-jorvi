@@ -92,8 +92,16 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     document.documentElement.classList.add("hide-scrollbar");
-    window.addEventListener("wheel", handleWheel, { passive: false });
+
+    if (!prefersReducedMotion) {
+      window.addEventListener("wheel", handleWheel, { passive: false });
+    }
+
     return () => {
       document.documentElement.classList.remove("hide-scrollbar");
       window.removeEventListener("wheel", handleWheel);

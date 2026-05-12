@@ -1,0 +1,16 @@
+{
+  "name": "Jorvi Kapela - Portfolio",
+  "short_name": "Jorvi Kapela",
+  "description": "Portfolio de Jorvi Kapela, créateur visuel spécialisé en design graphique, photographie et direction artistique.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#ef4444",
+  "icons": [
+    {
+      "src": "/logo/star.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

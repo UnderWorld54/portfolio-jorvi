@@ -76,10 +76,10 @@ export const metadata: Metadata = {
       "Portfolio de Jorvi Kapela, créateur visuel spécialisé en design graphique, photographie et direction artistique. Découvrez mes créations : logos, covers, photos et vidéos.",
     images: [
       {
-        url: `${siteUrl}/og-image.jpg`,
+        url: `${siteUrl}/opengraph-image`,
         width: 1200,
         height: 630,
-        alt: "Jorvi Kapela - Portfolio",
+        alt: "Jorvi Kapela - Créateur Visuel",
       },
     ],
   },
@@ -88,7 +88,7 @@ export const metadata: Metadata = {
     title: "Jorvi Kapela - Créateur Visuel | Designer | Artiste",
     description:
       "Portfolio de Jorvi Kapela, créateur visuel spécialisé en design graphique, photographie et direction artistique.",
-    images: [`${siteUrl}/og-image.jpg`],
+    images: [`${siteUrl}/opengraph-image`],
     creator: "@vyjor",
   },
   alternates: {
@@ -111,6 +111,7 @@ export const metadata: Metadata = {
     apple: [{ url: "/logo/star.svg", type: "image/svg+xml" }],
     shortcut: "/logo/star.svg",
   },
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({

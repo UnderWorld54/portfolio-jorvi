@@ -19,6 +19,7 @@ export default function CustomCursor() {
   const [isTouchDevice, setIsTouchDevice] = useState(true);
 
   const lastHoverCheck = useRef<Element | null>(null);
+  const rafId = useRef<number | null>(null);
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -29,16 +30,22 @@ export default function CustomCursor() {
 
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
+      if (rafId.current) return;
 
-      if (!isVisible) setIsVisible(true);
+      rafId.current = requestAnimationFrame(() => {
+        cursorX.set(e.clientX);
+        cursorY.set(e.clientY);
 
-      const target = e.target as Element;
-      if (target === lastHoverCheck.current) return;
-      lastHoverCheck.current = target;
+        if (!isVisible) setIsVisible(true);
 
-      setIsHovering(!!target.closest(INTERACTIVE_SELECTOR));
+        const target = e.target as Element;
+        if (target !== lastHoverCheck.current) {
+          lastHoverCheck.current = target;
+          setIsHovering(!!target.closest(INTERACTIVE_SELECTOR));
+        }
+
+        rafId.current = null;
+      });
     },
     [cursorX, cursorY, isVisible],
   );
@@ -66,6 +73,7 @@ export default function CustomCursor() {
       window.removeEventListener("mouseleave", handleMouseLeave);
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mouseup", handleMouseUp);
+      if (rafId.current) cancelAnimationFrame(rafId.current);
     };
   }, [
     handleMouseMove,
