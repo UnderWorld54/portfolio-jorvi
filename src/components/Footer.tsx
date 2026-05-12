@@ -62,14 +62,14 @@ export default function Footer() {
 
           {/* Nav */}
           <nav
-            className="flex items-center gap-6"
+            className="flex items-center gap-5 sm:gap-6"
             aria-label="Navigation du pied de page"
           >
             {navLinks.map(({ label, href }) => (
               <Link
                 key={href}
                 href={href}
-                className="text-white/50 hover:text-red-500 text-sm transition-colors"
+                className="text-white/50 hover:text-red-500 text-sm py-2 transition-colors"
                 style={{ fontFamily: '"Great White Serif", serif' }}
               >
                 {label}
@@ -78,7 +78,7 @@ export default function Footer() {
           </nav>
 
           {/* Socials */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-5 sm:gap-4">
             {socials.map(({ icon: Icon, href, label }) => (
               <a
                 key={label}
@@ -87,10 +87,10 @@ export default function Footer() {
                 rel={
                   href.startsWith("http") ? "noopener noreferrer" : undefined
                 }
-                className="text-white/40 hover:text-red-500 transition-colors"
+                className="text-white/40 hover:text-red-500 transition-colors p-2"
                 aria-label={label}
               >
-                <Icon size={18} />
+                <Icon size={20} />
               </a>
             ))}
           </div>
@@ -99,8 +99,7 @@ export default function Footer() {
         {/* Copyright */}
         <div className="mt-8 pt-6 border-t border-white/5 text-center">
           <p className="text-white/30 text-xs">
-            © {new Date().getFullYear()} Jorvi Kapela.{" "}
-            {"Tous droits réservés."}
+            © {new Date().getFullYear()} Jorvi Kapela. {"Tous droits réservés."}
           </p>
         </div>
       </div>

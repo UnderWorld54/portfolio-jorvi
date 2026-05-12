@@ -166,14 +166,14 @@ export default function CTASection() {
                       ease: [0.25, 0.1, 0.25, 1],
                     }}
                     whileHover={{ x: 6, scale: 1.01 }}
-                    className="group flex items-center gap-6 p-6 bg-black/30 border border-red-500/20 rounded-xl backdrop-blur-sm transition-all duration-300 hover:border-red-500/50 hover:bg-black/50"
+                    className="group flex items-center gap-4 sm:gap-6 p-4 sm:p-6 bg-black/30 border border-red-500/20 rounded-xl backdrop-blur-sm transition-all duration-300 hover:border-red-500/50 hover:bg-black/50"
                     style={{
                       boxShadow: "0 4px 20px rgba(239, 68, 68, 0.1)",
                     }}
                   >
-                    <div className="shrink-0 p-4 rounded-xl bg-red-500/10 group-hover:bg-red-500/20 transition-colors">
+                    <div className="shrink-0 p-3 sm:p-4 rounded-xl bg-red-500/10 group-hover:bg-red-500/20 transition-colors">
                       <Icon
-                        size={32}
+                        size={24}
                         className="text-red-500"
                         style={{
                           filter:
@@ -237,14 +237,14 @@ export default function CTASection() {
                       ease: [0.25, 0.1, 0.25, 1],
                     }}
                     whileHover={{ x: -6, scale: 1.01 }}
-                    className="group flex items-center gap-6 p-6 bg-black/30 border border-red-500/20 rounded-xl backdrop-blur-sm transition-all duration-300 hover:border-red-500/50 hover:bg-black/50"
+                    className="group flex items-center gap-4 sm:gap-6 p-4 sm:p-6 bg-black/30 border border-red-500/20 rounded-xl backdrop-blur-sm transition-all duration-300 hover:border-red-500/50 hover:bg-black/50"
                     style={{
                       boxShadow: "0 4px 20px rgba(239, 68, 68, 0.1)",
                     }}
                   >
-                    <div className="shrink-0 p-4 rounded-xl bg-red-500/10 group-hover:bg-red-500/20 transition-colors">
+                    <div className="shrink-0 p-3 sm:p-4 rounded-xl bg-red-500/10 group-hover:bg-red-500/20 transition-colors">
                       <Icon
-                        size={32}
+                        size={24}
                         className="text-red-500"
                         style={{
                           filter:

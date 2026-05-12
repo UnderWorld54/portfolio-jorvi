@@ -175,7 +175,7 @@ export default function ImageModal() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-2 sm:p-4"
           onClick={closeModal}
         >
           <div
@@ -184,10 +184,10 @@ export default function ImageModal() {
           >
             <button
               onClick={closeModal}
-              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+              className="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 p-2.5 sm:p-2 rounded-full bg-black/60 hover:bg-black/80 text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
               aria-label="Fermer"
             >
-              <X size={24} />
+              <X size={22} className="sm:w-6 sm:h-6" />
             </button>
 
             {hasPrevious && (
@@ -297,7 +297,7 @@ export default function ImageModal() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.25, delay: 0.1 }}
-                className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-sm rounded-lg p-4 max-w-2xl w-full mx-4"
+                className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-sm rounded-lg p-3 sm:p-4 max-w-2xl w-[calc(100%-1rem)] sm:w-full sm:mx-4"
               >
                 {currentItem.description && (
                   <p className="text-white/90 text-sm md:text-base mb-2 text-center">

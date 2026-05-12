@@ -30,7 +30,7 @@ export default function PortfolioCard({
         delay: delay * 0.6,
         ease: [0.25, 0.1, 0.25, 1],
       }}
-      className="group relative h-[400px] md:h-[500px] overflow-hidden rounded-xl md:rounded-2xl border border-red-500/20 cursor-pointer"
+      className="group relative h-[300px] sm:h-[400px] md:h-[500px] overflow-hidden rounded-xl md:rounded-2xl border border-red-500/20 cursor-pointer"
       whileHover={{ borderColor: "rgba(239, 68, 68, 0.5)" }}
     >
       <Link href={href} className="block h-full w-full">

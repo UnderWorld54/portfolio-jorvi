@@ -7,7 +7,6 @@ import PageContainer from "@/components/ui/PageContainer";
 import PageTitle from "@/components/ui/PageTitle";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-
 const methods = [
   {
     icon: Eye,
@@ -139,7 +138,7 @@ export default function AboutPage() {
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
           <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 via-transparent to-red-500/5 pointer-events-none" />
-          <div className="relative border border-red-500/20 rounded-2xl p-8 md:p-12">
+          <div className="relative border border-red-500/20 rounded-2xl p-5 sm:p-8 md:p-12">
             <h2
               className="text-3xl md:text-4xl font-bold text-white mb-6"
               style={{ fontFamily: '"Great White Serif", serif' }}

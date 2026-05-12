@@ -1,13 +1,13 @@
 export default function LoadingSkeleton() {
   return (
-    <div className="min-h-screen bg-black px-6 pt-32 pb-16">
+    <div className="min-h-screen bg-black px-4 sm:px-6 md:px-8 lg:px-12 pt-24 sm:pt-28 md:pt-32 pb-16">
       {/* Title skeleton */}
-      <div className="max-w-7xl mx-auto mb-12">
-        <div className="h-10 w-48 bg-white/5 rounded-lg animate-pulse" />
+      <div className="max-w-7xl mx-auto mb-8 sm:mb-12 flex justify-center">
+        <div className="h-8 sm:h-10 w-36 sm:w-48 bg-white/5 rounded-lg animate-pulse" />
       </div>
 
       {/* Grid skeleton */}
-      <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
         {Array.from({ length: 8 }).map((_, i) => (
           <div
             key={i}

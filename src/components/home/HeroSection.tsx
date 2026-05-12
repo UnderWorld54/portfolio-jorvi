@@ -8,7 +8,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 export default function HeroSection() {
   const heroRef = useRef<HTMLDivElement>(null);
   const { language } = useLanguage();
-  const logoSrc = language === "ENG" ? "/images/VISU_EN.svg" : "/images/VISU.svg";
+  const logoSrc =
+    language === "ENG" ? "/images/VISU_EN.svg" : "/images/VISU.svg";
   const logoAlt = language === "ENG" ? "VISUAL" : "VISUEL";
 
   return (
@@ -59,7 +60,7 @@ export default function HeroSection() {
       {/*         VISU CENTRÉ        */}
       {/* --------------------------- */}
       <div className="absolute z-30 flex items-center justify-center">
-        <div className="relative w-[45vw] max-w-[550px] min-w-[240px]">
+        <div className="relative w-[65vw] sm:w-[55vw] md:w-[45vw] max-w-[550px] min-w-[200px]">
           <Image
             src={logoSrc}
             alt={logoAlt}

@@ -128,7 +128,7 @@ export default function AboutSection() {
             </motion.p>
 
             <motion.h3
-              className="text-6xl md:text-8xl font-bold text-red-500 mb-4"
+              className="text-5xl sm:text-6xl md:text-8xl font-bold text-red-500 mb-4"
               style={{ fontFamily: '"Great White Serif", serif' }}
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
