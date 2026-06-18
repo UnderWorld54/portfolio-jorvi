@@ -103,7 +103,7 @@ const translations: Record<Language, Record<string, string>> = {
     "hero.subtitle": "Créateur visuel • Designer • Artiste",
     "hero.cta": "Découvrir mon travail",
     "about.greeting": "Bonjour moi c'est",
-    "about.title": "A PROPOS DE MOI",
+    "about.title": "À PROPOS DE MOI",
     "about.subtitle":
       "Je suis un créateur visuel passionné, spécialisé dans le design graphique, la photographie et la direction artistique. Mon approche combine esthétique moderne et sensibilité artistique pour donner vie à vos projets.",
     "about.description":
