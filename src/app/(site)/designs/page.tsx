@@ -1,4 +1,4 @@
-import { getLogos, getPrints, getVideos } from "@/lib/strapi";
+import { getLogos, getPrints, getVideos } from "@/lib/sanity";
 import DesignsSection from "@/components/DesignsSection";
 
 export const revalidate = 3600;

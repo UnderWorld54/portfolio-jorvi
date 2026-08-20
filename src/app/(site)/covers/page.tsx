@@ -1,14 +1,14 @@
-import { getTransformedCovers } from "@/lib/strapi";
+import { getCovers } from "@/lib/sanity";
 import GalleryContent from "@/components/gallery/GalleryContent";
 
 export const revalidate = 3600;
 
 export default async function CoversPage() {
-  let items: Awaited<ReturnType<typeof getTransformedCovers>> = [];
+  let items: Awaited<ReturnType<typeof getCovers>> = [];
   let error: string | null = null;
 
   try {
-    items = await getTransformedCovers();
+    items = await getCovers();
   } catch (e) {
     error = e instanceof Error ? e.message : "Failed to fetch covers";
   }

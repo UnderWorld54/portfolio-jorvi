@@ -1,26 +1,22 @@
 import { notFound } from "next/navigation";
-import {
-  getTransformedLogos,
-  getTransformedPrints,
-  getTransformedVideos,
-} from "@/lib/strapi";
+import { getLogos, getPrints, getVideos } from "@/lib/sanity";
 import GalleryContent from "@/components/gallery/GalleryContent";
 
 export const revalidate = 3600;
 
 const categories = {
   logos: {
-    fetcher: getTransformedLogos,
+    fetcher: getLogos,
     titleKey: "page.logos",
     contentTypeKey: "content.type.logo",
   },
   prints: {
-    fetcher: getTransformedPrints,
+    fetcher: getPrints,
     titleKey: "page.prints",
     contentTypeKey: "content.type.print",
   },
   videos: {
-    fetcher: getTransformedVideos,
+    fetcher: getVideos,
     titleKey: "page.videos",
     contentTypeKey: "content.type.video",
   },

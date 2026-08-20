@@ -7,16 +7,23 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "translate": "node scripts/translate.js"
+    "translate": "node scripts/translate.js",
+    "import:sanity": "node scripts/import-to-sanity.mjs"
   },
   "dependencies": {
+    "@sanity/client": "^8.2.0",
+    "@sanity/image-url": "^2.1.1",
+    "@sanity/vision": "^6.10.1",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.553.0",
     "next": "16.0.10",
-    "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "next-sanity": "^13.3.3",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "sanity": "^6.10.1",
+    "styled-components": "^6.5.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

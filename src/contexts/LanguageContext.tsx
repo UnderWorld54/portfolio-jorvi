@@ -169,7 +169,7 @@ const translations: Record<Language, Record<string, string>> = {
     "message.noContent.soon": "Le contenu sera bientôt disponible.",
     "message.error.loading": "Erreur lors du chargement des {type}",
     "message.error.config":
-      "Vérifiez votre configuration Strapi dans les variables d'environnement.",
+      "Vérifiez votre configuration Sanity dans les variables d'environnement.",
     "message.category.notFound": "Catégorie non trouvée",
     "message.back": "Retour",
     "message.back.designs": "Retour aux designs",
@@ -253,7 +253,7 @@ const translations: Record<Language, Record<string, string>> = {
     "message.noContent.soon": "Content will be available soon.",
     "message.error.loading": "Error loading {type}",
     "message.error.config":
-      "Check your Strapi configuration in environment variables.",
+      "Check your Sanity configuration in environment variables.",
     "message.category.notFound": "Category not found",
     "message.back": "Back",
     "message.back.designs": "Back to designs",

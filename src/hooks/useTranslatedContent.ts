@@ -5,7 +5,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { translateTexts } from '@/lib/translation';
 
 /**
- * Hook pour traduire automatiquement le contenu dynamique (Strapi)
+ * Hook pour traduire automatiquement le contenu dynamique (Sanity)
  * Traduit les champs description, artist et projectName
  */
 export function useTranslatedContent<T extends { id: string; description?: string; artist?: string; projectName?: string }>(
